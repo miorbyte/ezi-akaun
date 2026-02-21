@@ -3,322 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EZI Akaun v7.9 | KV Kulim Innovation (Updated)</title>
+    <title>EZI Akaun v9.8 | Final Gold Edition</title>
     <style>
-        :root {
-            --primary: #4361ee;
-            --success: #2ecc71;
-            --danger: #e63946;
-            --dark: #1e1f26;
-            --light: #f8f9fa;
-            --border-color: #dee2e6;
-            --warning: #f39c12; /* Warna baru untuk Aset/Pinjaman */
+        :root { 
+            --primary: #1e272e; 
+            --success: #05c46b; 
+            --danger: #ff3f34; 
+            --warning: #f1c40f;
+            --accent: #3c40c6; 
+            --border-color: #d2dae2; 
         }
+        * { box-sizing: border-box; transition: all 0.2s ease; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f1f2f6; margin: 0; padding: 15px; color: #2f3542; }
+        .container { max-width: 1100px; margin: 0 auto; }
         
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; color: #333; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        
-        /* Header */
-        .nama-syarikat-container { text-align: center; margin-bottom: 30px; }
+        /* Header Syarikat */
         .nama-syarikat-input { 
-            font-size: 30px; font-weight: 800; text-align: center; color: var(--primary);
-            border: 2px dashed #ced4da; background: white; padding: 12px; border-radius: 15px; 
-            width: 100%; max-width: 600px; display: block; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 32px; font-weight: 900; text-align: center; color: var(--primary); 
+            border: 4px solid var(--primary); background: white; padding: 15px; 
+            border-radius: 20px; width: 100%; margin-bottom: 25px; outline: none; 
+            text-transform: uppercase; box-shadow: 8px 8px 0 #bdc3c7; 
         }
-
-        /* Dashboard Grid */
-        .grid-main { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 25px; }
-        @media (min-width: 900px) { .grid-main { grid-template-columns: 1.5fr 1fr 1fr; } }
-
-        .ai-card { 
-            background: linear-gradient(135deg, var(--dark) 0%, #3a3d54 100%); 
-            color: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        
+        /* Dashboard Cards */
+        .grid-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .dashboard-card { 
+            background: white; padding: 25px; border-radius: 25px; 
+            border: 4px solid var(--primary); box-shadow: 10px 10px 0 rgba(0,0,0,0.05); 
         }
-
-        .info-card { background: white; padding: 20px; border-radius: 20px; border: 1px solid var(--border-color); }
-        .info-card-title { font-size: 13px; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-
-        .bar-container { background: rgba(255,255,255,0.1); border-radius: 10px; height: 10px; margin: 15px 0; }
-        .bar-fill { height: 100%; border-radius: 10px; width: 0%; transition: 1.5s ease; }
-
-        .export-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .btn-export { 
-            padding: 12px; border: none; border-radius: 10px; color: white; 
-            font-weight: 700; cursor: pointer; display: flex; align-items: center; 
-            justify-content: center; gap: 10px; transition: 0.3s; font-size: 13px; width: 100%;
+        .card-header { 
+            font-weight: 900; font-size: 15px; text-transform: uppercase; 
+            margin-bottom: 20px; color: black; border-left: 10px solid var(--primary); padding-left: 10px; 
         }
-        .btn-pdf { background-color: var(--danger); }
-        .btn-excel { background-color: var(--success); }
+        
+        /* Visual Gauge */
+        .gauge-outer { background: #dcdde1; height: 22px; border-radius: 50px; position: relative; margin: 15px 0 10px 0; border: 2px solid #2f3542; overflow: hidden; }
+        .gauge-inner { height: 100%; width: 0%; border-radius: 50px; transition: width 1s ease-in-out; }
+        .gauge-labels { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: #57602f; text-transform: uppercase; }
 
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .card-title { margin: 0 0 20px 0; font-size: 17px; font-weight: 700; border-left: 5px solid var(--primary); padding-left: 15px; }
-
-        /* Form Layout */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 13px; color: #555; }
-        input, select { width: 100%; padding: 12px; border: 1.5px solid var(--border-color); border-radius: 10px; font-size: 14px; }
-        .btn-primary { background: var(--primary); color: white; border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .btn-reset { background: none; color: #ccc; border: none; font-size: 11px; margin-top: 15px; cursor: pointer; text-decoration: underline; width: 100%; }
-
-        /* Jadual Laporan */
+        /* Tables & Reports */
+        .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #ddd; }
+        .card-title { margin: 0 0 20px 0; font-size: 18px; font-weight: 800; border-bottom: 4px solid var(--accent); display: inline-block; padding-bottom: 5px; }
         .table-laporan { width: 100%; border-collapse: collapse; }
-        .table-laporan td { padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
-        .table-laporan td.val-laporan { text-align: right; font-weight: 700; }
-        .total-row { background: #f9f9f9; font-weight: 800 !important; border-top: 2px solid #333; color: #333; }
+        .table-laporan td { padding: 12px 0; border-bottom: 1px solid #f1f2f6; font-size: 14px; }
+        .val-laporan { text-align: right; font-weight: 700; font-family: 'Courier New', monospace; font-size: 15px; }
+        .total-row { background: #f8f9fa; font-weight: 900 !important; border-top: 3px solid #000; border-bottom: 3px double #000; color: black; }
+        .sub-header { color: var(--accent); font-weight: 900; font-size: 12px; padding-top: 20px !important; text-transform: uppercase; letter-spacing: 1px; }
 
-        .table-history-container { overflow-x: auto; }
-        .table-history { width: 100%; border-collapse: collapse; min-width: 700px; }
-        .table-history th { 
-            text-align: left; background: #f8f9fa; padding: 15px 12px; 
-            font-weight: 700; color: #666; border-bottom: 2px solid #eee;
-        }
-        .table-history td { padding: 15px 12px; border-bottom: 1px solid #f0f0f0; }
-        .td-amaun { font-weight: 700; text-align: right; }
+        /* Form Controls */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        input, select { width: 100%; padding: 14px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 15px; font-weight: 600; }
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 16px; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
 
-        .badge { padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; background: #eee; color: #333; display: inline-block; }
-        .kk-header { color: var(--primary); font-weight: 800; font-size: 14px; padding-top: 20px; text-transform: uppercase; }
-        .footer-note { text-align: center; font-size: 11px; color: #999; margin: 50px 0 20px; font-weight: 500; }
+        /* Filter Bar */
+        .filter-bar { background: #fff; padding: 20px; border-radius: 20px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px; border: 3px solid var(--accent); }
+        .btn-csv { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
-        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
-        @media print { .no-print { display: none !important; } }
+        @media print { .no-print { display: none !important; } .container { max-width: 100%; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="nama-syarikat-container">
-        <input type="text" id="namaSyarikat" class="nama-syarikat-input" placeholder="Masukkan Nama Perniagaan">
-        <div id="tajukLaporan" style="margin-top:10px; font-weight: bold; color:var(--dark);">
-            LAPORAN KEWANGAN SEHINGGA: <span id="displayTarikh">...</span>
-        </div>
-    </div>
+    <input type="text" id="namaSyarikat" class="nama-syarikat-input" placeholder="NAMA PERNIAGAAN ANDA">
 
-    <div class="grid-main no-print">
-        <div class="ai-card">
-            <div style="font-size: 11px; opacity: 0.8; font-weight: 600;">STATUS PRESTASI</div>
-            <div id="statusTeks" style="font-size: 22px; font-weight: 800; margin: 8px 0;">Analisis Data...</div>
-            <div class="bar-container"><div id="progressBar" class="bar-fill"></div></div>
-            <div id="nasihatAI" style="font-size: 12px; opacity: 0.9; line-height: 1.4; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;">
-                Sila masukkan data kewangan anda.
+    <div class="grid-dashboard no-print">
+        <div class="dashboard-card">
+            <div class="card-header">Prestasi Untung Bersih</div>
+            <div id="statusTeks" style="font-size: 22px; font-weight: 900;">DATA DIPROSES...</div>
+            <div class="gauge-outer">
+                <div id="gaugeUntung" class="gauge-inner"></div>
             </div>
+            <div class="gauge-labels"><span>Rugi</span><span>Imbang</span><span>Untung</span></div>
+            <p id="nasihatAI" style="font-size: 12px; margin-top: 15px; font-weight: 600; color: #7f8c8d;"></p>
         </div>
 
-        <div class="info-card">
-            <div class="info-card-title">Analisis Breakeven</div>
-            <div style="font-size: 11px; color: #888;">Sasaran Jualan Minimum:</div>
-            <div id="valBreakeven" style="font-size: 24px; font-weight: 800; color: var(--primary); margin: 5px 0;">RM 0.00</div>
-            <p style="font-size: 11px; color: #666; line-height: 1.4;">Jumlah jualan untuk menampung kos operasi bulan ini.</p>
-        </div>
-
-        <div class="info-card">
-            <div class="info-card-title">Export Laporan</div>
-            <div class="export-grid">
-                <button class="btn-export btn-pdf" onclick="window.print()"><span>📄</span> Cetak Laporan PDF</button>
-                <button class="btn-export btn-excel" onclick="simpanExcel()"><span>📊</span> Simpan Fail Excel</button>
+        <div class="dashboard-card">
+            <div class="card-header">Analisis Titik Pulang Modal</div>
+            <div id="tpmLabelUtama" style="font-size: 13px; font-weight: 700; color: black;">Perlu Jualan Lagi:</div>
+            <div id="valBakiTPM" style="font-size: 32px; font-weight: 900; color: var(--danger); margin: 5px 0;">RM 0.00</div>
+            
+            <div class="gauge-outer">
+                <div id="gaugeTPM" class="gauge-inner"></div>
             </div>
-            <button class="btn-reset" onclick="resetSistem()">Reset Semua Rekod</button>
+            
+            <div style="font-size: 11px; margin-top: 12px; border-top: 1px solid #eee; padding-top: 8px; color: #636e72;">
+                <b>Sasaran Keseluruhan (Modal):</b> <span id="valSasaranPenuh" style="color: black;">RM 0.00</span>
+            </div>
         </div>
     </div>
 
     <div class="card no-print">
         <h2 class="card-title">Kemasukan Transaksi</h2>
-        <form id="bookkeepingForm">
+        <form id="accForm">
             <div class="form-grid">
-                <div class="form-group"><label>Kategori</label><select id="jenis" required>
-                    <option value="" disabled selected>Pilih...</option>
-                    <optgroup label="Duit Masuk">
-                        <option value="modal">Suntikan Modal (Owner)</option>
+                <select id="jenis" required>
+                    <option value="" disabled selected>Pilih Kategori...</option>
+                    <optgroup label="SUMBER">
+                        <option value="modal">Modal Sendiri</option>
+                        <option value="pinjaman">Pinjaman Bank</option>
+                    </optgroup>
+                    <optgroup label="DEBIT (MASUK)">
                         <option value="jualan">Jualan Tunai</option>
-                        <option value="pinjaman">Pinjaman Bank/Luar</option>
+                        <option value="jualan_hutang">Jualan Hutang (Penghutang)</option>
                     </optgroup>
-                    <optgroup label="Duit Keluar">
+                    <optgroup label="KREDIT (KELUAR)">
                         <option value="belian">Belian Stok</option>
-                        <option value="belanja">Belanja Operasi (Bil/Sewa/Gaji)</option>
-                        <option value="aset">Belanja Aset (Mesin/Peralatan)</option>
+                        <option value="belanja">Belanja Operasi</option>
+                        <option value="aset">Belanja Aset (Harta Tetap)</option>
+                        <option value="belian_hutang">Belian Hutang (Pemiutang)</option>
+                        <option value="ambilan_tunai">Ambilan Tunai</option>
+                        <option value="ambilan_barang">Ambilan Barangniaga</option>
                     </optgroup>
-                    <optgroup label="Hutang (Kredit)">
-                        <option value="jualan_hutang">Jualan Hutang (Customer Hutang)</option>
-                        <option value="belian_hutang">Belian Hutang (Hutang Supplier)</option>
-                    </optgroup>
-                </select></div>
-                <div class="form-group"><label>Tarikh</label><input type="date" id="tarikh" required onchange="kemaskiniTarikhDisplay()"></div>
+                </select>
+                <input type="date" id="tarikh" required>
             </div>
             <div class="form-grid" style="grid-template-columns: 2fr 1fr;">
-                <div class="form-group"><label>Butiran</label><input type="text" id="butiran" placeholder="Contoh: Bil Elektrik / Beli Mesin Cetak" required></div>
-                <div class="form-group"><label>Amaun (RM)</label><input type="number" id="amaun" step="0.01" required></div>
+                <input type="text" id="butiran" placeholder="Keterangan transaksi..." required>
+                <input type="number" id="amaun" step="0.01" placeholder="0.00" required>
             </div>
-            <button type="submit" class="btn-primary">Sahkan & Simpan Rekod</button>
+            <button type="submit" class="btn-primary">SIMPAN REKOD</button>
         </form>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+    <div class="filter-bar no-print">
+        <span style="font-weight:800; font-size:14px; color:var(--accent);">LAPORAN:</span>
+        <select id="filterBulan" style="width:auto;" onchange="prosesAkaun()">
+            <option value="semua">Keseluruhan</option>
+            <option value="01">Januari</option><option value="02">Februari</option><option value="03">Mac</option>
+            <option value="04">April</option><option value="05">Mei</option><option value="06">Jun</option>
+            <option value="07">Julai</option><option value="08">Ogos</option><option value="09">September</option>
+            <option value="10">Oktober</option><option value="11">November</option><option value="12">Disember</option>
+        </select>
+        <select id="filterTahun" style="width:auto;" onchange="prosesAkaun()"></select>
+        
+        <div style="margin-left:auto; display:flex; gap:10px;">
+            <button onclick="eksportCSV()" class="btn-csv">📥 Eksport Excel</button>
+            <button onclick="window.print()" style="padding:10px 20px; cursor:pointer; background:var(--primary); color:white; border:none; border-radius:10px; font-weight:700;">📄 Cetak</button>
+        </div>
+    </div>
+
+    <div class="grid-reports">
         <div class="card">
-            <h2 class="card-title">Untung & Rugi</h2>
+            <h2 class="card-title">Penyata Untung Rugi</h2>
             <table class="table-laporan">
-                <tr><td>Hasil Jualan</td><td class="val-laporan" id="valJualan" style="color:var(--success)">RM 0.00</td></tr>
-                <tr><td>Kos Belian Stok</td><td class="val-laporan" id="valBelian" style="color:var(--danger)">- RM 0.00</td></tr>
-                <tr style="background:#f9f9f9; font-weight:bold;"><td>Untung Kasar</td><td class="val-laporan" id="valUntungKasar">RM 0.00</td></tr>
-                <tr><td>Belanja Operasi (Bil/Gaji/Sewa)</td><td class="val-laporan" id="valBelanja" style="color:var(--danger)">- RM 0.00</td></tr>
-                <tr class="total-row" style="font-size:18px;"><td><b>Untung Bersih</b></td><td class="val-laporan" id="valUntungBersih">RM 0.00</td></tr>
+                <tr><td>Jualan Bersih</td><td class="val-laporan" id="p_jualan">0.00</td></tr>
+                <tr><td>Kos Belian Stok</td><td class="val-laporan" id="p_belian">(0.00)</td></tr>
+                <tr style="font-weight:bold;"><td>UNTUNG KASAR</td><td class="val-laporan" id="p_uk">0.00</td></tr>
+                <tr><td>Belanja Operasi</td><td class="val-laporan" id="p_belanja">(0.00)</td></tr>
+                <tr class="total-row"><td>UNTUNG BERSIH / (RUGI)</td><td class="val-laporan" id="p_ub">0.00</td></tr>
             </table>
         </div>
 
         <div class="card">
             <h2 class="card-title">Kunci Kira-Kira</h2>
             <table class="table-laporan">
-                <tr><td colspan="2" class="kk-header">ASET</td></tr>
-                <tr><td>Tunai & Bank</td><td class="val-laporan" id="valTunai">RM 0.00</td></tr>
-                <tr><td>Aset Tetap (Mesin/Peralatan)</td><td class="val-laporan" id="valAsetTetap">RM 0.00</td></tr>
-                <tr><td>Penghutang (Customer)</td><td class="val-laporan" id="valPenghutang">RM 0.00</td></tr>
-                <tr class="total-row"><td>JUMLAH ASET</td><td class="val-laporan" id="valJumlahAset">RM 0.00</td></tr>
+                <tr><td colspan="2" class="sub-header">Aset</td></tr>
+                <tr><td>Aset Tetap</td><td class="val-laporan" id="k_aset">0.00</td></tr>
+                <tr><td>Tunai & Bank</td><td class="val-laporan" id="k_tunai">0.00</td></tr>
+                <tr><td>Penghutang</td><td class="val-laporan" id="k_penghutang">0.00</td></tr>
+                <tr class="total-row"><td>JUMLAH ASET (A)</td><td class="val-laporan" id="k_totalAset">0.00</td></tr>
                 
-                <tr><td colspan="2" class="kk-header">LIABILITI & EKUITI</td></tr>
-                <tr><td>Hutang Pemiutang / Pinjaman</td><td class="val-laporan" id="valLiabiliti">RM 0.00</td></tr>
-                <tr><td>Ekuiti Pemilik</td><td class="val-laporan" id="valEkuiti">RM 0.00</td></tr>
-                <tr class="total-row"><td>JUMLAH (L+E)</td><td class="val-laporan" id="valLiabilitiEkuiti">RM 0.00</td></tr>
+                <tr><td colspan="2" class="sub-header">Liabiliti & Ekuiti</td></tr>
+                <tr><td>Pemiutang / Pinjaman</td><td class="val-laporan" id="k_liabiliti">0.00</td></tr>
+                <tr><td>Modal Pemilik</td><td class="val-laporan" id="k_modal">0.00</td></tr>
+                <tr><td>Untung Bersih</td><td class="val-laporan" id="k_ub">0.00</td></tr>
+                <tr><td>(-) Ambilan</td><td class="val-laporan" id="k_ambilan">(0.00)</td></tr>
+                <tr class="total-row"><td>JUMLAH EKUITI & LIABILITI (L+E)</td><td class="val-laporan" id="k_totalLE">0.00</td></tr>
             </table>
         </div>
     </div>
 
     <div class="card">
         <h2 class="card-title">Sejarah Transaksi</h2>
-        <input type="text" id="cariData" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #ddd; margin-bottom: 20px;" placeholder="Cari..." onkeyup="renderTable()">
-        <div class="table-history-container">
-            <table class="table-history">
+        <div style="overflow-x:auto;">
+            <table class="table-laporan" style="min-width: 850px;">
                 <thead>
-                    <tr><th>Tarikh</th><th>Kategori</th><th>Butiran</th><th style="text-align:right">Amaun (RM)</th><th class="no-print" style="text-align:center">Aksi</th></tr>
+                    <tr style="text-align:left; background:#f1f2f6; font-weight:900;">
+                        <th style="padding:15px;">Tarikh</th>
+                        <th>Kategori</th>
+                        <th>Butiran</th>
+                        <th style="text-align:right;">Masuk</th>
+                        <th style="text-align:right;">Keluar</th>
+                        <th class="no-print" style="text-align:center;">Aksi</th>
+                    </tr>
                 </thead>
                 <tbody id="senaraiTransaksi"></tbody>
             </table>
         </div>
     </div>
-
-    <div class="footer-note">Inspirasi Projek Inovasi BPP KV Kulim by team EZI Akaun v7.9 Updated</div>
 </div>
 
 <script>
+    let data = JSON.parse(localStorage.getItem('ezi_gold_v98')) || [];
+    const debitKeys = ['modal', 'pinjaman', 'jualan', 'jualan_hutang'];
+    
+    const fYear = document.getElementById('filterTahun');
+    const curYear = new Date().getFullYear();
+    for(let i=curYear; i>=curYear-2; i--) { fYear.innerHTML += `<option value="${i}">${i}</option>`; }
     document.getElementById('tarikh').valueAsDate = new Date();
-    kemaskiniTarikhDisplay();
 
-    const inputNama = document.getElementById('namaSyarikat');
-    inputNama.value = localStorage.getItem('namaSyarikat') || "";
-    inputNama.addEventListener('input', () => localStorage.setItem('namaSyarikat', inputNama.value));
+    function prosesAkaun() {
+        const fb = document.getElementById('filterBulan').value;
+        const ft = document.getElementById('filterTahun').value;
+        
+        let b = { tunai:0, jualan:0, belian:0, belanja:0, modal:0, aset:0, p_hutang:0, p_utang:0, pinjaman:0, ambilan:0 };
+        const filtered = [];
 
-    let senaraiData = JSON.parse(localStorage.getItem('bookkeepingData')) || [];
-
-    function kemaskiniTarikhDisplay() {
-        document.getElementById('displayTarikh').innerText = document.getElementById('tarikh').value;
-    }
-
-    function saveAndRefresh() {
-        localStorage.setItem('bookkeepingData', JSON.stringify(senaraiData));
-        kiraSemua();
-        renderTable();
-    }
-
-    function kiraSemua() {
-        let akaun = { 
-            tunai: 0, jualan: 0, belian: 0, belanja: 0, modal: 0, 
-            penghutang: 0, pemiutang: 0, pinjaman: 0, asetTetap: 0 
-        };
-
-        senaraiData.forEach(d => {
-            if(d.jenis === 'modal') { akaun.tunai += d.amaun; akaun.modal += d.amaun; }
-            else if(d.jenis === 'jualan') { akaun.tunai += d.amaun; akaun.jualan += d.amaun; }
-            else if(d.jenis === 'pinjaman') { akaun.tunai += d.amaun; akaun.pinjaman += d.amaun; }
-            else if(d.jenis === 'belian') { akaun.tunai -= d.amaun; akaun.belian += d.amaun; }
-            else if(d.jenis === 'belanja') { akaun.tunai -= d.amaun; akaun.belanja += d.amaun; }
-            else if(d.jenis === 'aset') { akaun.tunai -= d.amaun; akaun.asetTetap += d.amaun; }
-            else if(d.jenis === 'jualan_hutang') { akaun.penghutang += d.amaun; akaun.jualan += d.amaun; }
-            else if(d.jenis === 'belian_hutang') { akaun.pemiutang += d.amaun; akaun.belian += d.amaun; }
+        data.forEach(d => {
+            const p = d.tarikh.split('-');
+            if ((fb === 'semua' || p[1] === fb) && p[0] === ft) {
+                filtered.push(d);
+                const amt = d.amaun;
+                if(d.jenis==='modal'){ b.tunai+=amt; b.modal+=amt; }
+                else if(d.jenis==='pinjaman'){ b.tunai+=amt; b.pinjaman+=amt; }
+                else if(d.jenis==='jualan'){ b.tunai+=amt; b.jualan+=amt; }
+                else if(d.jenis==='jualan_hutang'){ b.p_hutang+=amt; b.jualan+=amt; }
+                else if(d.jenis==='belian'){ b.tunai-=amt; b.belian+=amt; }
+                else if(d.jenis==='belanja'){ b.tunai-=amt; b.belanja+=amt; }
+                else if(d.jenis==='aset'){ b.tunai-=amt; b.aset+=amt; }
+                else if(d.jenis==='belian_hutang'){ b.p_utang+=amt; b.belian+=amt; }
+                else if(d.jenis==='ambilan_tunai'){ b.tunai-=amt; b.ambilan+=amt; }
+                else if(d.jenis==='ambilan_barang'){ b.belian-=amt; b.ambilan+=amt; }
+            }
         });
-        updateUI(akaun);
-    }
 
-    function updateUI(akaun) {
-        const fmt = (n) => "RM " + n.toLocaleString('en-US', {minimumFractionDigits: 2});
-        let uk = akaun.jualan - akaun.belian;
-        let ub = uk - akaun.belanja;
-        let ja = akaun.tunai + akaun.penghutang + akaun.asetTetap;
-        let ep = akaun.modal + ub;
-        let jl = akaun.pemiutang + akaun.pinjaman; // Total Hutang
-        let jle = jl + ep; // Balancing check
+        const f = (n) => n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         
-        document.getElementById('valJualan').innerText = fmt(akaun.jualan);
-        document.getElementById('valBelian').innerText = "- " + fmt(akaun.belian);
-        document.getElementById('valUntungKasar').innerText = fmt(uk);
-        document.getElementById('valBelanja').innerText = "- " + fmt(akaun.belanja);
-        document.getElementById('valUntungBersih').innerText = fmt(ub);
-        
-        document.getElementById('valTunai').innerText = fmt(akaun.tunai);
-        document.getElementById('valAsetTetap').innerText = fmt(akaun.asetTetap);
-        document.getElementById('valPenghutang').innerText = fmt(akaun.penghutang);
-        document.getElementById('valJumlahAset').innerText = fmt(ja);
-        
-        document.getElementById('valLiabiliti').innerText = fmt(jl);
-        document.getElementById('valEkuiti').innerText = fmt(ep);
-        document.getElementById('valLiabilitiEkuiti').innerText = fmt(jle);
+        let uk = b.jualan - b.belian;
+        let ub = uk - b.belanja;
+        let totalAset = b.aset + b.tunai + b.p_hutang;
+        let ekuitiNet = b.modal + ub - b.ambilan;
+        let totalLE = b.p_utang + b.pinjaman + ekuitiNet;
 
-        document.getElementById('valBreakeven').innerText = fmt(akaun.belian + akaun.belanja);
-        let pb = akaun.jualan > 0 ? (akaun.belanja / akaun.jualan) * 100 : 0;
-        document.getElementById('progressBar').style.width = Math.min(pb, 100) + "%";
+        // --- DASHBOARD: PRESTASI ---
+        const gUntung = document.getElementById('gaugeUntung');
+        const sTeks = document.getElementById('statusTeks');
+        const nAI = document.getElementById('nasihatAI');
         
-        let st = document.getElementById('statusTeks');
-        let na = document.getElementById('nasihatAI');
-        if(ub >= 0) {
-            st.innerText = "Bisnes Sihat ✅"; st.style.color = "var(--success)";
-            na.innerText = "Sangat Bagus! Untung bersih anda mencukupi.";
-        } else {
-            st.innerText = "Zon Bahaya ⚠️"; st.style.color = "var(--danger)";
-            na.innerText = "Peringatan: Belanja melebihi untung kasar.";
+        if(filtered.length > 0) {
+            let pctUntung = b.jualan > 0 ? (ub / b.jualan) * 100 : 0;
+            gUntung.style.width = Math.max(5, Math.min(100, 50 + pctUntung)) + "%";
+            gUntung.style.background = ub >= 0 ? "var(--success)" : "var(--danger)";
+            sTeks.innerText = ub >= 0 ? "BISNES UNTUNG ✅" : "BISNES RUGI ⚠️";
+            sTeks.style.color = ub >= 0 ? "var(--success)" : "var(--danger)";
+            nAI.innerText = ub >= 0 ? `Tahniah! Untung bersih anda RM ${f(ub)}.` : `Anda rugi RM ${f(Math.abs(ub))}. Periksa kos belian & belanja.`;
         }
+
+        // --- DASHBOARD: TPM (LOGIK PRAKTIKAL) ---
+        const sasaranTPM = b.belian + b.belanja; 
+        const jualanSemasa = b.jualan; 
+        const bakiPerlu = sasaranTPM - jualanSemasa; 
+
+        const tpmBar = document.getElementById('gaugeTPM');
+        const labelUtama = document.getElementById('tpmLabelUtama');
+        const valBaki = document.getElementById('valBakiTPM');
+        const valPenuh = document.getElementById('valSasaranPenuh');
+
+        valPenuh.innerText = "RM " + f(sasaranTPM);
+
+        if (sasaranTPM > 0) {
+            let pctProgress = (jualanSemasa / sasaranTPM) * 100;
+            tpmBar.style.width = Math.min(100, pctProgress) + "%";
+
+            if (jualanSemasa < sasaranTPM) {
+                labelUtama.innerText = "Perlu Jualan Lagi:";
+                valBaki.innerText = "RM " + f(bakiPerlu);
+                valBaki.style.color = "var(--danger)";
+                tpmBar.style.background = "var(--warning)";
+            } else {
+                let untungKasar = jualanSemasa - sasaranTPM;
+                labelUtama.innerText = "Lebihan (Sudah Pulang Modal):";
+                valBaki.innerText = "RM " + f(untungKasar);
+                valBaki.style.color = "var(--success)";
+                tpmBar.style.background = "var(--success)";
+            }
+        } else {
+            valBaki.innerText = "RM 0.00";
+            tpmBar.style.width = "0%";
+        }
+
+        // --- UPDATE PENYATA ---
+        document.getElementById('p_jualan').innerText = f(b.jualan);
+        document.getElementById('p_belian').innerText = `(${f(b.belian)})`;
+        document.getElementById('p_uk').innerText = f(uk);
+        document.getElementById('p_belanja').innerText = `(${f(b.belanja)})`;
+        document.getElementById('p_ub').innerText = f(ub);
+
+        document.getElementById('k_aset').innerText = f(b.aset);
+        document.getElementById('k_tunai').innerText = f(b.tunai);
+        document.getElementById('k_penghutang').innerText = f(b.p_hutang);
+        document.getElementById('k_totalAset').innerText = f(totalAset);
+        document.getElementById('k_liabiliti').innerText = f(b.p_utang + b.pinjaman);
+        document.getElementById('k_modal').innerText = f(b.modal);
+        document.getElementById('k_ub').innerText = f(ub);
+        document.getElementById('k_ambilan').innerText = `(${f(b.ambilan)})`;
+        document.getElementById('k_totalLE').innerText = f(totalLE);
+
+        renderTable(filtered);
     }
 
-    function renderTable() {
+    function renderTable(filtered) {
         const tbody = document.getElementById('senaraiTransaksi');
-        const filter = document.getElementById('cariData').value.toLowerCase();
         tbody.innerHTML = "";
-        senaraiData.filter(d => d.butiran.toLowerCase().includes(filter)).reverse().forEach(d => {
-            let row = `<tr>
-                <td>${d.tarikh}</td>
-                <td><span class="badge">${d.jenis.replace('_', ' ').toUpperCase()}</span></td>
-                <td>${d.butiran}</td>
-                <td class="td-amaun">RM ${d.amaun.toFixed(2)}</td>
-                <td class="no-print" style="text-align:center"><button style="color:red; border:1px solid red; background:none; cursor:pointer; padding:3px 6px; border-radius:4px;" onclick="padamRekod(${d.id})">Padam</button></td>
-            </tr>`;
-            tbody.insertAdjacentHTML('beforeend', row);
+        [...filtered].reverse().forEach(d => {
+            const isDebit = debitKeys.includes(d.jenis);
+            const amt = d.amaun.toLocaleString('en-US', {minimumFractionDigits: 2});
+            tbody.insertAdjacentHTML('beforeend', `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding:15px; font-weight:600;">${d.tarikh}</td>
+                    <td><span style="font-size:10px; font-weight:900; background:#f1f2f6; padding:5px 8px; border-radius:6px;">${d.jenis.replace('_',' ').toUpperCase()}</span></td>
+                    <td style="font-weight:600;">${d.butiran}</td>
+                    <td style="text-align:right; color:var(--success); font-weight:800;">${isDebit ? amt : '-'}</td>
+                    <td style="text-align:right; color:var(--danger); font-weight:800;">${!isDebit ? amt : '-'}</td>
+                    <td class="no-print" style="text-align:center"><button onclick="hapus(${d.id})" style="border:none; background:none; color:#bdc3c7; cursor:pointer; font-size:22px;">&times;</button></td>
+                </tr>
+            `);
         });
     }
 
-    document.getElementById('bookkeepingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        senaraiData.push({
-            id: Date.now(),
-            jenis: document.getElementById('jenis').value,
-            tarikh: document.getElementById('tarikh').value,
-            butiran: document.getElementById('butiran').value,
-            amaun: parseFloat(document.getElementById('amaun').value)
-        });
-        saveAndRefresh();
-        this.reset();
-        document.getElementById('tarikh').valueAsDate = new Date();
-        kemaskiniTarikhDisplay();
-    });
-
-    function padamRekod(id) { if(confirm("Hapus?")) { senaraiData = senaraiData.filter(d => d.id !== id); saveAndRefresh(); } }
-    function resetSistem() { if(confirm("Hapus semua data?")) { senaraiData = []; saveAndRefresh(); } }
-    function simpanExcel() {
-        let content = `<html><head><meta charset="UTF-8"></head><body><h2>EZI Akaun</h2><table border="1">${document.querySelector('.table-history').innerHTML}</table></body></html>`;
-        let blob = new Blob([content], {type: 'application/vnd.ms-excel'});
-        let a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'Laporan.xls';
+    function eksportCSV() {
+        if(data.length === 0) return alert("Tiada data.");
+        let csv = "Tarikh,Kategori,Butiran,Amaun\n";
+        data.forEach(d => { csv += `${d.tarikh},${d.jenis},${d.butiran.replace(',','')},${d.amaun}\n`; });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `EZI_Akaun_Gold.csv`;
         a.click();
     }
 
-    kiraSemua();
-    renderTable();
+    document.getElementById('accForm').onsubmit = function(e) {
+        e.preventDefault();
+        const t = document.getElementById('tarikh').value;
+        data.push({ 
+            id: Date.now(), 
+            jenis: document.getElementById('jenis').value, 
+            tarikh: t, 
+            butiran: document.getElementById('butiran').value, 
+            amaun: parseFloat(document.getElementById('amaun').value) 
+        });
+        localStorage.setItem('ezi_gold_v98', JSON.stringify(data));
+        prosesAkaun();
+        this.reset(); document.getElementById('tarikh').value = t;
+    };
+
+    function hapus(id) { 
+        if(confirm("Padam transaksi?")) { 
+            data = data.filter(d => d.id !== id); 
+            localStorage.setItem('ezi_gold_v98', JSON.stringify(data)); 
+            prosesAkaun(); 
+        } 
+    }
+    
+    const sn = document.getElementById('namaSyarikat');
+    sn.value = localStorage.getItem('ezi_gold_sn') || "";
+    sn.oninput = () => localStorage.setItem('ezi_gold_sn', sn.value);
+
+    prosesAkaun();
 </script>
 </body>
 </html>
