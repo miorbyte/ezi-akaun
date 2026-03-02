@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profit Niaga Pro v14 - Auditor General</title>
+    <title>Profit Niaga Pro v15 - Forensic Edition</title>
     <style>
         :root { 
             --primary: #1e272e; --success: #05c46b; --danger: #ff3f34; 
@@ -19,7 +19,7 @@
             border-radius: 15px; width: 100%; margin-bottom: 20px; outline: none; text-transform: uppercase;
         }
 
-        /* DASHBOARD GAUGES */
+        /* GAUGES */
         .grid-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .gauge-card { background: white; padding: 20px; border-radius: 15px; border: 1px solid #ddd; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .gauge-container { position: relative; width: 250px; margin: 0 auto; }
@@ -30,9 +30,9 @@
         .input-box { background: #fff; border: 2px solid var(--primary); border-radius: 15px; padding: 15px; }
         .card-header { font-weight: 900; font-size: 11px; text-transform: uppercase; margin-bottom: 10px; border-left: 5px solid var(--primary); padding-left: 10px; color: var(--primary); }
         input, select { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 12px; margin-bottom: 5px; font-weight: 600; }
-        .btn-calc { padding: 10px; border-radius: 6px; border: none; font-weight: 800; cursor: pointer; color: white; width: 100%; transition: 0.2s; }
+        .btn-calc { padding: 10px; border-radius: 6px; border: none; font-weight: 800; cursor: pointer; color: white; width: 100%; }
 
-        /* REPORTS GRID */
+        /* REPORTS */
         .grid-reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .report-card { background: white; padding: 20px; border-radius: 15px; border: 1px solid #ddd; }
         .table-laporan { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
@@ -44,7 +44,7 @@
         .toolbar { background: var(--primary); color: white; padding: 12px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
         .btn-tool { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: 800; color: white; font-size: 11px; }
 
-        @media print { .no-print { display: none !important; } body { background: white; padding: 0; } .report-card { border: 1px solid #000; box-shadow: none; width: 100%; margin-bottom: 20px; } }
+        @media print { .no-print { display: none !important; } body { background: white; } .report-card { width: 100%; margin-bottom: 20px; } }
     </style>
 </head>
 <body>
@@ -58,32 +58,27 @@
             <div class="gauge-container">
                 <svg viewBox="0 0 200 120">
                     <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:var(--danger);stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:var(--warning);stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:var(--success);stop-opacity:1" />
+                        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:var(--danger)" /><stop offset="50%" style="stop-color:var(--warning)" /><stop offset="100%" style="stop-color:var(--success)" />
                         </linearGradient>
                     </defs>
                     <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#eee" stroke-width="15" stroke-linecap="round"/>
-                    <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="url(#grad1)" stroke-width="15" stroke-linecap="round"/>
-                    <line id="needleUntung" x1="100" y1="100" x2="100" y2="35" stroke="#333" stroke-width="4" transform="rotate(-90 100 100)" style="transition: 1s;"/>
-                    <circle cx="100" cy="100" r="5" fill="#333"/>
+                    <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="url(#g1)" stroke-width="15" stroke-linecap="round"/>
+                    <line id="needleU" x1="100" y1="100" x2="100" y2="35" stroke="#333" stroke-width="4" transform="rotate(-90 100 100)" style="transition:1s;"/>
                 </svg>
             </div>
-            <div class="gauge-value" id="valUntung">RM 0.00</div>
+            <div class="gauge-value" id="valU">RM 0.00</div>
         </div>
-
         <div class="gauge-card">
-            <div class="card-header">Titik Pulang Modal (Break-even)</div>
+            <div class="card-header">Tahap Ambilan Pemilik</div>
             <div class="gauge-container">
                 <svg viewBox="0 0 200 120">
                     <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#eee" stroke-width="15" stroke-linecap="round"/>
-                    <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="url(#grad1)" stroke-width="15" stroke-linecap="round"/>
-                    <line id="needleTPM" x1="100" y1="100" x2="100" y2="35" stroke="#333" stroke-width="4" transform="rotate(-90 100 100)" style="transition: 1.5s;"/>
-                    <circle cx="100" cy="100" r="5" fill="#333"/>
+                    <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="var(--danger)" stroke-width="15" stroke-linecap="round" stroke-dasharray="0 251" id="barAmb"/>
                 </svg>
             </div>
-            <div class="gauge-value" id="valTPM">0%</div>
+            <div class="gauge-value" id="valAmb">RM 0.00</div>
+            <div style="font-size:9px; color:gray;">Ambilan vs Untung Bersih</div>
         </div>
     </div>
 
@@ -93,146 +88,117 @@
             <input type="date" id="s_tarikh">
             <select id="s_arah">
                 <option value="jual_tunai">Jualan (Tunai)</option>
-                <option value="jual_hutang">Jualan (Kredit/Hutang)</option>
+                <option value="jual_hutang">Jualan (Kredit)</option>
                 <option value="beli_tunai">Belian (Tunai)</option>
-                <option value="beli_hutang">Belian (Kredit/Hutang)</option>
+                <option value="beli_hutang">Belian (Kredit)</option>
                 <option value="pul_jual">Pulangan Jualan</option>
                 <option value="pul_beli">Pulangan Belian</option>
             </select>
-            <input type="text" id="s_item" placeholder="Butiran Item">
+            <input type="text" id="s_item" placeholder="Butiran">
             <div style="display:flex; gap:5px;">
                 <input type="number" id="s_qty" placeholder="Qty">
                 <input type="number" id="s_amaun" placeholder="RM/Unit">
             </div>
-            <button class="btn-calc" style="background:var(--accent)" onclick="rekodStok()">REKOD TRANSAKSI</button>
+            <button class="btn-calc" style="background:var(--accent)" onclick="rekodStok()">REKOD</button>
         </div>
 
         <div class="input-box">
-            <div class="card-header">📋 Belanja & Kewangan</div>
+            <div class="card-header">📋 Belanja & Ambilan</div>
             <input type="date" id="t_tarikh">
             <select id="t_jenis">
-                <optgroup label="Kos Masuk (Belian)">
-                    <option value="k_angkut_m">Angkutan Masuk (Postage)</option>
-                    <option value="k_duti">Duti Import / Cukai Belian</option>
-                </optgroup>
                 <optgroup label="Belanja Operasi">
-                    <option value="b_gaji">Gaji & Upah</option>
-                    <option value="b_caruman">KWSP / SOCSO / EIS</option>
+                    <option value="b_gaji">Gaji & Caruman</option>
                     <option value="b_sewa">Sewa & Utiliti</option>
                     <option value="b_iklan">Iklan & Marketing</option>
-                    <option value="b_angkut_k">Angkutan Keluar (Delivery)</option>
-                    <option value="b_bank">Caj Bank / Payment Gateway</option>
-                    <option value="b_am">Belanja Am / Alat Tulis</option>
+                    <option value="b_am">Belanja Am / Pejabat</option>
                 </optgroup>
-                <optgroup label="Ekuiti & Aset">
-                    <option value="modal">Modal Tunai Masuk</option>
-                    <option value="pinjaman">Pinjaman Bank</option>
-                    <option value="aset">Beli Aset (Mesin/Laptop)</option>
-                    <option value="ambilan">Ambilan Peribadi</option>
+                <optgroup label="Ambilan Pemilik">
+                    <option value="amb_tunai">Ambilan Tunai (Guna Duit Bisnes)</option>
+                    <option value="amb_stok">Ambilan Stok (Barangniaga)</option>
+                    <option value="amb_bil">Bayaran Bil Peribadi (Astro/LHDN/dll)</option>
+                </optgroup>
+                <optgroup label="Lain-lain">
+                    <option value="modal">Modal Tunai</option>
+                    <option value="pinjaman">Pinjaman</option>
+                    <option value="aset">Beli Aset</option>
                 </optgroup>
             </select>
             <input type="number" id="t_amaun" placeholder="Amaun RM">
-            <button class="btn-calc" style="background:var(--primary)" onclick="rekodTransaksi()">SIMPAN BELANJA</button>
+            <button class="btn-calc" style="background:var(--primary)" onclick="rekodTransaksi()">SIMPAN</button>
         </div>
 
         <div class="input-box" style="background:#dfe4ea; border-style:dashed;">
-            <div class="card-header">📦 Audit Stok Fizikal</div>
-            <label style="font-size:10px; font-weight:900;">NILAI STOK AWAL (RM)</label>
-            <input type="number" id="v_stok_awal" oninput="prosesAkaun()" placeholder="0.00">
-            <label style="font-size:10px; font-weight:900;">NILAI STOK AKHIR (RM)</label>
-            <input type="number" id="v_stok_akhir" oninput="prosesAkaun()" placeholder="0.00">
+            <div class="card-header">📦 Audit Stok Akhir</div>
+            <input type="number" id="v_sa" oninput="prosesAkaun()" placeholder="Stok Awal (RM)">
+            <input type="number" id="v_sk" oninput="prosesAkaun()" placeholder="Stok Akhir (RM)">
         </div>
     </div>
 
     <div class="toolbar no-print">
-        <select id="fBulan" onchange="prosesAkaun()" style="width:120px; margin:0;"><option value="semua">Semua Bulan</option><option value="01">Jan</option><option value="02">Feb</option><option value="03">Mac</option><option value="04">Apr</option><option value="05">Mei</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Ogos</option><option value="09">Sep</option><option value="10">Okt</option><option value="11">Nov</option><option value="12">Dis</option></select>
-        <select id="fTahun" onchange="prosesAkaun()" style="width:90px; margin:0;"></select>
-        <div style="margin-left:auto; display:flex; gap:8px;">
-            <button onclick="simpanJSON()" class="btn-tool" style="background:var(--success)">💾 BACKUP</button>
-            <button onclick="document.getElementById('inJSON').click()" class="btn-tool" style="background:var(--accent)">📂 OPEN</button>
-            <input type="file" id="inJSON" style="display:none" onchange="muatJSON(event)">
-            <button onclick="window.print()" class="btn-tool" style="background:orange">📄 PRINT</button>
-        </div>
+        <select id="fBulan" onchange="prosesAkaun()" style="width:100px;"><option value="semua">Semua</option><option value="01">Jan</option><option value="02">Feb</option><option value="03">Mac</option><option value="04">Apr</option><option value="05">Mei</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Ogos</option><option value="09">Sep</option><option value="10">Okt</option><option value="11">Nov</option><option value="12">Dis</option></select>
+        <select id="fTahun" onchange="prosesAkaun()" style="width:90px;"></select>
+        <button onclick="simpanJSON()" class="btn-tool" style="background:var(--success); margin-left:auto;">💾 BACKUP</button>
+        <button onclick="document.getElementById('inJSON').click()" class="btn-tool" style="background:var(--accent)">📂 OPEN</button>
+        <input type="file" id="inJSON" style="display:none" onchange="muatJSON(event)">
+        <button onclick="window.print()" class="btn-tool" style="background:orange">📄 PRINT</button>
     </div>
 
     <div class="grid-reports">
         <div class="report-card">
-            <h2 class="card-header">Penyata Untung Rugi Terperinci</h2>
+            <h2 class="card-header">Penyata Untung Rugi</h2>
             <table class="table-laporan">
-                <tr><td>Jualan</td><td class="val" id="p_jual">0.00</td></tr>
-                <tr><td>(-) Pulangan Jualan</td><td class="val" id="p_pul_jual">(0.00)</td></tr>
-                <tr style="font-weight:bold;"><td>JUALAN BERSIH</td><td class="val" id="p_jual_b">0.00</td></tr>
-                
-                <tr><td colspan="2" class="sub-header">KOS JUALAN</td></tr>
+                <tr><td>Jualan Bersih</td><td class="val" id="p_jual">0.00</td></tr>
+                <tr><td colspan="2" class="sub-header">Kos Jualan</td></tr>
                 <tr><td>Stok Awal</td><td class="val" id="p_sa">0.00</td></tr>
-                <tr><td>Belian</td><td class="val" id="p_beli">0.00</td></tr>
-                <tr><td>(-) Pulangan Belian</td><td class="val" id="p_pul_beli">(0.00)</td></tr>
-                <tr><td>(+) Angkutan Masuk</td><td class="val" id="p_angkut_m">0.00</td></tr>
-                <tr><td>(+) Duti Import / Cukai</td><td class="val" id="p_duti">0.00</td></tr>
-                <tr style="border-top:1px solid #ccc;"><td>KOS BARANG UNTUK DIJUAL</td><td class="val" id="p_kbud">0.00</td></tr>
+                <tr><td>Belian Bersih</td><td class="val" id="p_beli">0.00</td></tr>
+                <tr style="color:var(--accent);"><td>(-) Ambilan Stok (Kos)</td><td class="val" id="p_amb_stok">(0.00)</td></tr>
                 <tr><td>(-) Stok Akhir</td><td class="val" id="p_sk">(0.00)</td></tr>
-                <tr style="font-weight:bold; color:var(--danger);"><td>KOS JUALAN (COGS)</td><td class="val" id="p_cogs">0.00</td></tr>
-                
+                <tr style="font-weight:bold; color:var(--danger);"><td>KOS JUALAN</td><td class="val" id="p_cogs">0.00</td></tr>
                 <tr class="total-row"><td>UNTUNG KASAR</td><td class="val" id="p_uk">0.00</td></tr>
-                
-                <tr><td colspan="2" class="sub-header">BELANJA OPERASI</td></tr>
-                <tr><td>Gaji & Upah</td><td class="val" id="p_b_gaji">0.00</td></tr>
-                <tr><td>Caruman (KWSP/SOCSO)</td><td class="val" id="p_b_caruman">0.00</td></tr>
-                <tr><td>Sewa & Utiliti</td><td class="val" id="p_b_sewa">0.00</td></tr>
-                <tr><td>Iklan & Marketing</td><td class="val" id="p_b_iklan">0.00</td></tr>
-                <tr><td>Angkutan Keluar</td><td class="val" id="p_b_angkut_k">0.00</td></tr>
-                <tr><td>Caj Bank / Gateway</td><td class="val" id="p_b_bank">0.00</td></tr>
-                <tr><td>Belanja Am / Pejabat</td><td class="val" id="p_b_am">0.00</td></tr>
-                <tr class="total-row" style="background:#f1f2f6 !important;"><td>UNTUNG / (RUGI) BERSIH</td><td class="val" id="p_ub">0.00</td></tr>
+                <tr><td colspan="2" class="sub-header">Belanja Operasi</td></tr>
+                <tr><td>Semua Belanja</td><td class="val" id="p_belanja">0.00</td></tr>
+                <tr class="total-row" style="background:#f1f2f6 !important;"><td>UNTUNG BERSIH</td><td class="val" id="p_ub">0.00</td></tr>
             </table>
         </div>
 
         <div class="report-card">
-            <h2 class="card-header">Kunci Kira-Kira</h2>
+            <h2 class="card-header">Ekuiti & Kunci Kira-Kira</h2>
             <table class="table-laporan">
-                <tr><td colspan="2" class="sub-header">ASET</td></tr>
-                <tr><td>Aset Tetap (Kos)</td><td class="val" id="k_aset">0.00</td></tr>
-                <tr><td>Stok Akhir (Inventori)</td><td class="val" id="k_sk">0.00</td></tr>
-                <tr><td>Penghutang</td><td class="val" id="k_hutang">0.00</td></tr>
-                <tr><td>Baki Tunai & Bank</td><td class="val" id="k_tunai">0.00</td></tr>
-                <tr class="total-row"><td>JUMLAH ASET</td><td class="val" id="k_total_a">0.00</td></tr>
-                
-                <tr><td colspan="2" class="sub-header">LIABILITI</td></tr>
-                <tr><td>Pemiutang</td><td class="val" id="k_pemiutang">0.00</td></tr>
-                <tr><td>Pinjaman Bank</td><td class="val" id="k_pinjam">0.00</td></tr>
-                
                 <tr><td colspan="2" class="sub-header">EKUITI PEMILIK</td></tr>
                 <tr><td>Modal Awal</td><td class="val" id="k_mod_a">0.00</td></tr>
-                <tr><td>(+) Untung Bersih Semasa</td><td class="val" id="k_ub">0.00</td></tr>
-                <tr><td>(-) Ambilan</td><td class="val" id="k_amb">(0.00)</td></tr>
-                <tr style="background:#f9f9f9; font-weight:bold;"><td>MODAL AKHIR</td><td class="val" id="k_mod_k">0.00</td></tr>
-                <tr class="total-row"><td>JUMLAH LIABILITI & EKUITI</td><td class="val" id="k_total_le">0.00</td></tr>
+                <tr><td>Untung Bersih</td><td class="val" id="k_ub">0.00</td></tr>
+                <tr><td colspan="2" style="font-size:10px; font-style:italic;">(-) Ambilan Terperinci:</td></tr>
+                <tr><td>&nbsp;&nbsp;• Ambilan Tunai</td><td class="val" id="k_amb_t">0.00</td></tr>
+                <tr><td>&nbsp;&nbsp;• Ambilan Stok</td><td class="val" id="k_amb_s">0.00</td></tr>
+                <tr><td>&nbsp;&nbsp;• Ambilan Bayaran Bil</td><td class="val" id="k_amb_b">0.00</td></tr>
+                <tr style="font-weight:bold; background:#eee;"><td>MODAL AKHIR</td><td class="val" id="k_mod_k">0.00</td></tr>
+                <tr><td colspan="2" class="sub-header">KEDUDUKAN KEWANGAN</td></tr>
+                <tr><td>Jumlah Aset (Harta)</td><td class="val" id="k_aset">0.00</td></tr>
+                <tr><td>Jumlah Liabiliti (Hutang)</td><td class="val" id="k_liab">0.00</td></tr>
             </table>
-            
-            <h2 class="card-header" style="margin-top:20px;">Penyata Aliran Tunai</h2>
+            <h2 class="card-header" style="margin-top:15px;">Aliran Tunai</h2>
             <table class="table-laporan">
-                <tr><td>Baki Awal Tunai</td><td class="val" id="c_awal">0.00</td></tr>
-                <tr style="color:var(--success);"><td>(+) Penerimaan (Jualan/Modal/Pinjaman)</td><td class="val" id="c_masuk">0.00</td></tr>
-                <tr style="color:var(--danger);"><td>(-) Pembayaran (Belanja/Belian/Aset/Ambilan)</td><td class="val" id="c_keluar">(0.00)</td></tr>
-                <tr class="total-row"><td>BAKI AKHIR TUNAI</td><td class="val" id="c_akhir">0.00</td></tr>
+                <tr style="color:var(--success);"><td>Duit Masuk</td><td class="val" id="c_masuk">0.00</td></tr>
+                <tr style="color:var(--danger);"><td>Duit Keluar</td><td class="val" id="c_keluar">(0.00)</td></tr>
+                <tr class="total-row"><td>BAKI TUNAI SEMASA</td><td class="val" id="c_baki">0.00</td></tr>
             </table>
         </div>
     </div>
 
     <div class="report-card no-print">
-        <h2 class="card-header">Sejarah Transaksi (Audit Trail)</h2>
+        <h2 class="card-header">Log Transaksi & Audit</h2>
         <table class="table-laporan" style="font-size:11px;">
-            <thead><tr style="background:#eee;"><th>Tarikh</th><th>Kategori</th><th>Butiran</th><th>Masuk</th><th>Keluar</th><th>Baki</th><th>Hapus</th></tr></thead>
+            <thead style="background:#eee;"><tr><th>Tarikh</th><th>Jenis</th><th>Butiran</th><th>Masuk</th><th>Keluar</th><th>Tindakan</th></tr></thead>
             <tbody id="logT"></tbody>
         </table>
     </div>
 </div>
 
 <script>
-    let data = JSON.parse(localStorage.getItem('ez_audit_v14')) || [];
-    const fYear = document.getElementById('fTahun');
-    const curYear = new Date().getFullYear();
-    for(let i=curYear; i>=curYear-2; i--) { fYear.innerHTML += `<option value="${i}">${i}</option>`; }
+    let data = JSON.parse(localStorage.getItem('audit_v15')) || [];
+    const fY = document.getElementById('fTahun');
+    const curY = new Date().getFullYear();
+    for(let i=curY; i>=curY-2; i--) fY.innerHTML += `<option value="${i}">${i}</option>`;
     document.getElementById('s_tarikh').valueAsDate = new Date();
     document.getElementById('t_tarikh').valueAsDate = new Date();
 
@@ -240,156 +206,116 @@
         const d = { 
             id: Date.now(), tarikh: document.getElementById('s_tarikh').value,
             jenis: document.getElementById('s_arah').value, butiran: document.getElementById('s_item').value.toUpperCase(),
-            amaun: parseFloat(document.getElementById('s_qty').value) * parseFloat(document.getElementById('s_amaun').value)
+            amaun: (parseFloat(document.getElementById('s_qty').value) || 0) * (parseFloat(document.getElementById('s_amaun').value) || 0)
         };
-        if(!d.amaun) return alert("Sila isi amaun!"); data.push(d); simpan();
+        if(!d.amaun) return; data.push(d); simpan();
     }
 
     function rekodTransaksi() {
         const d = {
             id: Date.now(), tarikh: document.getElementById('t_tarikh').value,
             jenis: document.getElementById('t_jenis').value, butiran: "-",
-            amaun: parseFloat(document.getElementById('t_amaun').value)
+            amaun: parseFloat(document.getElementById('t_amaun').value) || 0
         };
-        if(!d.amaun) return alert("Sila isi amaun!"); data.push(d); simpan();
+        if(!d.amaun) return; data.push(d); simpan();
     }
 
     function simpan() {
-        localStorage.setItem('ez_audit_v14', JSON.stringify(data));
+        localStorage.setItem('audit_v15', JSON.stringify(data));
         prosesAkaun();
-        document.querySelectorAll('input[type="number"], input[type="text"]').forEach(i => { if(!i.id.includes('v_stok')) i.value = ''; });
+        document.querySelectorAll('.input-box input').forEach(i => { if(!i.id.includes('v_')) i.value=''; });
     }
 
     function prosesAkaun() {
         const f = (n) => n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         const fb = document.getElementById('fBulan').value;
         const ft = document.getElementById('fTahun').value;
-        
-        const sa = parseFloat(document.getElementById('v_stok_awal').value) || 0;
-        const sk = parseFloat(document.getElementById('v_stok_akhir').value) || 0;
+        const sa = parseFloat(document.getElementById('v_sa').value) || 0;
+        const sk = parseFloat(document.getElementById('v_sk').value) || 0;
 
-        let r = { 
-            jual:0, pul_j:0, beli:0, pul_b:0, ang_m:0, duti:0,
-            gaji:0, caruman:0, sewa:0, iklan:0, ang_k:0, bank:0, am:0,
-            modal:0, pinjam:0, aset:0, amb:0, t_masuk:0, t_keluar:0, tunai:0, p_hut:0, p_ut:0
-        };
+        let r = { jual:0, pul_j:0, beli:0, pul_b:0, belanja:0, modal:0, pinjam:0, aset:0, amb_t:0, amb_s:0, amb_b:0, tunai:0, p_hut:0, p_ut:0, m:0, k:0 };
 
+        const log = document.getElementById('logT'); log.innerHTML = "";
         let filtered = data.filter(d => {
             const dp = d.tarikh.split('-');
             return (fb === 'semua' || dp[1] === fb) && dp[0] === ft;
-        });
-
-        const logBody = document.getElementById('logT');
-        logBody.innerHTML = "";
-        filtered.sort((a,b) => new Date(a.tarikh) - new Date(b.tarikh));
+        }).sort((a,b) => new Date(a.tarikh) - new Date(b.tarikh));
 
         filtered.forEach(d => {
-            let m=0, k=0;
-            if(d.jenis === 'jual_tunai') { r.jual += d.amaun; m = d.amaun; }
-            if(d.jenis === 'jual_hutang') { r.jual += d.amaun; r.p_hut += d.amaun; }
-            if(d.jenis === 'pul_jual') { r.pul_j += d.amaun; k = d.amaun; }
-            if(d.jenis === 'beli_tunai') { r.beli += d.amaun; k = d.amaun; }
-            if(d.jenis === 'beli_hutang') { r.beli += d.amaun; r.p_ut += d.amaun; }
-            if(d.jenis === 'pul_beli') { r.pul_b += d.amaun; m = d.amaun; }
-            if(d.jenis === 'k_angkut_m') { r.ang_m += d.amaun; k = d.amaun; }
-            if(d.jenis === 'k_duti') { r.duti += d.amaun; k = d.amaun; }
-            
-            if(d.jenis === 'b_gaji') { r.gaji += d.amaun; k = d.amaun; }
-            if(d.jenis === 'b_caruman') { r.caruman += d.amaun; k = d.amaun; }
-            if(d.jenis === 'b_sewa') { r.sewa += d.amaun; k = d.amaun; }
-            if(d.jenis === 'b_iklan') { r.iklan += d.amaun; k = d.amaun; }
-            if(d.jenis === 'b_angkut_k') { r.ang_k += d.amaun; k = d.amaun; }
-            if(d.jenis === 'b_bank') { r.bank += d.amaun; k = d.amaun; }
-            if(d.jenis === 'b_am') { r.am += d.amaun; k = d.amaun; }
-            
-            if(d.jenis === 'modal') { r.modal += d.amaun; m = d.amaun; }
-            if(d.jenis === 'pinjaman') { r.pinjam += d.amaun; m = d.amaun; }
-            if(d.jenis === 'aset') { r.aset += d.amaun; k = d.amaun; }
-            if(d.jenis === 'ambilan') { r.amb += d.amaun; k = d.amaun; }
+            let masuk=0, keluar=0;
+            if(d.jenis==='jual_tunai') { r.jual+=d.amaun; masuk=d.amaun; }
+            if(d.jenis==='jual_hutang') { r.jual+=d.amaun; r.p_hut+=d.amaun; }
+            if(d.jenis==='pul_jual') { r.pul_j+=d.amaun; keluar=d.amaun; }
+            if(d.jenis==='beli_tunai') { r.beli+=d.amaun; keluar=d.amaun; }
+            if(d.jenis==='beli_hutang') { r.beli+=d.amaun; r.p_ut+=d.amaun; }
+            if(d.jenis==='pul_beli') { r.pul_b+=d.amaun; masuk=d.amaun; }
+            if(d.jenis.startsWith('b_')) { r.belanja+=d.amaun; keluar=d.amaun; }
+            if(d.jenis==='modal') { r.modal+=d.amaun; masuk=d.amaun; }
+            if(d.jenis==='pinjaman') { r.pinjam+=d.amaun; masuk=d.amaun; }
+            if(d.jenis==='aset') { r.aset+=d.amaun; keluar=d.amaun; }
+            if(d.jenis==='amb_tunai') { r.amb_t+=d.amaun; keluar=d.amaun; }
+            if(d.jenis==='amb_stok') { r.amb_s+=d.amaun; }
+            if(d.jenis==='amb_bil') { r.amb_b+=d.amaun; keluar=d.amaun; }
 
-            r.t_masuk += m; r.t_keluar += k; r.tunai += (m-k);
-            logBody.insertAdjacentHTML('afterbegin', `<tr><td>${d.tarikh}</td><td>${d.jenis}</td><td>${d.butiran}</td><td class="val">${m?f(m):'-'}</td><td class="val">${k?f(k):'-'}</td><td class="val">${f(r.tunai)}</td><td><button onclick="hapus(${d.id})">❌</button></td></tr>`);
+            r.m+=masuk; r.k+=keluar; r.tunai+=(masuk-keluar);
+            log.insertAdjacentHTML('afterbegin',`<tr><td>${d.tarikh}</td><td>${d.jenis}</td><td>${d.butiran}</td><td class="val">${masuk?f(masuk):'-'}</td><td class="val">${keluar?f(keluar):'-'}</td><td><button onclick="hapus(${d.id})">❌</button></td></tr>`);
         });
 
-        // CALCULATIONS
-        const jualB = r.jual - r.pul_j;
-        const beliB = r.beli - r.pul_b;
-        const kbud = sa + beliB + r.ang_m + r.duti;
-        const cogs = kbud - sk;
-        const uk = jualB - cogs;
-        const totalB = r.gaji + r.caruman + r.sewa + r.iklan + r.ang_k + r.bank + r.am;
-        const ub = uk - totalB;
-        const modK = r.modal + ub - r.amb;
+        const jB = r.jual - r.pul_j;
+        const bB = r.beli - r.pul_b;
+        const cogs = (sa + bB - r.amb_s) - sk; // Ambilan stok ditolak dari COGS
+        const uk = jB - cogs;
+        const ub = uk - r.belanja;
+        const ambTotal = r.amb_t + r.amb_s + r.amb_b;
+        const modK = r.modal + ub - ambTotal;
 
-        // UI UPDATE P&L
-        document.getElementById('p_jual').innerText = f(r.jual);
-        document.getElementById('p_pul_jual').innerText = `(${f(r.pul_j)})`;
-        document.getElementById('p_jual_b').innerText = f(jualB);
+        document.getElementById('p_jual').innerText = f(jB);
         document.getElementById('p_sa').innerText = f(sa);
-        document.getElementById('p_beli').innerText = f(r.beli);
-        document.getElementById('p_pul_beli').innerText = `(${f(r.pul_b)})`;
-        document.getElementById('p_angkut_m').innerText = f(r.ang_m);
-        document.getElementById('p_duti').innerText = f(r.duti);
-        document.getElementById('p_kbud').innerText = f(kbud);
+        document.getElementById('p_beli').innerText = f(bB);
+        document.getElementById('p_amb_stok').innerText = `(${f(r.amb_s)})`;
         document.getElementById('p_sk').innerText = `(${f(sk)})`;
         document.getElementById('p_cogs').innerText = f(cogs);
         document.getElementById('p_uk').innerText = f(uk);
-        document.getElementById('p_b_gaji').innerText = f(r.gaji);
-        document.getElementById('p_b_caruman').innerText = f(r.caruman);
-        document.getElementById('p_b_sewa').innerText = f(r.sewa);
-        document.getElementById('p_b_iklan').innerText = f(r.iklan);
-        document.getElementById('p_b_angkut_k').innerText = f(r.ang_k);
-        document.getElementById('p_b_bank').innerText = f(r.bank);
-        document.getElementById('p_b_am').innerText = f(r.am);
+        document.getElementById('p_belanja').innerText = f(r.belanja);
         document.getElementById('p_ub').innerText = f(ub);
 
-        // UI UPDATE BS
-        document.getElementById('k_aset').innerText = f(r.aset);
-        document.getElementById('k_sk').innerText = f(sk);
-        document.getElementById('k_hutang').innerText = f(r.p_hut);
-        document.getElementById('k_tunai').innerText = f(r.tunai);
-        document.getElementById('k_total_a').innerText = f(r.aset + sk + r.p_hut + r.tunai);
-        document.getElementById('k_pemiutang').innerText = f(r.p_ut);
-        document.getElementById('k_pinjam').innerText = f(r.pinjam);
         document.getElementById('k_mod_a').innerText = f(r.modal);
         document.getElementById('k_ub').innerText = f(ub);
-        document.getElementById('k_amb').innerText = `(${f(r.amb)})`;
+        document.getElementById('k_amb_t').innerText = `(${f(r.amb_t)})`;
+        document.getElementById('k_amb_s').innerText = `(${f(r.amb_s)})`;
+        document.getElementById('k_amb_b').innerText = `(${f(r.amb_b)})`;
         document.getElementById('k_mod_k').innerText = f(modK);
-        document.getElementById('k_total_le').innerText = f(r.p_ut + r.pinjam + modK);
+        document.getElementById('k_aset').innerText = f(r.aset + sk + r.tunai + r.p_hut);
+        document.getElementById('k_liab').innerText = f(r.pinjam + r.p_ut);
 
-        // UI UPDATE CASHFLOW
-        document.getElementById('c_masuk').innerText = f(r.t_masuk);
-        document.getElementById('c_keluar').innerText = `(${f(r.t_keluar)})`;
-        document.getElementById('c_akhir').innerText = f(r.tunai);
+        document.getElementById('c_masuk').innerText = f(r.m);
+        document.getElementById('c_keluar').innerText = `(${f(r.k)})`;
+        document.getElementById('c_baki').innerText = f(r.tunai);
 
-        // GAUGE ANIMATION
-        const maxU = 10000; let angU = (ub/maxU)*90; 
-        if(angU>90) angU=90; if(angU<-90) angU=-90;
-        document.getElementById('needleUntung').setAttribute('transform',`rotate(${angU} 100 100)`);
-        document.getElementById('valUntung').innerText = "RM "+f(ub);
+        // GAUGES
+        let angU = (ub/10000)*90; if(angU>90) angU=90; if(angU<-90) angU=-90;
+        document.getElementById('needleU').setAttribute('transform',`rotate(${angU} 100 100)`);
+        document.getElementById('valU').innerText = "RM "+f(ub);
         
-        const totalK = cogs + totalB;
-        const tpm = totalK > 0 ? (jualB/totalK)*100 : 0;
-        let angT = (tpm/100)*90 - 90;
-        if(angT>90) angT=90; if(angT<-90) angT=-90;
-        document.getElementById('needleTPM').setAttribute('transform',`rotate(${angT} 100 100)`);
-        document.getElementById('valTPM').innerText = Math.round(tpm)+"%";
+        let ratio = ub > 0 ? (ambTotal / ub) * 251 : 0; if(ratio>251) ratio=251;
+        document.getElementById('barAmb').setAttribute('stroke-dasharray', `${ratio} 251`);
+        document.getElementById('valAmb').innerText = "RM "+f(ambTotal);
     }
 
     function simpanJSON() {
         const b = new Blob([JSON.stringify(data)], {type:"application/json"});
-        const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download="Audit_Pro_v14.json"; a.click();
+        const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download="Audit_Forensic_v15.json"; a.click();
     }
     function muatJSON(e) {
         const r = new FileReader();
-        r.onload=(x)=>{ data=JSON.parse(x.target.result); localStorage.setItem('ez_audit_v14',JSON.stringify(data)); prosesAkaun(); };
+        r.onload=(x)=>{ data=JSON.parse(x.target.result); localStorage.setItem('audit_v15',JSON.stringify(data)); prosesAkaun(); };
         r.readAsText(e.target.files[0]);
     }
     function hapus(id) { if(confirm("Hapus?")){ data=data.filter(x=>x.id!==id); simpan(); } }
     
     const sn = document.getElementById('namaSyarikat');
-    sn.value = localStorage.getItem('ez_audit_sn') || "";
-    sn.oninput = () => localStorage.setItem('ez_audit_sn', sn.value);
+    sn.value = localStorage.getItem('sn_v15') || "";
+    sn.oninput = () => localStorage.setItem('sn_v15', sn.value);
     prosesAkaun();
 </script>
 </body>
