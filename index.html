@@ -3,131 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profit Niaga Pro v18 - Auditor Edition</title>
+    <title>Profit Niaga Pro v19 - Inventory & Ledger</title>
     <style>
-        :root { 
-            --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; 
-            --warning: #f1c40f; --accent: #2980b9; --bg: #ecf0f1;
-        }
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); margin: 0; padding: 20px; color: #34495e; }
+        :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --accent: #2980b9; --bg: #f4f7f6; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg); margin: 0; padding: 20px; color: #333; }
         .container { max-width: 1700px; margin: 0 auto; }
         
-        /* Typography */
-        h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; color: var(--primary); border-bottom: 2px solid var(--accent); display: inline-block; }
+        .header-box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; border-bottom: 5px solid var(--primary); }
+        .nama-syarikat { font-size: 30px; font-weight: 900; border: none; text-align: center; width: 100%; outline: none; text-transform: uppercase; color: var(--primary); }
+
+        /* Input Grid */
+        .grid-input { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        h2 { font-size: 13px; text-transform: uppercase; color: var(--primary); border-left: 4px solid var(--accent); padding-left: 10px; margin-bottom: 15px; }
         
-        .header-box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; }
-        .nama-syarikat { font-size: 32px; font-weight: 900; border: none; text-align: center; width: 100%; outline: none; text-transform: uppercase; color: var(--primary); }
+        .form-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        input, select { padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 12px; width: 100%; }
+        .total-preview { background: #eee; font-weight: bold; text-align: right; padding: 10px; border-radius: 5px; color: var(--primary); font-family: monospace; }
+        
+        .btn { padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; width: 100%; transition: 0.3s; margin-top: 10px; }
+        .btn-jual { background: var(--success); }
+        .btn-beli { background: var(--accent); }
+        .btn-exp { background: var(--danger); }
 
-        /* Dashboard Gauges */
-        .grid-dash { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
-        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .gauge-svg { width: 200px; height: 120px; margin: 0 auto; display: block; }
-
-        /* Input Section */
-        .grid-input { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 20px; }
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
-        label { font-size: 11px; font-weight: bold; color: var(--primary); }
-        input, select { padding: 10px; border: 1px solid #bdc3c7; border-radius: 5px; font-size: 13px; }
-        .btn { padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; }
-        .btn-reg { background: var(--accent); }
-        .btn-reg:hover { background: #1c598a; }
-
-        /* Tables & Reports */
+        /* Reports */
         .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        .table-res { width: 100%; border-collapse: collapse; background: white; font-size: 12px; }
-        .table-res th, .table-res td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
-        .val { text-align: right; font-family: 'Courier New', monospace; font-weight: bold; }
-        .sub-sec { background: #f9f9f9; font-weight: bold; color: var(--accent); }
-        .grand-total { background: #2c3e50 !important; color: white !important; font-weight: 900; }
+        .table-res { width: 100%; border-collapse: collapse; font-size: 12px; background: white; }
+        .table-res td, .table-res th { padding: 10px; border-bottom: 1px solid #eee; }
+        .val { text-align: right; font-weight: bold; font-family: monospace; }
+        .sub-header { background: #f8f9fa; font-weight: bold; color: var(--accent); font-size: 11px; }
+        .grand-total { background: var(--primary) !important; color: white !important; font-weight: bold; }
 
-        /* Cashflow Table - Horizontal Scroll */
-        .scroll-x { overflow-x: auto; background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
-        .cf-table { width: 100%; border-collapse: collapse; min-width: 1200px; font-size: 11px; }
-        .cf-table th { background: var(--primary); color: white; padding: 10px; border: 1px solid #34495e; }
-        .cf-table td { border: 1px solid #ddd; padding: 8px; text-align: right; }
-        .cf-label { text-align: left !important; font-weight: bold; background: #f2f2f2; width: 150px; position: sticky; left: 0; }
+        /* Cashflow Table */
+        .scroll-x { overflow-x: auto; background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ddd; }
+        .cf-table { width: 100%; border-collapse: collapse; min-width: 1300px; font-size: 11px; }
+        .cf-table th { background: var(--primary); color: white; padding: 10px; border: 1px solid #444; }
+        .cf-table td { border: 1px solid #eee; padding: 8px; text-align: right; }
+        .cf-label { text-align: left !important; font-weight: bold; background: #f9f9f9; position: sticky; left: 0; }
 
-        /* History */
-        .history-box { max-height: 400px; overflow-y: auto; }
-        .tag { padding: 2px 6px; border-radius: 4px; font-size: 10px; color: white; }
+        .history-box { max-height: 400px; overflow-y: auto; background: white; border-radius: 10px; }
+        .tag { padding: 3px 7px; border-radius: 4px; font-size: 10px; color: white; font-weight: bold; }
 
-        @media print { .no-print { display: none !important; } }
+        @media print { .no-print { display: none !important; } .container { width: 100%; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-box">
-        <input type="text" id="bizName" class="nama-syarikat" placeholder="NAMA SYARIKAT ANDA">
-    </div>
-
-    <div class="grid-dash no-print">
-        <div class="card">
-            <h2>Prestasi Untung Bersih</h2>
-            <svg class="gauge-svg" viewBox="0 0 200 120">
-                <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#eee" stroke-width="12" />
-                <line id="ptrUB" x1="100" y1="100" x2="100" y2="40" stroke="var(--success)" stroke-width="4" transform="rotate(-90 100 100)" />
-            </svg>
-            <div id="txtUB" style="text-align:center; font-weight:900;">RM 0.00</div>
-        </div>
-        <div class="card">
-            <h2>Titik Pulang Modal (TPM)</h2>
-            <svg class="gauge-svg" viewBox="0 0 200 120">
-                <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#eee" stroke-width="12" />
-                <line id="ptrTPM" x1="100" y1="100" x2="100" y2="40" stroke="var(--warning)" stroke-width="4" transform="rotate(-90 100 100)" />
-            </svg>
-            <div id="txtTPM" style="text-align:center; font-weight:900;">0%</div>
-        </div>
+        <input type="text" id="bizName" class="nama-syarikat" placeholder="NAMA PERNIAGAAN ANDA">
     </div>
 
     <div class="grid-input no-print">
-        <div class="card" style="border-top: 5px solid var(--accent);">
-            <h2>1. Jualan, Belian & Stok</h2>
-            <div class="input-group">
-                <input type="date" id="in_date">
-                <select id="in_cat">
-                    <option value="j_tunai">Jualan Tunai (+ Cash)</option>
-                    <option value="j_hutang">Jualan Hutang (Penghutang)</option>
-                    <option value="b_tunai">Belian Tunai (- Cash)</option>
-                    <option value="b_hutang">Belian Hutang (Pemiutang)</option>
-                    <option value="stok_akhir">Audit Stok Akhir (Nilai RM)</option>
-                </select>
-                <input type="text" id="in_desc" placeholder="Butiran (cth: Stok Kedai)">
-                <input type="number" id="in_amt" placeholder="Amaun (RM)">
-                <button class="btn btn-reg" onclick="addData()">REKOD TRANSAKSI</button>
+        <div class="card" style="border-top: 5px solid var(--success);">
+            <h2>🛒 Rekod Jualan (Sales)</h2>
+            <input type="date" id="j_date" style="margin-bottom:10px;">
+            <select id="j_type" style="margin-bottom:10px;">
+                <option value="j_tunai">Tunai / Online Transfer</option>
+                <option value="j_hutang">Hutang (Penghutang)</option>
+            </select>
+            <div class="form-row">
+                <input type="text" id="j_item" placeholder="Nama Item">
+                <input type="number" id="j_qty" placeholder="Qty" oninput="calcJual()">
+                <input type="number" id="j_price" placeholder="Harga/Unit" oninput="calcJual()">
+                <div class="total-preview" id="j_total">0.00</div>
             </div>
+            <button class="btn btn-jual" onclick="addJualan()">REKOD JUALAN</button>
+        </div>
+
+        <div class="card" style="border-top: 5px solid var(--accent);">
+            <h2>📦 Rekod Belian Stok (Purchases)</h2>
+            <input type="date" id="b_date" style="margin-bottom:10px;">
+            <select id="b_type" style="margin-bottom:10px;">
+                <option value="b_tunai">Bayar Tunai / Supplier</option>
+                <option value="b_hutang">Hutang Pemiutang</option>
+            </select>
+            <div class="form-row">
+                <input type="text" id="b_item" placeholder="Nama Item">
+                <input type="number" id="b_qty" placeholder="Qty" oninput="calcBeli()">
+                <input type="number" id="b_price" placeholder="Kos/Unit" oninput="calcBeli()">
+                <div class="total-preview" id="b_total">0.00</div>
+            </div>
+            <button class="btn btn-beli" onclick="addBelian()">REKOD BELIAN</button>
         </div>
 
         <div class="card" style="border-top: 5px solid var(--danger);">
-            <h2>2. Belanja Operasi Detail</h2>
-            <div class="input-group">
-                <select id="in_exp">
-                    <option value="e_gaji">Gaji & Caruman</option>
-                    <option value="e_sewa">Sewa & Utiliti</option>
-                    <option value="e_iklan">Pemasaran & Iklan</option>
-                    <option value="e_trans">Logistik & Petrol</option>
-                    <option value="e_am">Belanja Pejabat/Am</option>
-                    <option value="amb_tunai">Ambilan Tunai</option>
-                    <option value="amb_stok">Ambilan Stok</option>
-                </select>
-                <input type="number" id="exp_amt" placeholder="Amaun Belanja (RM)">
-                <button class="btn" style="background:var(--danger);" onclick="addExp()">SIMPAN BELANJA</button>
-            </div>
-        </div>
-
-        <div class="card" style="border-top: 5px solid var(--primary);">
-            <h2>3. Aset, Modal & Pinjaman</h2>
-            <div class="input-group">
-                <select id="in_fin">
-                    <option value="aset">Beli Aset Tetap (Mesin/Laptop)</option>
-                    <option value="modal">Modal Tunai Masuk</option>
-                    <option value="pinj_bank">Pinjaman Bank (Liabiliti)</option>
-                    <option value="bayar_pinj">Bayar Ansuran Pinjaman</option>
-                </select>
-                <input type="number" id="fin_amt" placeholder="Amaun RM">
-                <button class="btn" style="background:var(--primary);" onclick="addFin()">REKOD KEWANGAN</button>
-            </div>
+            <h2>⚖️ Belanja & Kewangan</h2>
+            <input type="date" id="e_date" style="margin-bottom:10px;">
+            <select id="e_cat" style="margin-bottom:10px;">
+                <option value="e_gaji">Gaji & Caruman</option>
+                <option value="e_sewa">Sewa & Utiliti</option>
+                <option value="e_iklan">Pemasaran & Iklan</option>
+                <option value="e_am">Belanja Am/Pejabat</option>
+                <option value="amb_tunai">Ambilan Tunai</option>
+                <option value="modal">Modal Masuk</option>
+                <option value="pinjaman">Pinjaman Bank</option>
+                <option value="stok_akhir">Audit Stok Akhir (Nilai RM)</option>
+            </select>
+            <input type="number" id="e_amt" placeholder="Amaun (RM)">
+            <button class="btn btn-exp" onclick="addOthers()">SIMPAN REKOD</button>
         </div>
     </div>
 
@@ -135,50 +110,43 @@
         <div class="card">
             <h2>Penyata Untung Rugi</h2>
             <table class="table-res">
-                <tr class="sub-sec"><td>HASIL</td><td></td></tr>
-                <tr><td>Jualan Bersih</td><td class="val" id="p_jual">0.00</td></tr>
-                <tr class="sub-sec"><td>KOS JUALAN</td><td></td></tr>
-                <tr><td>Stok Awal</td><td class="val" id="p_sa">0.00</td></tr>
-                <tr><td>Belian + Kos Masuk</td><td class="val" id="p_beli">0.00</td></tr>
-                <tr><td>(-) Ambilan Stok</td><td class="val" id="p_as">(0.00)</td></tr>
-                <tr><td>(-) Stok Akhir</td><td class="val" id="p_sk">(0.00)</td></tr>
-                <tr style="color:var(--danger)"><td>KOS JUALAN (COGS)</td><td class="val" id="p_cogs">0.00</td></tr>
-                <tr class="grand-total"><td>UNTUNG KASAR</td><td class="val" id="p_uk">0.00</td></tr>
-                <tr class="sub-sec"><td>BELANJA OPERASI</td><td></td></tr>
-                <tr><td>Gaji & Caruman</td><td class="val" id="p_egaji">0.00</td></tr>
-                <tr><td>Sewa & Utiliti</td><td class="val" id="p_esewa">0.00</td></tr>
-                <tr><td>Pemasaran & Iklan</td><td class="val" id="p_eiklan">0.00</td></tr>
-                <tr><td>Logistik & Petrol</td><td class="val" id="p_etrans">0.00</td></tr>
-                <tr><td>Belanja Pejabat/Am</td><td class="val" id="p_eam">0.00</td></tr>
-                <tr class="grand-total"><td>UNTUNG / (RUGI) BERSIH</td><td class="val" id="p_ub">0.00</td></tr>
+                <tr class="sub-header"><td colspan="2">HASIL</td></tr>
+                <tr><td>Jualan Bersih</td><td class="val" id="r_jual">0.00</td></tr>
+                <tr class="sub-header"><td colspan="2">KOS JUALAN</td></tr>
+                <tr><td>Stok Awal</td><td class="val" id="r_sa">0.00</td></tr>
+                <tr><td>Belian Stok</td><td class="val" id="r_beli">0.00</td></tr>
+                <tr><td>(-) Stok Akhir</td><td class="val" id="r_sk">(0.00)</td></tr>
+                <tr style="color:var(--danger)"><td>KOS JUALAN (COGS)</td><td class="val" id="r_cogs">0.00</td></tr>
+                <tr class="grand-total"><td>UNTUNG KASAR</td><td class="val" id="r_uk">0.00</td></tr>
+                <tr class="sub-header"><td colspan="2">BELANJA OPERASI</td></tr>
+                <tr><td>Gaji & Caruman</td><td class="val" id="r_egaji">0.00</td></tr>
+                <tr><td>Sewa & Utiliti</td><td class="val" id="r_esewa">0.00</td></tr>
+                <tr><td>Pemasaran & Iklan</td><td class="val" id="r_eiklan">0.00</td></tr>
+                <tr><td>Belanja Am</td><td class="val" id="r_eam">0.00</td></tr>
+                <tr class="grand-total"><td>UNTUNG BERSIH</td><td class="val" id="r_ub">0.00</td></tr>
             </table>
         </div>
 
         <div class="card">
             <h2>Kunci Kira-Kira</h2>
             <table class="table-res">
-                <tr class="sub-sec"><td>ASET BUKAN SEMASA</td><td></td></tr>
-                <tr><td>Aset Tetap (Kos)</td><td class="val" id="k_at">0.00</td></tr>
-                <tr class="sub-sec"><td>ASET SEMASA</td><td></td></tr>
-                <tr><td>Stok Akhir</td><td class="val" id="k_sk">0.00</td></tr>
-                <tr><td>Penghutang Dagangan</td><td class="val" id="k_ph">0.00</td></tr>
+                <tr class="sub-header"><td colspan="2">ASET</td></tr>
+                <tr><td>Stok Akhir (Nilai Audit)</td><td class="val" id="k_sk">0.00</td></tr>
+                <tr><td>Penghutang (Hutang Pelanggan)</td><td class="val" id="k_ph">0.00</td></tr>
                 <tr><td>Tunai Di Tangan/Bank</td><td class="val" id="k_cash">0.00</td></tr>
                 <tr class="grand-total"><td>JUMLAH ASET</td><td class="val" id="k_ta">0.00</td></tr>
-                <tr class="sub-sec"><td>EKUITI PEMILIK</td><td></td></tr>
-                <tr><td>Modal Terkumpul</td><td class="val" id="k_mod">0.00</td></tr>
-                <tr><td>Untung Bersih Semasa</td><td class="val" id="k_ub">0.00</td></tr>
-                <tr><td>(-) Ambilan (T+S)</td><td class="val" id="k_amb">(0.00)</td></tr>
-                <tr style="font-weight:bold;"><td>MODAL AKHIR</td><td class="val" id="k_ma">0.00</td></tr>
-                <tr class="sub-sec"><td>LIABILITI (DETAILED)</td><td></td></tr>
-                <tr><td>Pemiutang Dagangan (Hutang Stok)</td><td class="val" id="k_pu">0.00</td></tr>
-                <tr><td>Pinjaman Bank & Pembiayaan</td><td class="val" id="k_bank">0.00</td></tr>
+                <tr class="sub-header"><td colspan="2">EKUITI & LIABILITI</td></tr>
+                <tr><td>Modal & Untung Bersih</td><td class="val" id="k_ekuiti">0.00</td></tr>
+                <tr><td>(-) Ambilan</td><td class="val" id="k_amb">(0.00)</td></tr>
+                <tr><td>Pemiutang (Hutang Supplier)</td><td class="val" id="k_pu">0.00</td></tr>
+                <tr><td>Pinjaman Bank</td><td class="val" id="k_bank">0.00</td></tr>
                 <tr class="grand-total"><td>JUMLAH LIABILITI & EKUITI</td><td class="val" id="k_tle">0.00</td></tr>
             </table>
         </div>
     </div>
 
     <div class="scroll-x">
-        <h2>Penyata Aliran Tunai Terperinci (Jan - Dis)</h2>
+        <h2>Penyata Aliran Tunai Jan - Dis (Detail)</h2>
         <table class="cf-table">
             <thead><tr id="cf_head"></tr></thead>
             <tbody id="cf_body"></tbody>
@@ -186,11 +154,11 @@
     </div>
 
     <div class="card no-print">
-        <h2>Sejarah Transaksi & Audit Trail</h2>
+        <h2>Sejarah Transaksi Terperinci</h2>
         <div class="history-box">
             <table class="table-res">
                 <thead style="position:sticky; top:0; background:#eee;">
-                    <tr><th>Tarikh</th><th>Kategori</th><th>Butiran</th><th>Masuk (RM)</th><th>Keluar (RM)</th><th>Tindakan</th></tr>
+                    <tr><th>Tarikh</th><th>Kategori</th><th>Item / Perincian</th><th>Qty</th><th>Harga</th><th>Jumlah (RM)</th><th>Hapus</th></tr>
                 </thead>
                 <tbody id="log_body"></tbody>
             </table>
@@ -199,169 +167,144 @@
 </div>
 
 <script>
-    let entries = JSON.parse(localStorage.getItem('audit_v18')) || [];
+    let db = JSON.parse(localStorage.getItem('biz_v19')) || [];
     const months = ["Jan","Feb","Mac","Apr","Mei","Jun","Jul","Ogo","Sep","Okt","Nov","Dis"];
-    
-    // Auto-setup Year
-    const bizYear = new Date().getFullYear();
 
-    function addData() {
-        const d = { id: Date.now(), t: document.getElementById('in_date').value, c: document.getElementById('in_cat').value, b: document.getElementById('in_desc').value, a: parseFloat(document.getElementById('in_amt').value)||0 };
-        if(d.a >= 0) { entries.push(d); save(); }
+    function calcJual() {
+        let q = document.getElementById('j_qty').value || 0;
+        let p = document.getElementById('j_price').value || 0;
+        document.getElementById('j_total').innerText = (q * p).toFixed(2);
     }
 
-    function addExp() {
-        const d = { id: Date.now(), t: document.getElementById('in_date').value, c: document.getElementById('in_exp').value, b: 'Belanja Operasi', a: parseFloat(document.getElementById('exp_amt').value)||0 };
-        if(d.a > 0) { entries.push(d); save(); }
+    function calcBeli() {
+        let q = document.getElementById('b_qty').value || 0;
+        let p = document.getElementById('b_price').value || 0;
+        document.getElementById('b_total').innerText = (q * p).toFixed(2);
     }
 
-    function addFin() {
-        const d = { id: Date.now(), t: document.getElementById('in_date').value, c: document.getElementById('in_fin').value, b: 'Transaksi Kewangan', a: parseFloat(document.getElementById('fin_amt').value)||0 };
-        if(d.a > 0) { entries.push(d); save(); }
+    function addJualan() {
+        const d = { 
+            id: Date.now(), t: document.getElementById('j_date').value, 
+            c: document.getElementById('j_type').value, i: document.getElementById('j_item').value,
+            q: parseFloat(document.getElementById('j_qty').value)||0, p: parseFloat(document.getElementById('j_price').value)||0 
+        };
+        if(d.q > 0) { db.push(d); save(); }
+    }
+
+    function addBelian() {
+        const d = { 
+            id: Date.now(), t: document.getElementById('b_date').value, 
+            c: document.getElementById('b_type').value, i: document.getElementById('b_item').value,
+            q: parseFloat(document.getElementById('b_qty').value)||0, p: parseFloat(document.getElementById('b_price').value)||0 
+        };
+        if(d.q > 0) { db.push(d); save(); }
+    }
+
+    function addOthers() {
+        const d = { 
+            id: Date.now(), t: document.getElementById('e_date').value, 
+            c: document.getElementById('e_cat').value, i: '-', q: 0, p: 0, 
+            amt: parseFloat(document.getElementById('e_amt').value)||0 
+        };
+        if(d.amt >= 0) { db.push(d); save(); }
     }
 
     function save() {
-        localStorage.setItem('audit_v18', JSON.stringify(entries));
+        localStorage.setItem('biz_v19', JSON.stringify(db));
         render();
+        document.querySelectorAll('input[type="number"], input[type="text"]').forEach(i => i.value = '');
+        document.querySelectorAll('.total-preview').forEach(i => i.innerText = '0.00');
     }
 
-    function del(id) { if(confirm("Hapus rekod ini?")) { entries = entries.filter(e => e.id !== id); save(); } }
+    function del(id) { if(confirm("Hapus rekod ini?")) { db = db.filter(e => e.id !== id); save(); } }
 
     function render() {
         const f = (n) => n.toLocaleString('en-US',{minimumFractionDigits:2});
-        
-        // Setup Reports Data
-        let r = { jual:0, beli:0, sk:0, as:0, egaji:0, esewa:0, eiklan:0, etrans:0, eam:0, ambt:0, ambs:0, at:0, ph:0, pu:0, mod:0, bank:0 };
-        let cfData = Array(12).fill(0).map(() => ({ awal:0, j_tunai:0, modal:0, pinjam:0, b_tunai:0, belanja:0, aset:0, ambilan:0, bayar_pinj:0, akhir:0 }));
+        let r = { jual:0, beli:0, sk:0, egaji:0, esewa:0, eiklan:0, eam:0, ambt:0, ph:0, pu:0, mod:0, bank:0 };
+        let cf = Array(12).fill(0).map(() => ({ awal:0, masuk:0, beli:0, belanja:0, amb:0, fin:0, akhir:0 }));
 
-        // Logic Loop
-        entries.sort((a,b) => new Date(a.t) - new Date(b.t)).forEach(e => {
-            const mIdx = new Date(e.t).getMonth();
-            const val = e.a;
+        db.sort((a,b) => new Date(a.t) - new Date(b.t)).forEach(e => {
+            const m = new Date(e.t).getMonth();
+            const amt = e.amt || (e.q * e.p);
 
-            // P&L & BS
-            if(e.c === 'j_tunai' || e.c === 'j_hutang') r.jual += val;
-            if(e.c === 'b_tunai' || e.c === 'b_hutang') r.beli += val;
-            if(e.c === 'stok_akhir') r.sk = val; // Latest value
-            if(e.c === 'amb_stok') r.ambs += val;
-            if(e.c === 'amb_tunai') r.ambt += val;
-            if(e.c === 'aset') r.at += val;
-            if(e.c === 'j_hutang') r.ph += val;
-            if(e.c === 'b_hutang') r.pu += val;
-            if(e.c === 'modal') r.mod += val;
-            if(e.c === 'pinj_bank') r.bank += val;
-            if(e.c === 'bayar_pinj') r.bank -= val;
-            if(r[e.c.replace('e_','e')] !== undefined) r[e.c.replace('e_','e')] += val;
+            // Perincian P&L & BS
+            if(e.c.startsWith('j_')) r.jual += amt;
+            if(e.c.startsWith('b_')) r.beli += amt;
+            if(e.c === 'stok_akhir') r.sk = amt;
+            if(e.c === 'e_gaji') r.egaji += amt;
+            if(e.c === 'e_sewa') r.esewa += amt;
+            if(e.c === 'e_iklan') r.eiklan += amt;
+            if(e.c === 'e_am') r.eam += amt;
+            if(e.c === 'amb_tunai') r.ambt += amt;
+            if(e.c === 'j_hutang') r.ph += amt;
+            if(e.c === 'b_hutang') r.pu += amt;
+            if(e.c === 'modal') r.mod += amt;
+            if(e.c === 'pinjaman') r.bank += amt;
 
-            // Cashflow Detail
-            if(e.c === 'j_tunai') cfData[mIdx].j_tunai += val;
-            if(e.c === 'modal') cfData[mIdx].modal += val;
-            if(e.c === 'pinj_bank') cfData[mIdx].pinjam += val;
-            if(e.c === 'b_tunai') cfData[mIdx].b_tunai += val;
-            if(e.c.startsWith('e_')) cfData[mIdx].belanja += val;
-            if(e.c === 'aset') cfData[mIdx].aset += val;
-            if(e.c === 'amb_tunai') cfData[mIdx].ambilan += val;
-            if(e.c === 'bayar_pinj') cfData[mIdx].bayar_pinj += val;
+            // Cashflow logic
+            if(e.c === 'j_tunai' || e.c === 'modal' || e.c === 'pinjaman') cf[m].masuk += amt;
+            if(e.c === 'b_tunai') cf[m].beli += amt;
+            if(e.c.startsWith('e_')) cf[m].belanja += amt;
+            if(e.c === 'amb_tunai') cf[m].amb += amt;
         });
 
-        // Hitung Cashflow Baki Berangkai
         let carry = 0;
-        cfData.forEach(m => {
-            m.awal = carry;
-            m.akhir = m.awal + (m.j_tunai + m.modal + m.pinjam) - (m.b_tunai + m.belanja + m.aset + m.ambilan + m.bayar_pinj);
-            carry = m.akhir;
-        });
+        cf.forEach(m => { m.awal = carry; m.akhir = m.awal + m.masuk - (m.beli + m.belanja + m.amb); carry = m.akhir; });
 
-        // Update P&L UI
-        const cogs = (r.beli - r.ambs) - r.sk; // Simplified: Assumes start stock handled via previous sk
+        const cogs = (r.beli - r.sk); // Simplified COGS
         const uk = r.jual - cogs;
-        const totExp = r.egaji + r.esewa + r.eiklan + r.etrans + r.eam;
-        const ub = uk - totExp;
+        const ub = uk - (r.egaji + r.esewa + r.eiklan + r.eam);
 
-        document.getElementById('p_jual').innerText = f(r.jual);
-        document.getElementById('p_beli').innerText = f(r.beli);
-        document.getElementById('p_as').innerText = `(${f(r.ambs)})`;
-        document.getElementById('p_sk').innerText = `(${f(r.sk)})`;
-        document.getElementById('p_cogs').innerText = f(cogs);
-        document.getElementById('p_uk').innerText = f(uk);
-        document.getElementById('p_egaji').innerText = f(r.egaji);
-        document.getElementById('p_esewa').innerText = f(r.esewa);
-        document.getElementById('p_eiklan').innerText = f(r.eiklan);
-        document.getElementById('p_etrans').innerText = f(r.etrans);
-        document.getElementById('p_eam').innerText = f(r.eam);
-        document.getElementById('p_ub').innerText = f(ub);
-
-        // Update BS UI
-        const ma = r.mod + ub - (r.ambt + r.ambs);
-        document.getElementById('k_at').innerText = f(r.at);
+        // Update P&L & BS DOM
+        document.getElementById('r_jual').innerText = f(r.jual);
+        document.getElementById('r_beli').innerText = f(r.beli);
+        document.getElementById('r_sk').innerText = `(${f(r.sk)})`;
+        document.getElementById('r_cogs').innerText = f(cogs);
+        document.getElementById('r_uk').innerText = f(uk);
+        document.getElementById('r_egaji').innerText = f(r.egaji);
+        document.getElementById('r_esewa').innerText = f(r.esewa);
+        document.getElementById('r_eiklan').innerText = f(r.eiklan);
+        document.getElementById('r_eam').innerText = f(r.eam);
+        document.getElementById('r_ub').innerText = f(ub);
+        
         document.getElementById('k_sk').innerText = f(r.sk);
         document.getElementById('k_ph').innerText = f(r.ph);
         document.getElementById('k_cash').innerText = f(carry);
-        document.getElementById('k_ta').innerText = f(r.at + r.sk + r.ph + carry);
-        document.getElementById('k_mod').innerText = f(r.mod);
-        document.getElementById('k_ub').innerText = f(ub);
-        document.getElementById('k_amb').innerText = `(${f(r.ambt + r.ambs)})`;
-        document.getElementById('k_ma').innerText = f(ma);
+        document.getElementById('k_ta').innerText = f(r.sk + r.ph + carry);
+        document.getElementById('k_ekuiti').innerText = f(r.mod + ub);
+        document.getElementById('k_amb').innerText = `(${f(r.ambt)})`;
         document.getElementById('k_pu').innerText = f(r.pu);
         document.getElementById('k_bank').innerText = f(r.bank);
-        document.getElementById('k_tle').innerText = f(ma + r.pu + r.bank);
+        document.getElementById('k_tle').innerText = f(r.mod + ub - r.ambt + r.pu + r.bank);
 
-        // Render Cashflow Table
+        // Cashflow Table
         const cfH = document.getElementById('cf_head');
         cfH.innerHTML = `<th>Perkara</th>` + months.map(m => `<th>${m}</th>`).join('') + `<th>JUMLAH</th>`;
-        
         const cfRows = [
-            { l: "BAKI AWAL", k: "awal" },
-            { l: "Jualan Tunai", k: "j_tunai", c: "g" },
-            { l: "Modal Masuk", k: "modal", c: "g" },
-            { l: "Pinjaman Bank", k: "pinjam", c: "g" },
-            { l: "Bayaran Belian", k: "b_tunai", c: "r" },
-            { l: "Belanja Operasi", k: "belanja", c: "r" },
-            { l: "Beli Aset", k: "aset", c: "r" },
-            { l: "Ambilan Tunai", k: "ambilan", c: "r" },
-            { l: "Ansuran Bank", k: "bayar_pinj", c: "r" },
-            { l: "BAKI AKHIR", k: "akhir", isBold: true }
+            {l:"BAKI AWAL", k:"awal"}, {l:"Duit Masuk (+)", k:"masuk"}, {l:"Bayaran Stok (-)", k:"beli"}, 
+            {l:"Belanja Operasi (-)", k:"belanja"}, {l:"Ambilan Tunai (-)", k:"amb"}, {l:"BAKI AKHIR", k:"akhir", b:true}
         ];
-
         document.getElementById('cf_body').innerHTML = cfRows.map(row => {
-            let totalRow = 0;
-            let cells = cfData.map(m => {
-                totalRow += m[row.k];
-                return `<td class="val" style="color:${row.c==='r'?'#e74c3c':(row.c==='g'?'#27ae60':'')}">${f(m[row.k])}</td>`;
-            }).join('');
-            return `<tr style="${row.isBold?'font-weight:900; background:#eee;':''}">
-                <td class="cf-label">${row.l}</td>${cells}<td class="val">${f(totalRow)}</td>
-            </tr>`;
+            let total = 0;
+            let cells = cf.map(m => { total += m[row.k]; return `<td>${f(m[row.k])}</td>`; }).join('');
+            return `<tr style="${row.b?'font-weight:bold;background:#eee':''}"><td>${row.l}</td>${cells}<td>${f(total)}</td></tr>`;
         }).join('');
 
         // History Log
-        document.getElementById('log_body').innerHTML = entries.slice().reverse().map(e => `
+        document.getElementById('log_body').innerHTML = db.slice().reverse().map(e => `
             <tr>
-                <td>${e.t}</td>
-                <td><span class="tag" style="background:var(--accent)">${e.c}</span></td>
-                <td>${e.b}</td>
-                <td class="val">${['j_tunai','modal','pinj_bank'].includes(e.c)?f(e.a):'-'}</td>
-                <td class="val">${['b_tunai','aset','amb_tunai','bayar_pinj'].includes(e.c)||e.c.startsWith('e_')?f(e.a):'-'}</td>
+                <td>${e.t}</td><td><span class="tag" style="background:var(--primary)">${e.c}</span></td>
+                <td>${e.i}</td><td>${e.q || '-'}</td><td>${e.p ? f(e.p) : '-'}</td>
+                <td class="val">${f(e.amt || (e.q*e.p))}</td>
                 <td><button onclick="del(${e.id})">❌</button></td>
             </tr>
         `).join('');
-
-        // Gauges
-        let angU = (ub/10000)*90; if(angU>90) angU=90; if(angU<-90) angU=-90;
-        document.getElementById('ptrUB').setAttribute('transform',`rotate(${angU} 100 100)`);
-        document.getElementById('txtUB').innerText = "RM "+f(ub);
-
-        const tpm = (cogs+totExp) > 0 ? (r.jual/(cogs+totExp))*100 : 0;
-        let angT = (tpm/100)*90-90; if(angT>90) angT=90; if(angT<-90) angT=-90;
-        document.getElementById('ptrTPM').setAttribute('transform',`rotate(${angT} 100 100)`);
-        document.getElementById('txtTPM').innerText = Math.round(tpm)+"%";
     }
 
-    // Init
-    document.getElementById('in_date').valueAsDate = new Date();
+    document.querySelectorAll('input[type="date"]').forEach(i => i.valueAsDate = new Date());
     const sn = document.getElementById('bizName');
-    sn.value = localStorage.getItem('biz_name_v18') || "";
-    sn.oninput = () => localStorage.setItem('biz_name_v18', sn.value);
+    sn.value = localStorage.getItem('biz_name_v19') || "";
+    sn.oninput = () => localStorage.setItem('biz_name_v19', sn.value);
     render();
 </script>
 </body>
