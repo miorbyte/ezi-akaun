@@ -191,6 +191,49 @@ tr:hover td { background: rgba(0,0,0,0.015); }
 .badge-yellow { background: #fef9c3; color: #854d0e; }
 .badge-purple { background: #f3e8ff; color: #6b21a8; }
 .badge-orange { background: #fff7ed; color: #9a3412; }
+
+/* ITEM CATALOGUE AUTOCOMPLETE */
+.item-input-wrap { position: relative; }
+.item-dropdown {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 999;
+  background: #fff; border: 1px solid #dde3ec; border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12); max-height: 200px; overflow-y: auto;
+  display: none;
+}
+.item-dropdown.show { display: block; }
+.item-dropdown-item {
+  padding: 9px 12px; cursor: pointer; display: flex; justify-content: space-between;
+  align-items: center; font-size: 12px; border-bottom: 1px solid #f1f5f9;
+  transition: background 0.1s;
+}
+.item-dropdown-item:last-child { border-bottom: none; }
+.item-dropdown-item:hover, .item-dropdown-item.active { background: #eff6ff; }
+.item-dropdown-nama { font-weight: 700; color: #1a202c; }
+.item-dropdown-harga { font-family: var(--mono); font-size: 11px; color: #1a56db; font-weight: 700; }
+.item-dropdown-jenis { font-size: 10px; color: #94a3b8; background: #f1f5f9; padding: 1px 6px; border-radius: 10px; }
+
+/* KATALOG MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  z-index: 9000; align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: #fff; border-radius: 16px; padding: 24px; max-width: 680px;
+  width: 95%; max-height: 80vh; display: flex; flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.modal-title { font-size: 14px; font-weight: 900; color: #1a202c; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b; }
+.modal-body { overflow-y: auto; flex: 1; }
+.katalog-search { width: 100%; margin-bottom: 12px; }
+.katalog-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.katalog-table th { background: #f1f5f9; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; border-bottom: 2px solid #e2e8f0; }
+.katalog-table td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+.katalog-table tr:hover td { background: #f8fafc; }
+.katalog-harga-input { width: 100px; padding: 5px 8px; border: 1px solid #dde3ec; border-radius: 5px; font-size: 12px; font-family: var(--mono); text-align: right; }
+.katalog-harga-input:focus { border-color: #1a56db; outline: none; }
 .btn-del { background: none; border: 1px solid #fca5a5; color: #c0392b; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 10px; font-weight: 700; transition: all 0.15s; }
 .btn-del:hover { background: #c0392b; color: #fff; }
 
@@ -320,6 +363,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
     <button class="inp-tab-btn" id="itab_beli" onclick="switchInputTab('beli')">🔴 Rekod Belian</button>
     <button class="inp-tab-btn" id="itab_ops" onclick="switchInputTab('ops')">📋 Belanja Operasi</button>
     <button class="inp-tab-btn" id="itab_modal" onclick="switchInputTab('modal')">🏛️ Modal / Aset / Stok</button>
+    <button class="inp-tab-btn" onclick="bukaKatalog()" style="margin-left:auto; border-color:#6b46c1; color:#6b46c1;">📦 Katalog Item</button>
   </div>
 
   <!-- PANEL JUALAN -->
@@ -655,8 +699,63 @@ tr:hover td { background: rgba(0,0,0,0.015); }
   </div>
 </div>
 
+<!-- KATALOG MODAL -->
+<div class="modal-overlay" id="katalog_modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">📦 Katalog Item — Jualan & Belian</div>
+      <button class="modal-close" onclick="tutupKatalog()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="text" class="katalog-search" id="katalog_cari" placeholder="🔍 Cari nama item..." oninput="renderKatalog()">
+      <table class="katalog-table">
+        <thead>
+          <tr>
+            <th>Nama Item</th>
+            <th>Jenis</th>
+            <th style="text-align:right;">Harga Terakhir (RM)</th>
+            <th>Kali Guna</th>
+            <th>Tarikh Terakhir</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="katalog_body"></tbody>
+      </table>
+      <div id="katalog_empty" class="empty-state" style="display:none;">
+        <div class="icon">📦</div>
+        Tiada item dalam katalog. Item akan ditambah secara automatik apabila anda menyimpan transaksi jualan atau belian.
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 let db = JSON.parse(localStorage.getItem('biz_v18') || localStorage.getItem('biz_v17') || '[]');
+
+// Katalog item: { nama, hargaJual, hargaBeli, kaliJual, kaliBeli, tarikhTerakhir }
+let katalog = JSON.parse(localStorage.getItem('biz_katalog') || '{}');
+
+function simpanKatalog() {
+  localStorage.setItem('biz_katalog', JSON.stringify(katalog));
+}
+
+function kemaskiniKatalog(itemDetails, jenis) {
+  const isJual = ['jual_tunai','jual_hutang','pulang_jual_tunai','pulang_jual_hutang'].includes(jenis);
+  const isBeli = ['beli_tunai','beli_hutang','pulang_beli_tunai','pulang_beli_hutang'].includes(jenis);
+  const tarikhHari = new Date().toISOString().split('T')[0];
+
+  itemDetails.forEach(item => {
+    const key = item.nama.toLowerCase().trim();
+    if(!katalog[key]) {
+      katalog[key] = { nama: item.nama, hargaJual: 0, hargaBeli: 0, kaliJual: 0, kaliBeli: 0, tarikhTerakhir: tarikhHari };
+    }
+    katalog[key].tarikhTerakhir = tarikhHari;
+    katalog[key].nama = item.nama; // preserve latest casing
+    if(isJual) { katalog[key].hargaJual = item.harga; katalog[key].kaliJual++; }
+    if(isBeli) { katalog[key].hargaBeli = item.harga; katalog[key].kaliBeli++; }
+  });
+  simpanKatalog();
+}
 
 // Migrate old data if needed
 db = db.map(d => ({ id: d.id || Date.now(), t: d.t, j: d.j, a: d.a, n: d.n || '' }));
@@ -729,8 +828,17 @@ function tambahItem(prefix) {
   const row = document.createElement('div');
   row.className = 'item-row';
   row.id = prefix+'_row_'+idx;
+  const isJual = prefix === 'j';
   row.innerHTML = `
-    <input type="text" placeholder="Nama item..." id="${prefix}_nama_${idx}">
+    <div class="item-input-wrap">
+      <input type="text" placeholder="Taip nama item..." id="${prefix}_nama_${idx}" 
+        oninput="cariKatalog('${prefix}',${idx})" 
+        onfocus="cariKatalog('${prefix}',${idx})"
+        onkeydown="naviDropdown(event,'${prefix}',${idx})"
+        onblur="setTimeout(()=>tutupDropdown('${prefix}',${idx}),200)"
+        autocomplete="off">
+      <div class="item-dropdown" id="${prefix}_drop_${idx}"></div>
+    </div>
     <input type="number" placeholder="0" min="0" step="0.01" id="${prefix}_qty_${idx}" oninput="kiraJumlah('${prefix}',${idx})">
     <input type="number" placeholder="0.00" min="0" step="0.01" id="${prefix}_harga_${idx}" oninput="kiraJumlah('${prefix}',${idx})">
     <div class="item-jumlah" id="${prefix}_jumlah_${idx}">0.00</div>
@@ -761,6 +869,165 @@ function kiraTotal(prefix) {
 function buangItem(prefix, idx) {
   document.getElementById(prefix+'_row_'+idx)?.remove();
   kiraTotal(prefix);
+}
+
+// ---- AUTOCOMPLETE KATALOG ----
+let dropdownActive = {}; // tracks active index per dropdown
+
+function cariKatalog(prefix, idx) {
+  const input = document.getElementById(`${prefix}_nama_${idx}`);
+  const drop = document.getElementById(`${prefix}_drop_${idx}`);
+  if(!input || !drop) return;
+
+  const q = input.value.toLowerCase().trim();
+  const isJual = prefix === 'j';
+
+  const jenisEl = document.getElementById(prefix === 'j' ? 'j_jenis' : 'b2_jenis');
+  const jenis = jenisEl ? jenisEl.value : '';
+  const isPulangan = jenis.includes('pulang');
+
+  const allItems = Object.values(katalog)
+    .sort((a,b) => new Date(b.tarikhTerakhir) - new Date(a.tarikhTerakhir));
+
+  // Filter by query if typed, else show all
+  const matches = (q.length === 0 ? allItems : allItems.filter(k => k.nama.toLowerCase().includes(q))).slice(0, 10);
+
+  if(matches.length === 0) { drop.classList.remove('show'); return; }
+
+  dropdownActive[`${prefix}_${idx}`] = -1;
+
+  drop.innerHTML = matches.map((k, i) => {
+    const harga = isJual ? k.hargaJual : k.hargaBeli;
+    const kali = isJual ? k.kaliJual : k.kaliBeli;
+    const jenisLabel = isJual ? (k.kaliJual > 0 ? `${k.kaliJual}× jual` : 'Baru') : (k.kaliBeli > 0 ? `${k.kaliBeli}× beli` : 'Baru');
+    return `<div class="item-dropdown-item" data-idx="${i}" 
+      onmousedown="pilihKatalog('${prefix}',${idx},'${k.nama.replace(/'/g,"\\'")}',${harga})"
+      onmouseover="dropdownActive['${prefix}_${idx}']=${i};highlightDrop('${prefix}',${idx})">
+      <div>
+        <span class="item-dropdown-nama">${k.nama}</span>
+        <span class="item-dropdown-jenis" style="margin-left:6px;">${jenisLabel}</span>
+        ${isPulangan ? '<span class="item-dropdown-jenis" style="margin-left:4px;background:#fff7ed;color:#9a3412;">PULANGAN</span>' : ''}
+      </div>
+      <span class="item-dropdown-harga">${harga > 0 ? 'RM '+fmt(harga) : '—'}</span>
+    </div>`;
+  }).join('');
+
+  drop.classList.add('show');
+}
+
+function highlightDrop(prefix, idx) {
+  const drop = document.getElementById(`${prefix}_drop_${idx}`);
+  if(!drop) return;
+  const key = `${prefix}_${idx}`;
+  drop.querySelectorAll('.item-dropdown-item').forEach((el, i) => {
+    el.classList.toggle('active', i === dropdownActive[key]);
+  });
+}
+
+function naviDropdown(e, prefix, idx) {
+  const drop = document.getElementById(`${prefix}_drop_${idx}`);
+  if(!drop || !drop.classList.contains('show')) return;
+  const key = `${prefix}_${idx}`;
+  const items = drop.querySelectorAll('.item-dropdown-item');
+  if(e.key === 'ArrowDown') {
+    e.preventDefault();
+    dropdownActive[key] = Math.min((dropdownActive[key]||0)+1, items.length-1);
+    highlightDrop(prefix, idx);
+  } else if(e.key === 'ArrowUp') {
+    e.preventDefault();
+    dropdownActive[key] = Math.max((dropdownActive[key]||0)-1, 0);
+    highlightDrop(prefix, idx);
+  } else if(e.key === 'Enter' || e.key === 'Tab') {
+    const active = dropdownActive[key];
+    if(active >= 0 && items[active]) {
+      e.preventDefault();
+      items[active].dispatchEvent(new MouseEvent('mousedown'));
+    }
+  } else if(e.key === 'Escape') {
+    tutupDropdown(prefix, idx);
+  }
+}
+
+function pilihKatalog(prefix, idx, nama, harga) {
+  const namaEl = document.getElementById(`${prefix}_nama_${idx}`);
+  const hargaEl = document.getElementById(`${prefix}_harga_${idx}`);
+  const qtyEl = document.getElementById(`${prefix}_qty_${idx}`);
+  if(namaEl) namaEl.value = nama;
+  if(hargaEl && harga > 0) {
+    hargaEl.value = harga;
+    kiraJumlah(prefix, idx);
+  }
+  if(qtyEl && (!qtyEl.value || qtyEl.value == '0')) qtyEl.focus();
+  else if(hargaEl && (!hargaEl.value || hargaEl.value == '0')) hargaEl.focus();
+  tutupDropdown(prefix, idx);
+}
+
+function tutupDropdown(prefix, idx) {
+  const drop = document.getElementById(`${prefix}_drop_${idx}`);
+  if(drop) drop.classList.remove('show');
+}
+
+// ---- KATALOG MODAL ----
+function bukaKatalog() {
+  document.getElementById('katalog_modal').classList.add('show');
+  renderKatalog();
+}
+
+function tutupKatalog() {
+  document.getElementById('katalog_modal').classList.remove('show');
+}
+
+function renderKatalog() {
+  const q = (document.getElementById('katalog_cari')?.value || '').toLowerCase();
+  const tbody = document.getElementById('katalog_body');
+  const empty = document.getElementById('katalog_empty');
+
+  const items = Object.entries(katalog)
+    .filter(([k,v]) => !q || v.nama.toLowerCase().includes(q))
+    .sort((a,b) => new Date(b[1].tarikhTerakhir) - new Date(a[1].tarikhTerakhir));
+
+  if(items.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = items.map(([key, k]) => `
+    <tr>
+      <td><strong>${k.nama}</strong></td>
+      <td>
+        ${k.kaliJual > 0 ? `<span class="badge badge-green" style="margin-right:3px;">Jual ×${k.kaliJual}</span>` : ''}
+        ${k.kaliBeli > 0 ? `<span class="badge badge-red">Beli ×${k.kaliBeli}</span>` : ''}
+      </td>
+      <td style="text-align:right;">
+        <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap;">
+          ${k.kaliJual > 0 ? `<div style="display:flex;align-items:center;gap:4px;"><span style="font-size:10px;color:#64748b;">Jual:</span><input class="katalog-harga-input" type="number" value="${k.hargaJual}" onchange="editHargaKatalog('${key}','jual',this.value)" step="0.01"></div>` : ''}
+          ${k.kaliBeli > 0 ? `<div style="display:flex;align-items:center;gap:4px;"><span style="font-size:10px;color:#64748b;">Beli:</span><input class="katalog-harga-input" type="number" value="${k.hargaBeli}" onchange="editHargaKatalog('${key}','beli',this.value)" step="0.01"></div>` : ''}
+          ${k.kaliJual === 0 && k.kaliBeli === 0 ? `<input class="katalog-harga-input" type="number" value="0" disabled>` : ''}
+        </div>
+      </td>
+      <td style="color:#64748b;font-size:11px;">${k.kaliJual + k.kaliBeli} kali</td>
+      <td style="font-family:var(--mono);font-size:11px;color:#64748b;">${k.tarikhTerakhir}</td>
+      <td><button class="btn-del" onclick="padamKatalog('${key}')">PADAM</button></td>
+    </tr>
+  `).join('');
+}
+
+function editHargaKatalog(key, jenis, val) {
+  if(!katalog[key]) return;
+  const harga = parseFloat(val) || 0;
+  if(jenis === 'jual') katalog[key].hargaJual = harga;
+  else katalog[key].hargaBeli = harga;
+  simpanKatalog();
+  showAlert('✅ Harga katalog dikemaskini!');
+}
+
+function padamKatalog(key) {
+  if(!confirm(`Padam "${katalog[key]?.nama}" dari katalog?`)) return;
+  delete katalog[key];
+  simpanKatalog();
+  renderKatalog();
 }
 
 function rekodJualBeli(type) {
@@ -808,6 +1075,7 @@ function rekodJualBeli(type) {
     items: itemDetails
   };
   db.push(entry);
+  kemaskiniKatalog(itemDetails, jenis);  // auto-save to item catalogue
   save();
 
   // Reset form
@@ -1246,6 +1514,16 @@ const todayStr = new Date().toISOString().split('T')[0];
   const el = document.getElementById(id);
   if(el) el.value = todayStr;
 });
+
+// Build katalog from existing db transactions if katalog is empty
+if(Object.keys(katalog).length === 0) {
+  db.forEach(d => {
+    if(d.items && d.items.length > 0) {
+      kemaskiniKatalog(d.items, d.j);
+    }
+  });
+}
+
 tambahItem('j');
 tambahItem('b2');
 proses();
