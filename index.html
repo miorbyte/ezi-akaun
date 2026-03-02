@@ -3,349 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profit Niaga Pro v9 - Full Business Edition</title>
+    <title>Profit Niaga Pro v10 - Accounting Edition</title>
     <style>
         :root { 
             --primary: #1e272e; --success: #05c46b; --danger: #ff3f34; 
             --warning: #f1c40f; --accent: #3c40c6; --border-color: #d2dae2; 
         }
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f1f2f6; margin: 0; padding: 15px; color: #2f3542; }
-        .container { max-width: 1250px; margin: 0 auto; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f1f2f6; margin: 0; padding: 15px; color: #2f3542; }
+        .container { max-width: 1300px; margin: 0 auto; }
         
         .nama-syarikat-input { 
-            font-size: 30px; font-weight: 900; text-align: center; color: var(--primary); 
-            border: 4px solid var(--primary); background: white; padding: 15px; 
-            border-radius: 20px; width: 100%; margin-bottom: 25px; outline: none; 
-            text-transform: uppercase; box-shadow: 8px 8px 0 #bdc3c7; 
+            font-size: 28px; font-weight: 900; text-align: center; color: var(--primary); 
+            border: 4px solid var(--primary); background: white; padding: 12px; 
+            border-radius: 15px; width: 100%; margin-bottom: 20px; outline: none; 
+            text-transform: uppercase; box-shadow: 6px 6px 0 #bdc3c7; 
         }
 
-        /* DASHBOARD */
-        .grid-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .dashboard-card { background: white; padding: 20px; border-radius: 20px; border: 3px solid var(--primary); }
-        .card-header { font-weight: 900; font-size: 13px; text-transform: uppercase; margin-bottom: 10px; border-left: 8px solid var(--primary); padding-left: 10px; }
-        .gauge-outer { background: #dcdde1; height: 14px; border-radius: 50px; position: relative; margin: 10px 0; border: 1px solid #2f3542; overflow: hidden; }
-        .gauge-inner { height: 100%; width: 0%; transition: width 1s; }
+        /* INPUT SECTIONS */
+        .grid-input { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .input-box { background: #fff; border: 2px solid var(--primary); border-radius: 15px; padding: 15px; }
+        .card-header { font-weight: 900; font-size: 12px; text-transform: uppercase; margin-bottom: 10px; border-left: 5px solid var(--primary); padding-left: 8px; }
+        .row-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        input, select { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 12px; font-weight: 600; }
+        .btn-calc { padding: 10px; border-radius: 5px; border: none; font-weight: 800; cursor: pointer; color: white; width: 100%; margin-top: 5px; }
 
-        /* STOK BOXES */
-        .grid-stok { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
-        .stok-box { background: #fff; border: 3px solid var(--primary); border-radius: 25px; padding: 20px; }
-        .stok-input-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-        input, select { width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-weight: 600; font-size: 13px; }
-        .btn-calc { padding: 12px; border-radius: 10px; border: none; font-weight: 800; cursor: pointer; color: white; flex: 1; }
-
-        /* TOOLBAR */
-        .toolbar { background: var(--primary); color: white; padding: 15px 25px; border-radius: 20px; margin: 25px 0; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
-        .btn-tool { padding: 8px 15px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer; color: white; font-size: 12px; }
+        /* TOOLBAR FILTER */
+        .toolbar { background: var(--primary); color: white; padding: 12px 20px; border-radius: 12px; margin: 20px 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .btn-tool { padding: 6px 12px; border-radius: 5px; border: none; font-weight: 800; cursor: pointer; color: white; font-size: 11px; }
 
         /* REPORTS */
-        .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #ddd; }
-        .grid-reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
-        .table-laporan { width: 100%; border-collapse: collapse; }
-        .table-laporan td { padding: 10px; border-bottom: 1px solid #f1f2f6; font-size: 14px; }
-        .val-laporan { text-align: right; font-weight: 700; font-family: 'Courier New', monospace; }
-        .total-row { background: #f8f9fa; font-weight: 900; border-top: 2px solid #000; border-bottom: 4px double #000; }
-        .sub-sec { color: var(--accent); font-weight: 900; font-size: 11px; padding-top: 15px !important; }
+        .grid-reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .report-card { background: white; padding: 20px; border-radius: 15px; border: 1px solid #ccc; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .table-laporan { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .table-laporan td { padding: 8px 5px; border-bottom: 1px solid #f1f2f6; font-size: 13px; }
+        .val { text-align: right; font-weight: 700; font-family: 'Courier New', monospace; }
+        .sub-header { background: #f8f9fa; font-weight: 900; color: var(--accent); font-size: 11px; }
+        .total-row { font-weight: 900; border-top: 2px solid #000; border-bottom: 4px double #000; background: #fff !important; }
 
-        .badge { font-size: 9px; padding: 2px 5px; border-radius: 4px; font-weight: 900; text-transform: uppercase; }
+        /* HISTORY */
+        .history-card { background: white; padding: 20px; border-radius: 15px; overflow-x: auto; }
 
-        @media (max-width: 768px) { .stok-input-row { grid-template-columns: 1fr 1fr; } .grid-stok { grid-template-columns: 1fr; } }
-        @media print { .no-print { display: none !important; } body { background: white; } .card { border: 1px solid #000; box-shadow: none; } }
+        @media print { .no-print { display: none !important; } body { background: white; padding: 0; } .container { max-width: 100%; } .report-card { border: 1px solid #000; box-shadow: none; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <input type="text" id="namaSyarikat" class="nama-syarikat-input" placeholder="NAMA PERNIAGAAN ANDA">
+    <input type="text" id="namaSyarikat" class="nama-syarikat-input" placeholder="NAMA PERNIAGAAN">
 
-    <div class="grid-dashboard no-print">
-        <div class="dashboard-card">
-            <div class="card-header">Prestasi Untung Bersih</div>
-            <div id="statusTeks" style="font-size: 22px; font-weight: 900;">RM 0.00</div>
-            <div class="gauge-outer"><div id="gaugeUntung" class="gauge-inner"></div></div>
-        </div>
-        <div class="dashboard-card">
-            <div class="card-header">Titik Pulang Modal (TPM)</div>
-            <div id="valBakiTPM" style="font-size: 22px; font-weight: 900;">RM 0.00</div>
-            <div class="gauge-outer"><div id="gaugeTPM" class="gauge-inner"></div></div>
-        </div>
-    </div>
-
-    <div class="grid-stok no-print">
-        <div class="stok-box" style="border-color: var(--danger);">
-            <div class="card-header" style="border-color:var(--danger)">📦 Rekod Belian Stok</div>
-            <div class="stok-input-row">
-                <input type="text" id="b_ref" placeholder="No. Invois">
-                <input type="text" id="b_item" placeholder="Nama Item">
-                <input type="number" id="b_qty" placeholder="Qty" oninput="kira('beli')">
-                <input type="number" id="b_kos" placeholder="Kos" oninput="kira('beli')">
+    <div class="grid-input no-print">
+        <div class="input-box" style="border-color: var(--accent);">
+            <div class="card-header" style="border-color: var(--accent);">🛒 Rekod Stok (Belian & Jualan)</div>
+            <div class="row-form">
+                <input type="text" id="s_ref" placeholder="No. Invois/Resit">
+                <input type="date" id="s_tarikh">
             </div>
-            <div style="font-weight:900; text-align:right; margin-bottom:10px; font-size:14px;">JUMLAH: RM <span id="total_beli">0.00</span></div>
-            <div style="display:flex; gap:5px;">
-                <button class="btn-calc" style="background:var(--primary)" onclick="rekod('beli','tunai')">TUNAI</button>
-                <button class="btn-calc" style="background:var(--accent)" onclick="rekod('beli','hutang')">HUTANG</button>
+            <div class="row-form">
+                <input type="text" id="s_item" placeholder="Nama Barang">
+                <input type="number" id="s_qty" placeholder="Qty">
             </div>
-        </div>
-        <div class="stok-box" style="border-color: var(--success);">
-            <div class="card-header" style="border-color:var(--success)">💰 Rekod Jualan Stok</div>
-            <div class="stok-input-row">
-                <input type="text" id="j_ref" placeholder="No. Resit">
-                <input type="text" id="j_item" placeholder="Nama Item">
-                <input type="number" id="j_qty" placeholder="Qty" oninput="kira('jual')">
-                <input type="number" id="j_harga" placeholder="Harga" oninput="kira('jual')">
-            </div>
-            <div style="font-weight:900; text-align:right; margin-bottom:10px; font-size:14px;">JUMLAH: RM <span id="total_jual">0.00</span></div>
-            <div style="display:flex; gap:5px;">
-                <button class="btn-calc" style="background:var(--success)" onclick="rekod('jual','tunai')">TUNAI</button>
-                <button class="btn-calc" style="background:var(--accent)" onclick="rekod('jual','hutang')">HUTANG</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="card no-print">
-        <div class="card-header">Kemasukan Transaksi, Pelarasan & Ekuiti</div>
-        <form id="accForm" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) auto; gap:10px; align-items:end;">
-            <div><label style="font-size:10px; font-weight:800;">KATEGORI</label>
-                <select id="jenis">
-                    <option value="modal">Modal (Tunai Masuk)</option>
-                    <option value="aset">Beli Aset (Mesin/Laptop/Kenderaan)</option>
-                    <option value="belanja">Belanja: Gaji / KWSP / SOCSO</option>
-                    <option value="belanja">Belanja: Sewa / Utiliti / Internet</option>
-                    <option value="belanja">Belanja: Iklan / Marketing / FB Ads</option>
-                    <option value="belanja">Belanja: Alat Tulis / Packaging</option>
-                    <option value="ambilan_tunai">Ambilan: Tunai (Kegunaan Peribadi)</option>
-                    <option value="ambilan_barang">Ambilan: Barangniaga (Guna Stok)</option>
-                    <option value="terima_bayaran_hutang">Terima Bayaran (Penghutang)</option>
-                    <option value="bayar_hutang_pembekal">Bayar Hutang (Pemiutang)</option>
-                    <option value="hutang_lapuk">Hutang Lapuk (Pelanggan Tak Bayar)</option>
+            <div class="row-form">
+                <input type="number" id="s_amaun" placeholder="Harga/Unit (RM)">
+                <select id="s_arah">
+                    <option value="beli_tunai">Belian (Tunai)</option>
+                    <option value="beli_hutang">Belian (Hutang)</option>
+                    <option value="jual_tunai">Jualan (Tunai)</option>
+                    <option value="jual_hutang">Jualan (Hutang)</option>
                 </select>
             </div>
-            <div><label style="font-size:10px; font-weight:800;">RUJUKAN</label><input type="text" id="ref" placeholder="No. Resit/Ref"></div>
-            <div><label style="font-size:10px; font-weight:800;">TARIKH</label><input type="date" id="tarikh"></div>
-            <div><label style="font-size:10px; font-weight:800;">BUTIRAN</label><input type="text" id="butiran" placeholder="Keterangan lanjut"></div>
-            <div><label style="font-size:10px; font-weight:800;">AMAUN (RM)</label><input type="number" id="amaun" step="0.01"></div>
-            <button type="submit" class="btn-calc" style="background:var(--primary); height:40px;">SIMPAN</button>
-        </form>
+            <button class="btn-calc" style="background:var(--accent)" onclick="rekodStok()">REKOD STOK</button>
+        </div>
+
+        <div class="input-box">
+            <div class="card-header">🏦 Transaksi, Ambilan & Pinjaman</div>
+            <div class="row-form">
+                <input type="text" id="t_ref" placeholder="No. Rujukan">
+                <input type="date" id="t_tarikh">
+            </div>
+            <select id="t_jenis" style="margin-bottom:8px;">
+                <option value="modal">Modal (Duit Masuk)</option>
+                <option value="ambilan_tunai">Ambilan (Tunai)</option>
+                <option value="ambilan_stok">Ambilan (Barangniaga)</option>
+                <option value="pinjaman">Terima Pinjaman Bank</option>
+                <option value="bayar_pinjaman">Bayar Pinjaman Bank</option>
+                <option value="aset">Beli Aset (Peralatan/Mesin)</option>
+                <option value="gaji">Belanja: Gaji / Upah</option>
+                <option value="sewa">Belanja: Sewa Kedai</option>
+                <option value="utiliti">Belanja: Bil Api/Air/Telco</option>
+                <option value="iklan">Belanja: Iklan/Promosi</option>
+                <option value="am">Belanja: Am / Lain-lain</option>
+                <option value="terima_hutang">Terima Bayaran Penghutang</option>
+                <option value="bayar_pembekal">Bayar Pemiutang Supplier</option>
+            </select>
+            <div class="row-form">
+                <input type="text" id="t_butiran" placeholder="Butiran">
+                <input type="number" id="t_amaun" placeholder="Amaun (RM)">
+            </div>
+            <button class="btn-calc" style="background:var(--primary)" onclick="rekodTransaksi()">SIMPAN TRANSAKSI</button>
+        </div>
     </div>
 
     <div class="toolbar no-print">
-        <div style="display:flex; gap:10px; align-items:center;">
-            <span style="font-weight:900; font-size:12px; color: var(--warning);">TEMPOH LAPORAN:</span>
-            <select id="fBulan" onchange="prosesAkaun()" style="width:130px; height:35px;"><option value="semua">Keseluruhan</option><option value="01">Januari</option><option value="02">Februari</option><option value="03">Mac</option><option value="04">April</option><option value="05">Mei</option><option value="06">Jun</option><option value="07">Julai</option><option value="08">Ogos</option><option value="09">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Disember</option></select>
-            <select id="fTahun" onchange="prosesAkaun()" style="width:90px; height:35px;"></select>
+        <div style="display:flex; gap:8px; align-items:center;">
+            <span style="font-weight:900; font-size:11px;">LAPORAN BULAN:</span>
+            <select id="fBulan" onchange="prosesAkaun()" style="width:120px; height:30px;"><option value="semua">Keseluruhan</option><option value="01">Januari</option><option value="02">Februari</option><option value="03">Mac</option><option value="04">April</option><option value="05">Mei</option><option value="06">Jun</option><option value="07">Julai</option><option value="08">Ogos</option><option value="09">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Disember</option></select>
+            <select id="fTahun" onchange="prosesAkaun()" style="width:80px; height:30px;"></select>
         </div>
-        <div style="margin-left:auto; display:flex; gap:10px;">
-            <button onclick="simpanJSON()" class="btn-tool" style="background:var(--success)">💾 BACKUP JSON</button>
-            <button onclick="document.getElementById('inputJSON').click()" class="btn-tool" style="background:var(--accent)">📂 BUKA JSON</button>
+        <div style="margin-left:auto; display:flex; gap:8px;">
+            <button onclick="simpanJSON()" class="btn-tool" style="background:var(--success)">💾 BACKUP</button>
+            <button onclick="document.getElementById('inputJSON').click()" class="btn-tool" style="background:var(--accent)">📂 BUKA</button>
             <input type="file" id="inputJSON" style="display:none" accept=".json" onchange="muatJSON(event)">
             <button onclick="window.print()" class="btn-tool" style="background:#e67e22">📄 CETAK</button>
         </div>
     </div>
 
     <div class="grid-reports">
-        <div class="card">
+        <div class="report-card">
             <h2 class="card-header">Penyata Untung Rugi</h2>
             <table class="table-laporan">
-                <tr><td>Jualan (Tunai + Hutang)</td><td class="val-laporan" id="p_jualan">0.00</td></tr>
-                <tr><td>Kos Belian Stok (Tolak Ambilan Barang)</td><td class="val-laporan" id="p_belian">(0.00)</td></tr>
-                <tr style="font-weight:bold; background:#f9f9f9;"><td>UNTUNG KASAR</td><td class="val-laporan" id="p_uk">0.00</td></tr>
-                <tr><td>Belanja Operasi & Pentadbiran</td><td class="val-laporan" id="p_belanja">(0.00)</td></tr>
-                <tr class="total-row"><td>UNTUNG BERSIH / (RUGI)</td><td class="val-laporan" id="p_ub">0.00</td></tr>
+                <tr><td>Jualan (Tunai + Kredit)</td><td class="val" id="p_jualan">0.00</td></tr>
+                <tr><td>(-) Kos Belian (Tolak Ambilan Stok)</td><td class="val" id="p_belian">(0.00)</td></tr>
+                <tr style="font-weight:bold; background:#eee;"><td>UNTUNG KASAR</td><td class="val" id="p_uk">0.00</td></tr>
+                <tr><td colspan="2" class="sub-header">Tolak: Belanja Operasi</td></tr>
+                <tr><td>&nbsp;&nbsp;Gaji & Upah</td><td class="val" id="b_gaji">0.00</td></tr>
+                <tr><td>&nbsp;&nbsp;Sewa Premis</td><td class="val" id="b_sewa">0.00</td></tr>
+                <tr><td>&nbsp;&nbsp;Utiliti (Api/Air/Internet)</td><td class="val" id="b_utiliti">0.00</td></tr>
+                <tr><td>&nbsp;&nbsp;Iklan & Pemasaran</td><td class="val" id="b_iklan">0.00</td></tr>
+                <tr><td>&nbsp;&nbsp;Belanja Am</td><td class="val" id="b_am">0.00</td></tr>
+                <tr class="total-row"><td>UNTUNG / (RUGI) BERSIH</td><td class="val" id="p_ub">0.00</td></tr>
             </table>
         </div>
-        <div class="card">
+
+        <div class="report-card">
             <h2 class="card-header">Kunci Kira-Kira</h2>
             <table class="table-laporan">
-                <tr><td colspan="2" class="sub-sec">ASET (HARTA)</td></tr>
-                <tr><td>Tunai & Bank</td><td class="val-laporan" id="k_tunai">0.00</td></tr>
-                <tr><td>Penghutang (Hutang Pelanggan)</td><td class="val-laporan" id="k_penghutang">0.00</td></tr>
-                <tr><td>Aset Tetap (Peralatan/Mesin)</td><td class="val-laporan" id="k_aset">0.00</td></tr>
-                <tr class="total-row"><td>JUMLAH ASET</td><td class="val-laporan" id="k_totalAset">0.00</td></tr>
-                <tr><td colspan="2" class="sub-sec">LIABILITI & EKUITI (MODAL)</td></tr>
-                <tr><td>Pemiutang (Hutang Supplier)</td><td class="val-laporan" id="k_pemiutang">0.00</td></tr>
-                <tr><td>Ekuiti (Modal + Untung - Ambilan)</td><td class="val-laporan" id="k_ekuiti">0.00</td></tr>
-                <tr class="total-row"><td>JUMLAH LIABILITI & EKUITI</td><td class="val-laporan" id="k_totalLE">0.00</td></tr>
+                <tr><td colspan="2" class="sub-header">ASET</td></tr>
+                <tr><td>Aset Tetap (Peralatan & Mesin)</td><td class="val" id="k_aset">0.00</td></tr>
+                <tr><td>Penghutang (Pelanggan)</td><td class="val" id="k_penghutang">0.00</td></tr>
+                <tr><td>Tunai & Bank (Baki Fizikal)</td><td class="val" id="k_tunai">0.00</td></tr>
+                <tr class="total-row"><td>JUMLAH ASET</td><td class="val" id="k_totalAset">0.00</td></tr>
+                
+                <tr><td colspan="2" class="sub-header">LIABILITI (HUTANG)</td></tr>
+                <tr><td>Pemiutang (Pembekal)</td><td class="val" id="k_pemiutang">0.00</td></tr>
+                <tr><td>Pinjaman Bank</td><td class="val" id="k_pinjaman">0.00</td></tr>
+                
+                <tr><td colspan="2" class="sub-header">EKUITI PEMILIK</td></tr>
+                <tr><td>Modal Awal</td><td class="val" id="k_modAwal">0.00</td></tr>
+                <tr><td>(+) Untung / (Rugi) Bersih</td><td class="val" id="k_ub">0.00</td></tr>
+                <tr><td>(-) Ambilan (Tunai + Stok)</td><td class="val" id="k_ambilan">0.00</td></tr>
+                <tr style="background:#f1f2f6;"><td>MODAL AKHIR</td><td class="val" id="k_modAkhir">0.00</td></tr>
+                <tr class="total-row"><td>JUMLAH LIABILITI & EKUITI</td><td class="val" id="k_totalLE">0.00</td></tr>
             </table>
         </div>
     </div>
 
-    <div class="card">
-        <h2 class="card-header">Sejarah Transaksi & Baki Berjalan</h2>
-        <div style="overflow-x:auto;">
-            <table class="table-laporan" style="min-width:1000px;">
-                <thead>
-                    <tr style="background:#f1f2f6; font-weight:900;">
-                        <th style="padding:15px; text-align:left;">Tarikh</th>
-                        <th style="text-align:left;">Ref</th>
-                        <th style="text-align:left;">Butiran</th>
-                        <th style="text-align:right;">Masuk (RM)</th>
-                        <th style="text-align:right;">Keluar (RM)</th>
-                        <th style="text-align:right; background:#e2e8f0;">Baki Tunai</th>
-                        <th class="no-print">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="senaraiTransaksi"></tbody>
-            </table>
-        </div>
+    <div class="history-card">
+        <h2 class="card-header">Sejarah Transaksi</h2>
+        <table class="table-laporan" style="min-width:1000px;">
+            <thead>
+                <tr style="background:#f1f2f6; font-weight:900;">
+                    <th style="padding:10px; text-align:left;">Tarikh</th>
+                    <th style="text-align:left;">Ref</th>
+                    <th style="text-align:left;">Kategori / Butiran</th>
+                    <th style="text-align:right;">Duit Masuk</th>
+                    <th style="text-align:right;">Duit Keluar</th>
+                    <th style="text-align:right; background:#e2e8f0;">Baki Tunai</th>
+                    <th class="no-print">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="senaraiTransaksi"></tbody>
+        </table>
     </div>
 </div>
 
 <script>
-    let data = JSON.parse(localStorage.getItem('ezi_gold_v9')) || [];
-    const tMasuk = ['modal', 'jualan', 'terima_bayaran_hutang'];
-    const tKeluar = ['belian', 'belanja', 'bayar_hutang_pembekal', 'ambilan_tunai', 'aset'];
-
-    // Setup Filter Tahun
+    let data = JSON.parse(localStorage.getItem('ezi_gold_v10')) || [];
+    
+    // Setup Filters
     const fYear = document.getElementById('fTahun');
     const curYear = new Date().getFullYear();
     for(let i=curYear; i>=curYear-2; i--) { fYear.innerHTML += `<option value="${i}">${i}</option>`; }
-    document.getElementById('tarikh').valueAsDate = new Date();
+    document.getElementById('s_tarikh').valueAsDate = new Date();
+    document.getElementById('t_tarikh').valueAsDate = new Date();
 
-    function kira(type) {
-        if(type === 'beli') {
-            let q = document.getElementById('b_qty').value || 0;
-            let k = document.getElementById('b_kos').value || 0;
-            document.getElementById('total_beli').innerText = (q * k).toFixed(2);
-        } else {
-            let q = document.getElementById('j_qty').value || 0;
-            let h = document.getElementById('j_harga').value || 0;
-            document.getElementById('total_jual').innerText = (q * h).toFixed(2);
-        }
+    function rekodStok() {
+        const ref = document.getElementById('s_ref').value || '-';
+        const tkh = document.getElementById('s_tarikh').value;
+        const item = document.getElementById('s_item').value;
+        const qty = parseFloat(document.getElementById('s_qty').value);
+        const amn = parseFloat(document.getElementById('s_amaun').value);
+        const arah = document.getElementById('s_arah').value;
+
+        if(!item || isNaN(qty) || isNaN(amn)) return alert("Lengkapkan data stok!");
+        
+        data.push({ 
+            id: Date.now(), ref, tarikh: tkh, 
+            jenis: arah, butiran: `${item.toUpperCase()} (${qty} Unit)`, 
+            amaun: qty * amn 
+        });
+        simpanDanRefresh();
     }
 
-    function rekod(arah, mod) {
-        let ref, item, qty, harga, jenis, amaun, butiran;
-        if(arah==='beli'){
-            ref = document.getElementById('b_ref').value || '-';
-            item = document.getElementById('b_item').value; qty = document.getElementById('b_qty').value;
-            harga = document.getElementById('b_kos').value; jenis = (mod==='tunai'?'belian':'belian_hutang');
-        } else {
-            ref = document.getElementById('j_ref').value || '-';
-            item = document.getElementById('j_item').value; qty = document.getElementById('j_qty').value;
-            harga = document.getElementById('j_harga').value; jenis = (mod==='tunai'?'jualan':'jualan_hutang');
-        }
-        if(!item || !qty || !harga) return alert("Isi maklumat!");
-        amaun = parseFloat(qty) * parseFloat(harga);
-        butiran = `${item.toUpperCase()} (${qty} UNIT)`;
-        simpan(jenis, butiran, amaun, ref);
-        document.querySelectorAll('.grid-stok input').forEach(i => i.value = '');
-        kira('beli'); kira('jual');
+    function rekodTransaksi() {
+        const ref = document.getElementById('t_ref').value || '-';
+        const tkh = document.getElementById('t_tarikh').value;
+        const jenis = document.getElementById('t_jenis').value;
+        const butiran = document.getElementById('t_butiran').value;
+        const amaun = parseFloat(document.getElementById('t_amaun').value);
+
+        if(isNaN(amaun)) return alert("Masukkan amaun!");
+        
+        data.push({ id: Date.now(), ref, tarikh: tkh, jenis, butiran, amaun });
+        simpanDanRefresh();
     }
 
-    function simpan(jenis, butiran, amaun, rujukan) {
-        let tarikh = document.getElementById('tarikh').value;
-        data.push({ id: Date.now(), jenis, tarikh, butiran, amaun: parseFloat(amaun), ref: rujukan || '-' });
-        localStorage.setItem('ezi_gold_v9', JSON.stringify(data));
+    function simpanDanRefresh() {
+        localStorage.setItem('ezi_gold_v10', JSON.stringify(data));
         prosesAkaun();
+        // Clear inputs
+        document.querySelectorAll('input[type="text"], input[type="number"]').forEach(i => i.value = '');
     }
-
-    document.getElementById('accForm').onsubmit = function(e) {
-        e.preventDefault();
-        simpan(document.getElementById('jenis').value, document.getElementById('butiran').value, document.getElementById('amaun').value, document.getElementById('ref').value);
-        this.reset(); document.getElementById('tarikh').valueAsDate = new Date();
-    };
 
     function prosesAkaun() {
         const fb = document.getElementById('fBulan').value;
         const ft = document.getElementById('fTahun').value;
         const f = (n) => n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         
-        let b = { tunai:0, jualan:0, belian:0, belanja:0, p_hutang:0, p_utang:0, modal:0, amb_tunai:0, amb_stok:0, aset:0 };
-        
+        let p = { jual:0, beli:0, gaji:0, sewa:0, utiliti:0, iklan:0, am:0 };
+        let k = { tunai:0, p_hutang:0, p_utang:0, bank:0, aset:0, mod_awal:0, amb_tunai:0, amb_stok:0 };
+
         let filtered = data.filter(d => {
-            const p = d.tarikh.split('-');
-            return (fb === 'semua' || p[1] === fb) && p[0] === ft;
+            const dateParts = d.tarikh.split('-');
+            return (fb === 'semua' || dateParts[1] === fb) && dateParts[0] === ft;
         });
 
         filtered.sort((a,b) => new Date(a.tarikh) - new Date(b.tarikh));
         const tbody = document.getElementById('senaraiTransaksi');
         tbody.innerHTML = "";
-        let bakiBerjalan = 0;
+        let bakiTunai = 0;
 
         filtered.forEach(d => {
-            let m = 0, k = 0;
+            let m = 0, keluar = 0;
             
-            // Logik Penyata & Kunci Kira-Kira
-            if(d.jenis==='jualan' || d.jenis==='jualan_hutang') b.jualan += d.amaun;
-            if(d.jenis==='belian' || d.jenis==='belian_hutang') b.belian += d.amaun;
-            if(d.jenis==='belanja' || d.jenis==='hutang_lapuk') b.belanja += d.amaun;
-            if(d.jenis==='modal') b.modal += d.amaun;
-            if(d.jenis==='aset') b.aset += d.amaun;
-            if(d.jenis==='ambilan_tunai') b.amb_tunai += d.amaun;
-            if(d.jenis==='ambilan_barang') b.amb_stok += d.amaun;
-            if(d.jenis==='jualan_hutang') b.p_hutang += d.amaun;
-            if(d.jenis==='belian_hutang') b.p_utang += d.amaun;
-            if(d.jenis==='terima_bayaran_hutang') b.p_hutang -= d.amaun;
-            if(d.jenis==='bayar_hutang_pembekal') b.p_utang -= d.amaun;
-            if(d.jenis==='hutang_lapuk') b.p_hutang -= d.amaun;
+            // LOGIK PENYATA UNTUNG RUGI
+            if(d.jenis === 'jual_tunai' || d.jenis === 'jual_hutang') p.jual += d.amaun;
+            if(d.jenis === 'beli_tunai' || d.jenis === 'beli_hutang') p.beli += d.amaun;
+            if(d.jenis === 'gaji') p.gaji += d.amaun;
+            if(d.jenis === 'sewa') p.sewa += d.amaun;
+            if(d.jenis === 'utiliti') p.utiliti += d.amaun;
+            if(d.jenis === 'iklan') p.iklan += d.amaun;
+            if(d.jenis === 'am') p.am += d.amaun;
 
-            // Aliran Tunai
-            if(tMasuk.includes(d.jenis)) { b.tunai += d.amaun; bakiBerjalan += d.amaun; m = d.amaun; }
-            if(tKeluar.includes(d.jenis)) { b.tunai -= d.amaun; bakiBerjalan -= d.amaun; k = d.amaun; }
+            // LOGIK KUNCI KIRA-KIRA
+            if(d.jenis === 'jual_hutang') k.p_hutang += d.amaun;
+            if(d.jenis === 'beli_hutang') k.p_utang += d.amaun;
+            if(d.jenis === 'terima_hutang') { k.p_hutang -= d.amaun; m = d.amaun; }
+            if(d.jenis === 'bayar_pembekal') { k.p_utang -= d.amaun; keluar = d.amaun; }
+            if(d.jenis === 'modal') { k.mod_awal += d.amaun; m = d.amaun; }
+            if(d.jenis === 'pinjaman') { k.bank += d.amaun; m = d.amaun; }
+            if(d.jenis === 'bayar_pinjaman') { k.bank -= d.amaun; keluar = d.amaun; }
+            if(d.jenis === 'ambilan_tunai') { k.amb_tunai += d.amaun; keluar = d.amaun; }
+            if(d.jenis === 'ambilan_stok') k.amb_stok += d.amaun;
+            if(d.jenis === 'aset') { k.aset += d.amaun; keluar = d.amaun; }
+            
+            // Tunai Flows
+            if(d.jenis === 'jual_tunai') m = d.amaun;
+            if(d.jenis === 'beli_tunai') keluar = d.amaun;
+            if(['gaji','sewa','utiliti','iklan','am'].includes(d.jenis)) keluar = d.amaun;
 
+            bakiTunai += (m - keluar);
+            
             tbody.insertAdjacentHTML('afterbegin', `
                 <tr>
-                    <td style="padding:15px;">${d.tarikh}</td>
+                    <td>${d.tarikh}</td>
                     <td><small>${d.ref}</small></td>
-                    <td><strong>${d.butiran}</strong><br><span class="badge" style="background:${d.jenis.includes('hutang')?'#ffeaa7':'#dff9fb'}">${d.jenis.replace(/_/g,' ')}</span></td>
-                    <td style="text-align:right; color:var(--success); font-weight:700;">${m>0?f(m):'-'}</td>
-                    <td style="text-align:right; color:var(--danger); font-weight:700;">${k>0?f(k):'-'}</td>
-                    <td style="text-align:right; font-weight:900; background:#f8f9fa;">${f(bakiBerjalan)}</td>
-                    <td class="no-print"><button onclick="hapus(${d.id})" style="border:none; background:none; color:#ccc; cursor:pointer;">&times;</button></td>
+                    <td><strong>${d.jenis.replace(/_/g,' ').toUpperCase()}</strong><br><small>${d.butiran}</small></td>
+                    <td style="text-align:right; color:var(--success);">${m > 0 ? f(m) : '-'}</td>
+                    <td style="text-align:right; color:var(--danger);">${keluar > 0 ? f(keluar) : '-'}</td>
+                    <td style="text-align:right; font-weight:900;">${f(bakiTunai)}</td>
+                    <td class="no-print"><button onclick="hapus(${d.id})" style="border:none; color:red; cursor:pointer;">&times;</button></td>
                 </tr>
             `);
         });
 
-        // Hasil Penyata
-        let kosBeliNet = b.belian - b.amb_stok; // Ambilan stok kurangkan kos belian
-        let uk = b.jualan - kosBeliNet;
-        let ub = uk - b.belanja;
+        // KIRAAN AKHIR
+        let kosBeliNet = p.beli - k.amb_stok;
+        let uk = p.jual - kosBeliNet;
+        let totalBelanja = p.gaji + p.sewa + p.utiliti + p.iklan + p.am;
+        let ub = uk - totalBelanja;
+        let modAkhir = k.mod_awal + ub - (k.amb_tunai + k.amb_stok);
 
-        document.getElementById('p_jualan').innerText = f(b.jualan);
+        // PAPAR DATA - PENYATA
+        document.getElementById('p_jualan').innerText = f(p.jual);
         document.getElementById('p_belian').innerText = `(${f(kosBeliNet)})`;
         document.getElementById('p_uk').innerText = f(uk);
-        document.getElementById('p_belanja').innerText = `(${f(b.belanja)})`;
+        document.getElementById('b_gaji').innerText = f(p.gaji);
+        document.getElementById('b_sewa').innerText = f(p.sewa);
+        document.getElementById('b_utiliti').innerText = f(p.utiliti);
+        document.getElementById('b_iklan').innerText = f(p.iklan);
+        document.getElementById('b_am').innerText = f(p.am);
         document.getElementById('p_ub').innerText = f(ub);
-        
-        document.getElementById('k_tunai').innerText = f(b.tunai);
-        document.getElementById('k_penghutang').innerText = f(b.p_hutang);
-        document.getElementById('k_aset').innerText = f(b.aset);
-        document.getElementById('k_totalAset').innerText = f(b.tunai + b.p_hutang + b.aset);
-        document.getElementById('k_pemiutang').innerText = f(b.p_utang);
-        document.getElementById('k_ekuiti').innerText = f(b.modal + ub - b.amb_tunai - b.amb_stok);
-        document.getElementById('k_totalLE').innerText = f(b.p_utang + (b.modal + ub - b.amb_tunai - b.amb_stok));
 
-        // Dashboard Visual
-        const sTeks = document.getElementById('statusTeks');
-        sTeks.innerText = "RM " + f(ub); sTeks.style.color = ub >= 0 ? "var(--success)" : "var(--danger)";
-        document.getElementById('gaugeUntung').style.width = ub >= 0 ? "100%" : "20%";
-        document.getElementById('gaugeUntung').style.background = ub >= 0 ? "var(--success)" : "var(--danger)";
-        
-        let kosTtp = kosBeliNet + b.belanja; 
-        document.getElementById('valBakiTPM').innerText = "RM " + f(b.jualan >= kosTtp ? (b.jualan - kosTtp) : (kosTtp - b.jualan));
-        document.getElementById('gaugeTPM').style.width = (kosTtp > 0 ? (b.jualan/kosTtp * 100) : 0) + "%";
-        document.getElementById('gaugeTPM').style.background = b.jualan >= kosTtp ? "var(--success)" : "var(--warning)";
+        // PAPAR DATA - KUNCI KIRA
+        document.getElementById('k_aset').innerText = f(k.aset);
+        document.getElementById('k_penghutang').innerText = f(k.p_hutang);
+        document.getElementById('k_tunai').innerText = f(bakiTunai);
+        document.getElementById('k_totalAset').innerText = f(k.aset + k.p_hutang + bakiTunai);
+        document.getElementById('k_pemiutang').innerText = f(k.p_utang);
+        document.getElementById('k_pinjaman').innerText = f(k.bank);
+        document.getElementById('k_modAwal').innerText = f(k.mod_awal);
+        document.getElementById('k_ub').innerText = f(ub);
+        document.getElementById('k_ambilan').innerText = `(${f(k.amb_tunai + k.amb_stok)})`;
+        document.getElementById('k_modAkhir').innerText = f(modAkhir);
+        document.getElementById('k_totalLE').innerText = f(k.p_utang + k.bank + modAkhir);
     }
 
     function simpanJSON() {
         const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url; a.download = "ProfitNiaga_Backup_" + new Date().toISOString().slice(0,10) + ".json";
-        a.click();
+        a.href = url; a.download = "Audit_Niaga_v10.json"; a.click();
     }
 
     function muatJSON(event) {
         const reader = new FileReader();
         reader.onload = (e) => {
             data = JSON.parse(e.target.result);
-            localStorage.setItem('ezi_gold_v9', JSON.stringify(data));
+            localStorage.setItem('ezi_gold_v10', JSON.stringify(data));
             prosesAkaun();
         };
         reader.readAsText(event.target.files[0]);
     }
 
-    function hapus(id) { if(confirm("Padam?")) { data = data.filter(d => d.id !== id); localStorage.setItem('ezi_gold_v9', JSON.stringify(data)); prosesAkaun(); } }
+    function hapus(id) { if(confirm("Hapus rekod ini?")) { data = data.filter(d => d.id !== id); localStorage.setItem('ezi_gold_v10', JSON.stringify(data)); prosesAkaun(); } }
     
     const sn = document.getElementById('namaSyarikat');
     sn.value = localStorage.getItem('ezi_gold_sn') || "";
