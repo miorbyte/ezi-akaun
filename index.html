@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profit Niaga - Rekod Lengkap & Baki Terkini</title>
+    <title>Profit Niaga - Sistem Rekod Lengkap v3</title>
     <style>
         :root { 
             --primary: #1e272e; 
@@ -25,17 +25,17 @@
         }
         
         .grid-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .dashboard-card { background: white; padding: 25px; border-radius: 25px; border: 4px solid var(--primary); }
+        .dashboard-card { background: white; padding: 25px; border-radius: 25px; border: 4px solid var(--primary); box-shadow: 10px 10px 0 rgba(0,0,0,0.05); }
         .card-header { font-weight: 900; font-size: 15px; text-transform: uppercase; margin-bottom: 20px; border-left: 10px solid var(--primary); padding-left: 10px; }
         
         .gauge-outer { background: #dcdde1; height: 22px; border-radius: 50px; position: relative; margin: 15px 0 10px 0; border: 2px solid #2f3542; overflow: hidden; }
-        .gauge-inner { height: 100%; width: 0%; border-radius: 50px; transition: width 1s; }
-        .gauge-labels { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; }
+        .gauge-inner { height: 100%; width: 0%; border-radius: 50px; transition: width 1s ease-in-out; }
+        .gauge-labels { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: #57602f; text-transform: uppercase; }
 
         .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #ddd; }
         .card-title { margin: 0 0 20px 0; font-size: 18px; font-weight: 800; border-bottom: 4px solid var(--accent); display: inline-block; padding-bottom: 5px; }
         
-        .grid-reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; }
+        .grid-reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 20px; }
         .table-laporan { width: 100%; border-collapse: collapse; }
         .table-laporan td, .table-laporan th { padding: 12px 10px; border-bottom: 1px solid #f1f2f6; font-size: 14px; }
         .val-laporan { text-align: right; font-weight: 700; font-family: 'Courier New', monospace; font-size: 15px; }
@@ -62,12 +62,18 @@
             <div class="card-header">Prestasi Untung Bersih</div>
             <div id="statusTeks" style="font-size: 22px; font-weight: 900;">DATA DIPROSES...</div>
             <div class="gauge-outer"><div id="gaugeUntung" class="gauge-inner"></div></div>
+            <div class="gauge-labels"><span>Rugi</span><span>Imbang</span><span>Untung</span></div>
             <p id="nasihatAI" style="font-size: 12px; margin-top: 15px; font-weight: 600; color: #7f8c8d;"></p>
         </div>
+
         <div class="dashboard-card">
-            <div class="card-header">Baki Tunai Terkini</div>
-            <div id="valBakiDashboard" style="font-size: 32px; font-weight: 900; color: var(--accent);">RM 0.00</div>
-            <p style="font-size: 11px; margin-top: 12px; color: #636e72;">Baki bersih selepas semua transaksi.</p>
+            <div class="card-header">Analisis Titik Pulang Modal</div>
+            <div id="tpmLabelUtama" style="font-size: 13px; font-weight: 700; color: black;">Perlu Jualan Lagi:</div>
+            <div id="valBakiTPM" style="font-size: 32px; font-weight: 900; color: var(--danger); margin: 5px 0;">RM 0.00</div>
+            <div class="gauge-outer"><div id="gaugeTPM" class="gauge-inner"></div></div>
+            <div style="font-size: 11px; margin-top: 12px; border-top: 1px solid #eee; padding-top: 8px; color: #636e72;">
+                <b>Sasaran (Modal + Belanja):</b> <span id="valSasaranPenuh" style="color: black;">RM 0.00</span>
+            </div>
         </div>
     </div>
 
@@ -96,7 +102,7 @@
                 <input type="date" id="tarikh" required>
             </div>
             <div class="form-grid" style="grid-template-columns: 2fr 1fr;">
-                <input type="text" id="butiran" placeholder="Keterangan transaksi..." required>
+                <input type="text" id="butiran" placeholder="Keterangan..." required>
                 <input type="number" id="amaun" step="0.01" placeholder="0.00" required>
             </div>
             <button type="submit" class="btn-primary">SIMPAN REKOD</button>
@@ -149,7 +155,7 @@
     </div>
 
     <div class="card">
-        <h2 class="card-title">Sejarah Transaksi</h2>
+        <h2 class="card-title">Sejarah Transaksi & Baki</h2>
         <div style="overflow-x:auto;">
             <table class="table-laporan" style="min-width: 900px;">
                 <thead>
@@ -173,6 +179,7 @@
     let data = JSON.parse(localStorage.getItem('ezi_gold_v98')) || [];
     const debitKeys = ['modal', 'pinjaman', 'jualan', 'jualan_hutang'];
     
+    // Setup Filter Tahun
     const fYear = document.getElementById('filterTahun');
     const curYear = new Date().getFullYear();
     for(let i=curYear; i>=curYear-2; i--) { fYear.innerHTML += `<option value="${i}">${i}</option>`; }
@@ -185,13 +192,11 @@
 
         let b = { tunai:0, jualan:0, belian:0, belanja:0, modal:0, aset:0, p_hutang:0, p_utang:0, pinjaman:0, ambilan:0 };
         
-        // Asingkan data yang ditapis
         let filtered = data.filter(d => {
             const p = d.tarikh.split('-');
             return (fb === 'semua' || p[1] === fb) && p[0] === ft;
         });
 
-        // Susun ikut tarikh untuk baki kronologi
         filtered.sort((a,b) => new Date(a.tarikh) - new Date(b.tarikh));
 
         const tbody = document.getElementById('senaraiTransaksi');
@@ -202,18 +207,17 @@
             const amt = d.amaun;
             const isDebit = debitKeys.includes(d.jenis);
             
-            // Logik Pengiraan Penyata
+            // Logik Akaun
             if(d.jenis==='modal'){ b.tunai+=amt; b.modal+=amt; bakiBerjalan+=amt; }
             else if(d.jenis==='pinjaman'){ b.tunai+=amt; b.pinjaman+=amt; bakiBerjalan+=amt; }
             else if(d.jenis==='jualan'){ b.tunai+=amt; b.jualan+=amt; bakiBerjalan+=amt; }
-            else if(d.jenis==='jualan_hutang'){ b.p_hutang+=amt; b.jualan+=amt; } // Hutang tak masuk tunai lagi
+            else if(d.jenis==='jualan_hutang'){ b.p_hutang+=amt; b.jualan+=amt; } 
             else if(d.jenis==='belian'){ b.tunai-=amt; b.belian+=amt; bakiBerjalan-=amt; }
             else if(d.jenis==='belanja'){ b.tunai-=amt; b.belanja+=amt; bakiBerjalan-=amt; }
             else if(d.jenis==='aset'){ b.tunai-=amt; b.aset+=amt; bakiBerjalan-=amt; }
-            else if(d.jenis==='belian_hutang'){ b.p_utang+=amt; b.belian+=amt; } // Hutang tak keluar tunai lagi
+            else if(d.jenis==='belian_hutang'){ b.p_utang+=amt; b.belian+=amt; } 
             else if(d.jenis==='ambilan_tunai'){ b.tunai-=amt; b.ambilan+=amt; bakiBerjalan-=amt; }
 
-            // Render ke jadual (Paling baru kat atas)
             tbody.insertAdjacentHTML('afterbegin', `
                 <tr>
                     <td style="padding:15px;">${d.tarikh}</td>
@@ -227,13 +231,13 @@
             `);
         });
 
-        // Pengiraan Akhir
+        // --- CALC PENYATA ---
         let uk = b.jualan - b.belian;
         let ub = uk - b.belanja;
         let totalAset = b.aset + b.tunai + b.p_hutang;
         let totalLE = b.p_utang + b.pinjaman + (b.modal + ub - b.ambilan);
 
-        // Kemaskini UI Penyata
+        // Update Penyata UI
         document.getElementById('p_jualan').innerText = f(b.jualan);
         document.getElementById('p_belian').innerText = `(${f(b.belian)})`;
         document.getElementById('p_uk').innerText = f(uk);
@@ -249,13 +253,46 @@
         document.getElementById('k_ambilan').innerText = `(${f(b.ambilan)})`;
         document.getElementById('k_totalLE').innerText = f(totalLE);
 
-        // Dashboard Update
-        document.getElementById('valBakiDashboard').innerText = "RM " + f(bakiBerjalan);
+        // --- DASHBOARD: PRESTASI ---
+        const gUntung = document.getElementById('gaugeUntung');
         const sTeks = document.getElementById('statusTeks');
-        sTeks.innerText = ub >= 0 ? "UNTUNG BERSIH ✅" : "RUGI BERSIH ⚠️";
-        sTeks.style.color = ub >= 0 ? "var(--success)" : "var(--danger)";
-        document.getElementById('gaugeUntung').style.width = ub >= 0 ? "100%" : "20%";
-        document.getElementById('nasihatAI').innerText = ub >= 0 ? `Bagus! Untung anda RM ${f(ub)}.` : `Perhatian! Rugi RM ${f(Math.abs(ub))}.`;
+        if(filtered.length > 0) {
+            let pctUntung = b.jualan > 0 ? (ub / b.jualan) * 100 : 0;
+            gUntung.style.width = Math.max(5, Math.min(100, 50 + pctUntung)) + "%";
+            gUntung.style.background = ub >= 0 ? "var(--success)" : "var(--danger)";
+            sTeks.innerText = ub >= 0 ? "BISNES UNTUNG ✅" : "BISNES RUGI ⚠️";
+            sTeks.style.color = ub >= 0 ? "var(--success)" : "var(--danger)";
+            document.getElementById('nasihatAI').innerText = ub >= 0 ? `Untung bersih anda RM ${f(ub)}.` : `Rugi RM ${f(Math.abs(ub))}.`;
+        }
+
+        // --- DASHBOARD: TPM (RE-ADDED) ---
+        const sasaranTPM = b.belian + b.belanja; 
+        const jualanSemasa = b.jualan; 
+        const bakiPerlu = sasaranTPM - jualanSemasa; 
+        const tpmBar = document.getElementById('gaugeTPM');
+        const labelUtama = document.getElementById('tpmLabelUtama');
+        const valBaki = document.getElementById('valBakiTPM');
+
+        document.getElementById('valSasaranPenuh').innerText = "RM " + f(sasaranTPM);
+
+        if (sasaranTPM > 0) {
+            let pctProgress = (jualanSemasa / sasaranTPM) * 100;
+            tpmBar.style.width = Math.min(100, pctProgress) + "%";
+            if (jualanSemasa < sasaranTPM) {
+                labelUtama.innerText = "Perlu Jualan Lagi:";
+                valBaki.innerText = "RM " + f(bakiPerlu);
+                valBaki.style.color = "var(--danger)";
+                tpmBar.style.background = "var(--warning)";
+            } else {
+                labelUtama.innerText = "Lebihan (Sudah Pulang Modal):";
+                valBaki.innerText = "RM " + f(jualanSemasa - sasaranTPM);
+                valBaki.style.color = "var(--success)";
+                tpmBar.style.background = "var(--success)";
+            }
+        } else {
+            valBaki.innerText = "RM 0.00";
+            tpmBar.style.width = "0%";
+        }
     }
 
     document.getElementById('accForm').onsubmit = function(e) {
@@ -279,6 +316,15 @@
             localStorage.setItem('ezi_gold_v98', JSON.stringify(data)); 
             prosesAkaun(); 
         } 
+    }
+
+    function eksportCSV() {
+        if(data.length === 0) return alert("Tiada data.");
+        let csv = "Tarikh,Kategori,Butiran,Amaun\n";
+        data.forEach(d => { csv += `${d.tarikh},${d.jenis},${d.butiran.replace(',','')},${d.amaun}\n`; });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = `Rekod_Niaga.csv`; a.click();
     }
 
     const sn = document.getElementById('namaSyarikat');
