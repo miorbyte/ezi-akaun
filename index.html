@@ -8,18 +8,18 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;700;900&display=swap');
 
 :root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface2: #222535;
-  --border: #2e3147;
-  --green: #00e676;
-  --green-dim: #00c85380;
-  --red: #ff4757;
-  --yellow: #ffd32a;
-  --blue: #3d8bff;
-  --purple: #c678dd;
-  --text: #e8eaf0;
-  --text-dim: #8891a5;
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --surface2: #f5f7fa;
+  --border: #dde3ec;
+  --green: #0a7c42;
+  --green-dim: rgba(10,124,66,0.12);
+  --red: #c0392b;
+  --yellow: #b7791f;
+  --blue: #1a56db;
+  --purple: #6b46c1;
+  --text: #1a202c;
+  --text-dim: #64748b;
   --font: 'IBM Plex Sans', sans-serif;
   --mono: 'IBM Plex Mono', monospace;
 }
@@ -28,32 +28,33 @@
 body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-track { background: #f0f4f8; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
 /* HEADER */
 .app-header {
-  background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f2040 100%);
+  border-bottom: 1px solid #0f2040;
   padding: 18px 24px;
   display: flex; align-items: center; gap: 16px;
 }
 .logo-badge {
-  background: var(--green); color: #000; font-weight: 900; font-size: 11px;
+  background: #22c55e; color: #fff; font-weight: 900; font-size: 11px;
   padding: 4px 10px; border-radius: 4px; letter-spacing: 1px;
 }
 .company-input {
   flex: 1; background: transparent; border: none; outline: none;
-  font-size: 22px; font-weight: 900; color: var(--text); font-family: var(--font);
+  font-size: 22px; font-weight: 900; color: #fff; font-family: var(--font);
   letter-spacing: 1px; text-transform: uppercase;
 }
-.company-input::placeholder { color: var(--text-dim); }
+.company-input::placeholder { color: rgba(255,255,255,0.5); }
 .header-date { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
 
 /* NAV TABS */
 .nav-tabs {
-  display: flex; gap: 0; background: var(--surface);
-  border-bottom: 1px solid var(--border); padding: 0 24px; overflow-x: auto;
+  display: flex; gap: 0; background: #ffffff;
+  border-bottom: 2px solid var(--border); padding: 0 24px; overflow-x: auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 .tab-btn {
   padding: 14px 20px; border: none; background: transparent; color: var(--text-dim);
@@ -61,8 +62,8 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); min-
   letter-spacing: 0.5px; border-bottom: 3px solid transparent; transition: all 0.2s;
   white-space: nowrap;
 }
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+.tab-btn:hover { color: var(--text); background: #f8fafc; }
+.tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
 
 /* CONTENT */
 .tab-content { display: none; padding: 24px; }
@@ -76,49 +77,52 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); min-
 .kpi-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 10px; padding: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 .kpi-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
 .kpi-val { font-family: var(--mono); font-size: 20px; font-weight: 700; }
 .kpi-sub { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
-.pos { color: var(--green); }
-.neg { color: var(--red); }
-.neu { color: var(--yellow); }
-.blu { color: var(--blue); }
+.pos { color: #0a7c42; }
+.neg { color: #c0392b; }
+.neu { color: #b7791f; }
+.blu { color: #1a56db; }
 
 /* INPUT GRID */
 .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
 .input-panel {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 12px; padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 .panel-title {
   font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-  color: var(--text-dim); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  color: #334155; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
 }
 .panel-title span { font-size: 16px; }
 label { font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 4px; margin-top: 10px; font-weight: 600; }
 input[type="date"], input[type="number"], input[type="text"], select {
-  width: 100%; padding: 9px 12px; background: var(--surface2);
+  width: 100%; padding: 9px 12px; background: #f8fafc;
   border: 1px solid var(--border); border-radius: 7px; color: var(--text);
   font-family: var(--font); font-size: 13px; outline: none; transition: border 0.2s;
 }
-input:focus, select:focus { border-color: var(--green); }
-select option { background: var(--surface2); }
+input:focus, select:focus { border-color: var(--blue); background: #fff; }
+select option { background: #fff; color: #1a202c; }
 .btn-submit {
   width: 100%; margin-top: 16px; padding: 11px;
   border: none; border-radius: 8px; cursor: pointer; font-family: var(--font);
   font-weight: 800; font-size: 13px; letter-spacing: 0.5px; transition: all 0.2s;
 }
-.btn-green { background: var(--green); color: #000; }
-.btn-blue { background: var(--blue); color: #fff; }
-.btn-purple { background: var(--purple); color: #fff; }
+.btn-green { background: #0a7c42; color: #fff; }
+.btn-blue { background: #1a56db; color: #fff; }
+.btn-purple { background: #6b46c1; color: #fff; }
 .btn-submit:hover { opacity: 0.85; transform: translateY(-1px); }
 
 /* FILTER BAR */
 .filter-bar {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 10px; padding: 14px 20px;
-  display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 .filter-bar label { margin: 0; color: var(--text-dim); font-size: 11px; font-weight: 700; }
 .filter-bar select { width: auto; padding: 7px 12px; font-size: 12px; }
@@ -131,34 +135,35 @@ select option { background: var(--surface2); }
 /* STATEMENTS */
 .stmt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; margin-bottom: 20px; }
 .stmt-card {
-  background: var(--surface); border: 1px solid var(--border);
+  background: #ffffff; border: 1px solid var(--border);
   border-radius: 12px; padding: 20px; overflow-x: auto;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
 }
 .stmt-title {
   font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;
-  color: var(--green); margin-bottom: 16px; padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
+  color: #1a56db; margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 2px solid #e2e8f0;
 }
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 7px 10px; font-size: 12px; }
-td.label-col { color: var(--text); }
+td.label-col { color: #1a202c; }
 td.val-col { text-align: right; font-family: var(--mono); font-weight: 700; font-size: 12px; }
-.sec-head { background: var(--surface2); }
-.sec-head td { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); padding: 6px 10px; }
-.sub-row td { color: var(--text-dim); }
-.total-row td { border-top: 1px solid var(--border); border-bottom: 2px solid var(--border); font-weight: 900; font-size: 13px; background: #1e2235; }
+.sec-head { background: #eff6ff; }
+.sec-head td { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #1a56db; padding: 6px 10px; }
+.sub-row td { color: #475569; }
+.total-row td { border-top: 1px solid #cbd5e1; border-bottom: 2px solid #94a3b8; font-weight: 900; font-size: 13px; background: #f1f5f9; }
 .highlight-row td { font-weight: 900; font-size: 13px; }
-tr:hover td { background: rgba(255,255,255,0.02); }
+tr:hover td { background: rgba(0,0,0,0.015); }
 
 /* CASH FLOW TABLE */
 .cf-wrap { overflow-x: auto; }
-.cf-table th { background: var(--surface2); text-align: center; font-size: 11px; color: var(--text-dim); font-family: var(--mono); padding: 8px 6px; }
+.cf-table th { background: #f1f5f9; text-align: center; font-size: 11px; color: #475569; font-family: var(--mono); padding: 8px 6px; border-bottom: 2px solid #cbd5e1; }
 .cf-table td.month-val { text-align: right; font-family: var(--mono); font-size: 11px; padding: 5px 6px; }
-.cf-table td.row-label { font-size: 11px; font-weight: 700; min-width: 180px; color: var(--text); padding: 5px 10px; }
-.cf-section { background: #1a1d2b; }
-.cf-section td { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--purple); padding: 8px 10px; }
-.cf-total td { font-weight: 900; background: #1e2235; border-top: 1px solid var(--border); }
-.cf-net td { font-weight: 900; color: var(--green); font-family: var(--mono); }
+.cf-table td.row-label { font-size: 11px; font-weight: 700; min-width: 180px; color: #1a202c; padding: 5px 10px; }
+.cf-section { background: #eff6ff; }
+.cf-section td { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #1a56db; padding: 8px 10px; }
+.cf-total td { font-weight: 900; background: #f1f5f9; border-top: 1px solid #cbd5e1; }
+.cf-net td { font-weight: 900; color: #0a7c42; font-family: var(--mono); }
 
 /* TRANSACTION HISTORY */
 .txn-controls {
@@ -168,36 +173,38 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .txn-table-wrap { overflow-x: auto; max-height: 600px; overflow-y: auto; }
 .txn-table { width: 100%; }
 .txn-table thead th {
-  background: var(--surface2); font-size: 11px; text-transform: uppercase;
-  letter-spacing: 0.5px; color: var(--text-dim); padding: 10px 12px;
+  background: #f1f5f9; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.5px; color: #475569; padding: 10px 12px;
   position: sticky; top: 0; z-index: 1; text-align: left; font-weight: 700;
 }
-.txn-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
-.txn-table tbody tr:hover { background: var(--surface2); }
-.txn-table td { padding: 10px 12px; font-size: 12px; }
+.txn-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s; }
+.txn-table tbody tr:hover { background: #f8fafc; }
+.txn-table td { padding: 10px 12px; font-size: 12px; color: #1a202c; }
 .txn-table td.amount { font-family: var(--mono); text-align: right; font-weight: 700; }
 .badge {
   display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 10px;
   font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
 }
-.badge-green { background: rgba(0,230,118,0.15); color: var(--green); }
-.badge-red { background: rgba(255,71,87,0.15); color: var(--red); }
-.badge-blue { background: rgba(61,139,255,0.15); color: var(--blue); }
-.badge-yellow { background: rgba(255,211,42,0.15); color: var(--yellow); }
-.badge-purple { background: rgba(198,120,221,0.15); color: var(--purple); }
-.btn-del { background: none; border: 1px solid var(--red); color: var(--red); padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 10px; font-weight: 700; transition: all 0.15s; }
-.btn-del:hover { background: var(--red); color: #fff; }
+.badge-green { background: #dcfce7; color: #166534; }
+.badge-red { background: #fee2e2; color: #991b1b; }
+.badge-blue { background: #dbeafe; color: #1e40af; }
+.badge-yellow { background: #fef9c3; color: #854d0e; }
+.badge-purple { background: #f3e8ff; color: #6b21a8; }
+.badge-orange { background: #fff7ed; color: #9a3412; }
+.btn-del { background: none; border: 1px solid #fca5a5; color: #c0392b; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 10px; font-weight: 700; transition: all 0.15s; }
+.btn-del:hover { background: #c0392b; color: #fff; }
 
 .empty-state { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; }
 .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
 
 .inp-tab-btn {
-  padding: 9px 18px; border: 1px solid var(--border); background: var(--surface2);
+  padding: 9px 18px; border: 1px solid var(--border); background: #fff;
   color: var(--text-dim); border-radius: 8px; cursor: pointer; font-family: var(--font);
   font-weight: 700; font-size: 12px; transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
-.inp-tab-btn.active { background: var(--surface); border-color: var(--green); color: var(--green); }
-.inp-tab-btn:hover { color: var(--text); border-color: var(--text-dim); }
+.inp-tab-btn.active { background: #1a56db; border-color: #1a56db; color: #fff; }
+.inp-tab-btn:hover { color: var(--text); border-color: #94a3b8; }
 
 .item-row {
   display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 36px;
@@ -206,8 +213,8 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .item-row input { margin-bottom: 0; }
 .item-jumlah {
   font-family: var(--mono); font-size: 13px; font-weight: 700;
-  background: var(--surface2); border: 1px solid var(--border); border-radius: 7px;
-  padding: 9px 10px; color: var(--yellow); text-align: right;
+  background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 7px;
+  padding: 9px 10px; color: #0a7c42; text-align: right;
 }
 .btn-del-row {
   background: none; border: 1px solid var(--border); color: var(--text-dim);
@@ -215,12 +222,45 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   display: flex; align-items: center; justify-content: center; transition: all 0.2s;
   flex-shrink: 0;
 }
-.btn-del-row:hover { border-color: var(--red); color: var(--red); }
+.btn-del-row:hover { border-color: #c0392b; color: #c0392b; }
+
+/* PRINT BUTTON fixed */
+.print-bar { display: flex; justify-content: flex-end; margin-bottom: 16px; gap: 10px; }
+.btn-print {
+  padding: 9px 20px; background: #1a56db; color: #fff; border: none;
+  border-radius: 8px; cursor: pointer; font-family: var(--font); font-weight: 800;
+  font-size: 12px; transition: all 0.2s;
+}
+.btn-print:hover { background: #1e40af; }
+
+/* GAUGE */
+.gauge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.gauge-card {
+  background: #ffffff; border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px; text-align: center;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+}
+.gauge-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #475569; margin-bottom: 10px; }
+.gauge-svg { width: 200px; margin: 0 auto; display: block; }
+.gauge-val { font-family: var(--mono); font-size: 22px; font-weight: 900; margin-top: 4px; }
+.gauge-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
 
 @media print {
   .no-print { display: none !important; }
-  body { background: white; color: black; }
-  .stmt-card, .stmt-grid, .tab-content { background: white !important; color: black !important; }
+  .print-bar { display: none !important; }
+  .gauge-grid { display: none !important; }
+  .nav-tabs { display: none !important; }
+  .app-header { border: none !important; }
+  body { background: white; color: #000 !important; padding: 0; }
+  .tab-content { display: block !important; padding: 10px; }
+  .stmt-card { background: white !important; color: #000 !important; border: 1px solid #ccc !important; page-break-inside: avoid; }
+  .sec-head td { background: #f0f0f0 !important; color: #333 !important; }
+  .total-row td { background: #fafafa !important; }
+  table td, table th { color: #000 !important; }
+  .pos { color: #006400 !important; }
+  .neg { color: #8b0000 !important; }
+  .val-col { color: #000 !important; }
+  .cf-table th { background: #eee !important; color: #333 !important; }
 }
 </style>
 </head>
@@ -245,7 +285,36 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 <!-- ======================== TAB: INPUT ======================== -->
 <div class="tab-content active" id="tab-input">
   <div class="kpi-strip" id="kpi_strip"></div>
-  <!-- SUB TABS for input -->
+
+  <!-- ANALISIS GAUGE -->
+  <div class="gauge-grid no-print" id="gauge_section">
+    <div class="gauge-card">
+      <div class="gauge-title">📈 Analisis Untung Bersih</div>
+      <svg class="gauge-svg" viewBox="0 0 200 120">
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#e2e8f0" stroke-width="14" stroke-linecap="round"/>
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#0a7c42" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" id="gauge_ub_arc"/>
+        <line id="gauge_ub_needle" x1="100" y1="100" x2="100" y2="28" stroke="#1a202c" stroke-width="3" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="5" fill="#1a202c"/>
+        <text x="20" y="115" font-size="9" fill="#94a3b8" font-family="monospace">Rugi</text>
+        <text x="155" y="115" font-size="9" fill="#94a3b8" font-family="monospace">Untung</text>
+      </svg>
+      <div class="gauge-val pos" id="gauge_ub_val">RM 0.00</div>
+      <div class="gauge-sub" id="gauge_ub_sub">Margin Bersih: 0.0%</div>
+    </div>
+    <div class="gauge-card">
+      <div class="gauge-title">⚖️ Analisis Titik Pulang Modal (TPM)</div>
+      <svg class="gauge-svg" viewBox="0 0 200 120">
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#e2e8f0" stroke-width="14" stroke-linecap="round"/>
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#b7791f" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" id="gauge_tpm_arc"/>
+        <line id="gauge_tpm_needle" x1="100" y1="100" x2="100" y2="28" stroke="#1a202c" stroke-width="3" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="5" fill="#1a202c"/>
+        <text x="16" y="115" font-size="9" fill="#94a3b8" font-family="monospace">Belum TPM</text>
+        <text x="145" y="115" font-size="9" fill="#94a3b8" font-family="monospace">Lepas TPM</text>
+      </svg>
+      <div class="gauge-val neu" id="gauge_tpm_val">RM 0.00</div>
+      <div class="gauge-sub" id="gauge_tpm_sub">TPM: 0% daripada jualan</div>
+    </div>
+  </div>
   <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
     <button class="inp-tab-btn active" id="itab_jual" onclick="switchInputTab('jual')">🟢 Rekod Jualan</button>
     <button class="inp-tab-btn" id="itab_beli" onclick="switchInputTab('beli')">🔴 Rekod Belian</button>
@@ -267,6 +336,8 @@ tr:hover td { background: rgba(255,255,255,0.02); }
           <select id="j_jenis">
             <option value="jual_tunai">Jualan Tunai</option>
             <option value="jual_hutang">Jualan Hutang (Penghutang)</option>
+            <option value="pulang_jual_tunai">⮐ Pulangan Jualan Tunai</option>
+            <option value="pulang_jual_hutang">⮐ Pulangan Jualan Hutang</option>
           </select>
         </div>
         <div>
@@ -278,18 +349,18 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       <!-- Item rows -->
       <div style="margin-top:14px;">
         <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr 36px; gap:6px; margin-bottom:6px;">
-          <span style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;">Nama Item / Produk</span>
-          <span style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;">Kuantiti</span>
-          <span style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;">Harga/Unit (RM)</span>
-          <span style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;">Jumlah (RM)</span>
+          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Nama Item / Produk</span>
+          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Kuantiti</span>
+          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Harga/Unit (RM)</span>
+          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Jumlah (RM)</span>
           <span></span>
         </div>
         <div id="j_items"></div>
-        <button onclick="tambahItem('j')" style="margin-top:8px;background:none;border:1px dashed var(--border);color:var(--text-dim);padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;width:100%;">+ Tambah Item</button>
+        <button onclick="tambahItem('j')" style="margin-top:8px;background:none;border:1px dashed #cbd5e1;color:#64748b;padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;width:100%;">+ Tambah Item</button>
       </div>
-      <div style="display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
-        <div style="font-size:13px;color:var(--text-dim);">JUMLAH KESELURUHAN:</div>
-        <div id="j_total_disp" style="font-family:var(--mono);font-size:22px;font-weight:900;color:var(--green);">RM 0.00</div>
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;">
+        <div style="font-size:13px;color:#64748b;">JUMLAH KESELURUHAN:</div>
+        <div id="j_total_disp" style="font-family:var(--mono);font-size:22px;font-weight:900;color:#0a7c42;">RM 0.00</div>
       </div>
       <button class="btn-submit btn-green" onclick="rekodJualBeli('jual')" style="margin-top:10px;">✅ SIMPAN REKOD JUALAN</button>
     </div>
@@ -309,6 +380,8 @@ tr:hover td { background: rgba(255,255,255,0.02); }
           <select id="b2_jenis">
             <option value="beli_tunai">Belian Tunai</option>
             <option value="beli_hutang">Belian Hutang (Pemiutang)</option>
+            <option value="pulang_beli_tunai">⮐ Pulangan Belian Tunai</option>
+            <option value="pulang_beli_hutang">⮐ Pulangan Belian Hutang</option>
           </select>
         </div>
         <div>
@@ -320,18 +393,18 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       <!-- Item rows belian -->
       <div style="margin-top:14px;">
         <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr 36px; gap:6px; margin-bottom:6px;">
-          <span style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;">Nama Item / Bahan</span>
-          <span style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;">Kuantiti</span>
-          <span style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;">Harga/Unit (RM)</span>
-          <span style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;">Jumlah (RM)</span>
+          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Nama Item / Bahan</span>
+          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Kuantiti</span>
+          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Harga/Unit (RM)</span>
+          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Jumlah (RM)</span>
           <span></span>
         </div>
         <div id="b2_items"></div>
-        <button onclick="tambahItem('b2')" style="margin-top:8px;background:none;border:1px dashed var(--border);color:var(--text-dim);padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;width:100%;">+ Tambah Item</button>
+        <button onclick="tambahItem('b2')" style="margin-top:8px;background:none;border:1px dashed #cbd5e1;color:#64748b;padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;width:100%;">+ Tambah Item</button>
       </div>
-      <div style="display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
-        <div style="font-size:13px;color:var(--text-dim);">JUMLAH KESELURUHAN:</div>
-        <div id="b2_total_disp" style="font-family:var(--mono);font-size:22px;font-weight:900;color:var(--red);">RM 0.00</div>
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;">
+        <div style="font-size:13px;color:#64748b;">JUMLAH KESELURUHAN:</div>
+        <div id="b2_total_disp" style="font-family:var(--mono);font-size:22px;font-weight:900;color:#c0392b;">RM 0.00</div>
       </div>
       <button class="btn-submit btn-blue" onclick="rekodJualBeli('beli')" style="margin-top:10px;">✅ SIMPAN REKOD BELIAN</button>
     </div>
@@ -403,21 +476,26 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </select>
     <label>TAHUN:</label>
     <select id="fTahun" onchange="proses()"></select>
-    <button onclick="window.print()" class="btn-tool" style="background:var(--blue);color:#fff; margin-left:auto;">📄 CETAK</button>
+  </div>
+  <div class="print-bar">
+    <button onclick="window.print()" class="btn-print">📄 CETAK / SIMPAN PDF</button>
   </div>
   <div class="stmt-grid">
     <div class="stmt-card" id="pnl_card">
       <div class="stmt-title">Penyata Untung Rugi</div>
       <table>
         <tr><td class="label-col">Jualan (Hasilan)</td><td class="val-col pos" id="r_jual">0.00</td></tr>
+        <tr class="sub-row"><td class="label-col" style="padding-left:16px;">(-) Pulangan Jualan</td><td class="val-col neg" id="r_pulang_jual">(0.00)</td></tr>
+        <tr class="highlight-row"><td class="label-col">Jualan Bersih</td><td class="val-col pos" id="r_jual_bersih">0.00</td></tr>
         <tr class="sec-head"><td colspan="2">Kos Barang Dijual (COGS)</td></tr>
         <tr class="sub-row"><td class="label-col">Stok Awal</td><td class="val-col" id="r_sa">0.00</td></tr>
         <tr class="sub-row"><td class="label-col">+ Belian Bersih</td><td class="val-col" id="r_beli">0.00</td></tr>
+        <tr class="sub-row"><td class="label-col" style="padding-left:16px;">(-) Pulangan Belian</td><td class="val-col neg" id="r_pulang_beli">(0.00)</td></tr>
         <tr class="sub-row"><td class="label-col">(-) Ambilan Stok</td><td class="val-col neg" id="r_ambs">(0.00)</td></tr>
         <tr class="sub-row"><td class="label-col">(-) Stok Akhir</td><td class="val-col neg" id="r_sk">(0.00)</td></tr>
         <tr class="highlight-row"><td class="label-col neg">Kos Jualan (COGS)</td><td class="val-col neg" id="r_cogs">0.00</td></tr>
         <tr class="total-row"><td class="label-col">UNTUNG KASAR</td><td class="val-col pos" id="r_uk">0.00</td></tr>
-        <tr><td class="label-col" style="font-size:10px;color:var(--text-dim);padding-top:4px;">Margin Untung Kasar</td><td class="val-col blu" id="r_gpm" style="font-size:11px;">0.0%</td></tr>
+        <tr><td class="label-col" style="font-size:10px;color:#64748b;padding-top:4px;">Margin Untung Kasar</td><td class="val-col blu" id="r_gpm" style="font-size:11px;">0.0%</td></tr>
         <tr class="sec-head"><td colspan="2">Belanja Operasi</td></tr>
         <tr class="sub-row"><td class="label-col">Gaji & Upah</td><td class="val-col neg" id="r_bgaji">0.00</td></tr>
         <tr class="sub-row"><td class="label-col">Sewa Premis</td><td class="val-col neg" id="r_bsewa">0.00</td></tr>
@@ -427,7 +505,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <tr class="sub-row"><td class="label-col">Belanja Am & Pejabat</td><td class="val-col neg" id="r_bam">0.00</td></tr>
         <tr class="highlight-row"><td class="label-col neg">Jumlah Belanja Operasi</td><td class="val-col neg" id="r_totb">0.00</td></tr>
         <tr class="total-row"><td class="label-col">UNTUNG / (RUGI) BERSIH</td><td class="val-col" id="r_ub">0.00</td></tr>
-        <tr><td class="label-col" style="font-size:10px;color:var(--text-dim);padding-top:4px;">Margin Untung Bersih</td><td class="val-col blu" id="r_npm" style="font-size:11px;">0.0%</td></tr>
+        <tr><td class="label-col" style="font-size:10px;color:#64748b;padding-top:4px;">Margin Untung Bersih</td><td class="val-col blu" id="r_npm" style="font-size:11px;">0.0%</td></tr>
       </table>
     </div>
   </div>
@@ -448,7 +526,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </select>
     <label>TAHUN:</label>
     <select id="fTahun2" onchange="proses()"></select>
-    <button onclick="window.print()" class="btn-tool" style="background:var(--blue);color:#fff; margin-left:auto;">📄 CETAK</button>
+  </div>
+  <div class="print-bar">
+    <button onclick="window.print()" class="btn-print">📄 CETAK / SIMPAN PDF</button>
   </div>
   <div class="stmt-grid">
     <div class="stmt-card">
@@ -476,7 +556,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <tr><td class="label-col">Pinjaman Lain-lain</td><td class="val-col neg" id="r_k_plain">0.00</td></tr>
         <tr class="highlight-row"><td class="label-col">JUMLAH LIABILITI</td><td class="val-col neg" id="r_k_totliab">0.00</td></tr>
         <tr class="total-row"><td class="label-col">JUMLAH LIABILITI & EKUITI</td><td class="val-col pos" id="r_k_tle">0.00</td></tr>
-        <tr><td class="label-col" style="font-size:10px; color:var(--text-dim);">Status Imbangan</td><td class="val-col" id="r_k_check" style="font-size:11px;"></td></tr>
+        <tr><td class="label-col" style="font-size:10px; color:#64748b;">Status Imbangan</td><td class="val-col" id="r_k_check" style="font-size:11px;"></td></tr>
       </table>
     </div>
   </div>
@@ -487,7 +567,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <div class="filter-bar no-print">
     <label>TAHUN:</label>
     <select id="fTahun3" onchange="proses()"></select>
-    <button onclick="window.print()" class="btn-tool" style="background:var(--blue);color:#fff; margin-left:auto;">📄 CETAK</button>
+  </div>
+  <div class="print-bar">
+    <button onclick="window.print()" class="btn-print">📄 CETAK / SIMPAN PDF</button>
   </div>
   <div class="stmt-card">
     <div class="stmt-title">Penyata Aliran Tunai Terperinci (Jan - Dis)</div>
@@ -514,8 +596,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       <option value="">Semua Kategori</option>
       <option value="jual_tunai">Jualan Tunai</option>
       <option value="jual_hutang">Jualan Hutang</option>
+      <option value="pulang_jual_tunai">Pulangan Jualan Tunai</option>
+      <option value="pulang_jual_hutang">Pulangan Jualan Hutang</option>
       <option value="beli_tunai">Belian Tunai</option>
       <option value="beli_hutang">Belian Hutang</option>
+      <option value="pulang_beli_tunai">Pulangan Belian Tunai</option>
+      <option value="pulang_beli_hutang">Pulangan Belian Hutang</option>
       <option value="b_gaji">Gaji & Upah</option>
       <option value="b_sewa">Sewa</option>
       <option value="b_utiliti">Utiliti</option>
@@ -565,7 +651,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         Tiada transaksi dijumpai. Mula rekod transaksi pertama anda!
       </div>
     </div>
-    <div id="txn_summary" style="padding:14px 10px; border-top:1px solid var(--border); font-size:12px; color:var(--text-dim); display:flex; gap:24px; flex-wrap:wrap;"></div>
+    <div id="txn_summary" style="padding:14px 10px; border-top:1px solid #e2e8f0; font-size:12px; color:#64748b; display:flex; gap:24px; flex-wrap:wrap;"></div>
   </div>
 </div>
 
@@ -603,6 +689,8 @@ function showTab(t) {
 const JENIS_LABEL = {
   jual_tunai: 'Jualan Tunai', jual_hutang: 'Jualan Hutang',
   beli_tunai: 'Belian Tunai', beli_hutang: 'Belian Hutang',
+  pulang_jual_tunai: 'Pulangan Jualan Tunai', pulang_jual_hutang: 'Pulangan Jualan Hutang',
+  pulang_beli_tunai: 'Pulangan Belian Tunai', pulang_beli_hutang: 'Pulangan Belian Hutang',
   b_gaji: 'Gaji & Upah', b_sewa: 'Sewa Premis', b_utiliti: 'Utiliti',
   b_iklan: 'Pemasaran & Iklan', b_trans: 'Pengangkutan & Petrol',
   b_am: 'Belanja Am & Pejabat', amb_tunai: 'Ambilan Tunai Pemilik',
@@ -617,6 +705,7 @@ function getBadge(j) {
   if(['beli_tunai','b_gaji','b_sewa','b_utiliti','b_iklan','b_trans','b_am','aset_tetap','bayar_pemiutang'].includes(j)) return 'badge-red';
   if(['beli_hutang','pinjaman_bank','pinjaman_lain'].includes(j)) return 'badge-yellow';
   if(['amb_tunai','amb_stok'].includes(j)) return 'badge-purple';
+  if(['pulang_jual_tunai','pulang_jual_hutang','pulang_beli_tunai','pulang_beli_hutang'].includes(j)) return 'badge-orange';
   return 'badge-blue';
 }
 
@@ -771,7 +860,7 @@ function save() {
 
 function showAlert(msg) {
   const a = document.createElement('div');
-  a.style.cssText = 'position:fixed;top:20px;right:20px;background:var(--green);color:#000;padding:12px 20px;border-radius:8px;font-weight:800;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(0,230,118,0.4);';
+  a.style.cssText = 'position:fixed;top:20px;right:20px;background:#0a7c42;color:#fff;padding:12px 20px;border-radius:8px;font-weight:800;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(10,124,66,0.3);';
   a.textContent = msg;
   document.body.appendChild(a);
   setTimeout(() => a.remove(), 2500);
@@ -792,11 +881,13 @@ function proses() {
     j_tunai:0, j_hutang_col:0, modal_masuk:0, pinj_bank:0, pinj_lain:0, terima_ph:0,
     beli_tunai:0, b_gaji:0, b_sewa:0, b_utiliti:0, b_iklan:0, b_trans:0, b_am:0,
     aset:0, amb_tunai:0, bayar_pu:0,
+    pulang_jual_tunai:0, pulang_beli_tunai:0,
   }));
 
   let r = { j:0, beli:0, sk:0, sa:0, mod:0, pinj_bank:0, pinj_lain:0, at:0, ambt:0, ambs:0,
     ph:0, pu:0, bayar_pu:0, terima_ph:0,
-    bgaji:0, bsewa:0, butil:0, biklan:0, btrans:0, bam:0 };
+    bgaji:0, bsewa:0, butil:0, biklan:0, btrans:0, bam:0,
+    pulang_jual:0, pulang_beli:0, pulang_ph:0 };
 
   db.filter(d => d.t && d.t.startsWith(selT)).sort((a,b) => new Date(a.t)-new Date(b.t)).forEach(d => {
     let mIdx = parseInt(d.t.split('-')[1]) - 1;
@@ -805,6 +896,8 @@ function proses() {
     // Aliran Tunai: masuk/keluar terperinci
     if(d.j === 'jual_tunai') cf[mIdx].j_tunai += val;
     if(d.j === 'jual_hutang') cf[mIdx].j_hutang_col += 0; // non-cash, captured via terima_penghutang
+    if(d.j === 'pulang_jual_tunai') cf[mIdx].pulang_jual_tunai += val;  // cash outflow — refund tunai
+    if(d.j === 'pulang_beli_tunai') cf[mIdx].pulang_beli_tunai += val;  // cash inflow — terima balik duit
     if(d.j === 'modal') cf[mIdx].modal_masuk += val;
     if(d.j === 'pinjaman_bank') cf[mIdx].pinj_bank += val;
     if(d.j === 'pinjaman_lain') cf[mIdx].pinj_lain += val;
@@ -829,6 +922,11 @@ function proses() {
     if(selB === 'semua' || mStr === selB) {
       if(d.j === 'jual_tunai' || d.j === 'jual_hutang') r.j += val;
       if(d.j === 'beli_tunai' || d.j === 'beli_hutang') r.beli += val;
+      // Pulangan: tolak dari jualan/belian
+      if(d.j === 'pulang_jual_tunai' || d.j === 'pulang_jual_hutang') r.pulang_jual += val;
+      if(d.j === 'pulang_beli_tunai' || d.j === 'pulang_beli_hutang') r.pulang_beli += val;
+      // Pulangan jualan hutang → kurang penghutang
+      if(d.j === 'pulang_jual_hutang') r.pulang_ph += val;
       if(d.j === 'stok_akhir') r.sk = val;
       if(d.j === 'stok_awal') r.sa = val;
       if(d.j === 'modal') r.mod += val;
@@ -851,17 +949,23 @@ function proses() {
   });
 
   // P&L calculations
-  const cogs = r.sa + r.beli - r.ambs - r.sk;
-  const uk = r.j - cogs;
+  const jualBersih = r.j - r.pulang_jual;
+  const beliBersih = r.beli - r.pulang_beli;
+  const cogs = r.sa + beliBersih - r.ambs - r.sk;
+  const uk = jualBersih - cogs;
   const totB = r.bgaji + r.bsewa + r.butil + r.biklan + r.btrans + r.bam;
   const ub = uk - totB;
-  const gpm = r.j > 0 ? (uk/r.j*100) : 0;
-  const npm = r.j > 0 ? (ub/r.j*100) : 0;
+  const gpm = jualBersih > 0 ? (uk/jualBersih*100) : 0;
+  const npm = jualBersih > 0 ? (ub/jualBersih*100) : 0;
 
   // P&L DOM
   document.getElementById('r_jual').textContent = fmt(r.j);
+  document.getElementById('r_pulang_jual').textContent = r.pulang_jual > 0 ? `(${fmt(r.pulang_jual)})` : '(0.00)';
+  document.getElementById('r_jual_bersih').textContent = fmt(jualBersih);
+  document.getElementById('r_jual_bersih').className = 'val-col ' + (jualBersih>=0?'pos':'neg');
   document.getElementById('r_sa').textContent = fmt(r.sa);
   document.getElementById('r_beli').textContent = fmt(r.beli);
+  document.getElementById('r_pulang_beli').textContent = r.pulang_beli > 0 ? `(${fmt(r.pulang_beli)})` : '(0.00)';
   document.getElementById('r_ambs').textContent = `(${fmt(r.ambs)})`;
   document.getElementById('r_sk').textContent = `(${fmt(r.sk)})`;
   document.getElementById('r_cogs').textContent = fmt(cogs);
@@ -885,15 +989,15 @@ function proses() {
   let cfMasuk = Array(12).fill(0), cfKeluar = Array(12).fill(0), cfAwal = Array(12).fill(0), cfAkhir = Array(12).fill(0);
   for(let i=0; i<12; i++) {
     cfAwal[i] = carry;
-    cfMasuk[i] = cf[i].j_tunai + cf[i].modal_masuk + cf[i].pinj_bank + cf[i].pinj_lain + cf[i].terima_ph;
-    cfKeluar[i] = cf[i].beli_tunai + cf[i].b_gaji + cf[i].b_sewa + cf[i].b_utiliti + cf[i].b_iklan + cf[i].b_trans + cf[i].b_am + cf[i].aset + cf[i].amb_tunai + cf[i].bayar_pu;
+    cfMasuk[i] = cf[i].j_tunai + cf[i].modal_masuk + cf[i].pinj_bank + cf[i].pinj_lain + cf[i].terima_ph + cf[i].pulang_beli_tunai;
+    cfKeluar[i] = cf[i].beli_tunai + cf[i].b_gaji + cf[i].b_sewa + cf[i].b_utiliti + cf[i].b_iklan + cf[i].b_trans + cf[i].b_am + cf[i].aset + cf[i].amb_tunai + cf[i].bayar_pu + cf[i].pulang_jual_tunai;
     cfAkhir[i] = cfAwal[i] + cfMasuk[i] - cfKeluar[i];
     carry = cfAkhir[i];
   }
 
   // BS
-  const phNet = r.ph - r.terima_ph;
-  const puNet = r.pu - r.bayar_pu;
+  const phNet = r.ph - r.terima_ph - r.pulang_ph;  // penghutang bersih (tolak pulangan jualan hutang)
+  const puNet = r.pu - r.bayar_pu - r.pulang_beli;  // pemiutang bersih (tolak pulangan belian hutang)
   const mk = r.mod + ub - (r.ambt + r.ambs);
   const totLiab = puNet + r.pinj_bank + r.pinj_lain;
   const totAset = r.at + r.sk + phNet + carry;
@@ -924,8 +1028,10 @@ function proses() {
     { sec: 'AKTIVITI OPERASI - TUNAI MASUK', rows: null },
     { label: 'Jualan Tunai Diterima', key: 'j_tunai', type: 'in' },
     { label: 'Terima Bayaran Penghutang', key: 'terima_ph', type: 'in' },
+    { label: 'Terima Balik Pulangan Belian', key: 'pulang_beli_tunai', type: 'in' },
     { sec: 'AKTIVITI OPERASI - TUNAI KELUAR', rows: null },
     { label: 'Belian Tunai (Stok)', key: 'beli_tunai', type: 'out' },
+    { label: 'Bayar Balik Pulangan Jualan', key: 'pulang_jual_tunai', type: 'out' },
     { label: 'Gaji & Upah', key: 'b_gaji', type: 'out' },
     { label: 'Sewa Premis', key: 'b_sewa', type: 'out' },
     { label: 'Utiliti (Air/Api/Internet)', key: 'b_utiliti', type: 'out' },
@@ -951,18 +1057,18 @@ function proses() {
       html += `<tr class="cf-section"><td colspan="13" class="row-label">${row.sec}</td></tr>`;
     } else if(row.special === 'net') {
       const netRow = cfMasuk.map((m,i) => cfMasuk[i]-cfKeluar[i]);
-      html += `<tr class="cf-total"><td class="row-label" style="color:var(--yellow)">ALIRAN TUNAI BERSIH</td>${netRow.map(v=>`<td class="month-val" style="color:${v>=0?'var(--green)':'var(--red)'}">${fmt(v)}</td>`).join('')}</tr>`;
+      html += `<tr class="cf-total"><td class="row-label" style="color:#b7791f">ALIRAN TUNAI BERSIH</td>${netRow.map(v=>`<td class="month-val" style="color:${v>=0?'#0a7c42':'#c0392b'}">${fmt(v)}</td>`).join('')}</tr>`;
     } else if(row.special === 'awal') {
-      html += `<tr><td class="row-label" style="color:var(--text-dim)">Baki Tunai Awal</td>${cfAwal.map(v=>`<td class="month-val" style="color:var(--text-dim)">${fmt(v)}</td>`).join('')}</tr>`;
+      html += `<tr><td class="row-label" style="color:#94a3b8">Baki Tunai Awal</td>${cfAwal.map(v=>`<td class="month-val" style="color:#94a3b8">${fmt(v)}</td>`).join('')}</tr>`;
     } else if(row.special === 'akhir') {
-      html += `<tr class="cf-net"><td class="row-label">💰 BAKI TUNAI AKHIR</td>${cfAkhir.map(v=>`<td class="month-val" style="color:${v>=0?'var(--green)':'var(--red)'}">${fmt(v)}</td>`).join('')}</tr>`;
+      html += `<tr class="cf-net"><td class="row-label">💰 BAKI TUNAI AKHIR</td>${cfAkhir.map(v=>`<td class="month-val" style="color:${v>=0?'#0a7c42':'#c0392b'}">${fmt(v)}</td>`).join('')}</tr>`;
     } else {
       const vals = Array(12).fill(0).map((_, i) => cf[i][row.key] || 0);
-      const color = row.type === 'in' ? 'var(--green)' : 'var(--red)';
+      const color = row.type === 'in' ? '#0a7c42' : '#c0392b';
       const sign = row.type === 'out' ? '-' : '+';
       const hasVal = vals.some(v => v > 0);
       if(!hasVal) return;
-      html += `<tr class="sub-row"><td class="row-label" style="padding-left:20px;color:var(--text-dim)">${sign} ${row.label}</td>${vals.map(v=>`<td class="month-val" style="color:${v>0?color:'var(--text-dim)'}">${v>0?fmt(v):'-'}</td>`).join('')}</tr>`;
+      html += `<tr class="sub-row"><td class="row-label" style="padding-left:20px;color:#64748b">${sign} ${row.label}</td>${vals.map(v=>`<td class="month-val" style="color:${v>0?color:'#94a3b8'}">${v>0?fmt(v):'-'}</td>`).join('')}</tr>`;
     }
   });
   document.getElementById('cf_rows').innerHTML = html;
@@ -974,7 +1080,7 @@ function renderKPI(r, ub, tunai, totAset, totLiab) {
   if(!r) {
     // Quick calc for input tab KPI
     const selT = String(cy);
-    let rq = { j:0, bgaji:0, bsewa:0, butil:0, biklan:0, btrans:0, bam:0, beli:0, sk:0, sa:0, ambt:0, ambs:0, mod:0, at:0, ph:0, pu:0, pinj_bank:0, pinj_lain:0, bayar_pu:0, terima_ph:0 };
+    let rq = { j:0, bgaji:0, bsewa:0, butil:0, biklan:0, btrans:0, bam:0, beli:0, sk:0, sa:0, ambt:0, ambs:0, mod:0, at:0, ph:0, pu:0, pinj_bank:0, pinj_lain:0, bayar_pu:0, terima_ph:0, pulang_jual:0, pulang_beli:0, pulang_ph:0 };
     db.filter(d => d.t && d.t.startsWith(selT)).forEach(d => {
       if(d.j === 'jual_tunai' || d.j === 'jual_hutang') rq.j += d.a;
       if(d.j === 'b_gaji') rq.bgaji += d.a; if(d.j === 'b_sewa') rq.bsewa += d.a;
@@ -987,23 +1093,72 @@ function renderKPI(r, ub, tunai, totAset, totLiab) {
       if(d.j === 'pinjaman_bank') rq.pinj_bank += d.a; if(d.j === 'pinjaman_lain') rq.pinj_lain += d.a;
       if(d.j === 'jual_hutang') rq.ph += d.a; if(d.j === 'beli_hutang') rq.pu += d.a;
       if(d.j === 'bayar_pemiutang') rq.bayar_pu += d.a; if(d.j === 'terima_penghutang') rq.terima_ph += d.a;
+      if(d.j === 'pulang_jual_tunai' || d.j === 'pulang_jual_hutang') rq.pulang_jual += d.a;
+      if(d.j === 'pulang_beli_tunai' || d.j === 'pulang_beli_hutang') rq.pulang_beli += d.a;
+      if(d.j === 'pulang_jual_hutang') rq.pulang_ph += d.a;
     });
-    const cogsQ = rq.sa + rq.beli - rq.ambs - rq.sk;
-    const ukQ = rq.j - cogsQ;
+    const jualBersihQ = rq.j - rq.pulang_jual;
+    const beliBersihQ = rq.beli - rq.pulang_beli;
+    const cogsQ = rq.sa + beliBersihQ - rq.ambs - rq.sk;
+    const ukQ = jualBersihQ - cogsQ;
     const totBQ = rq.bgaji + rq.bsewa + rq.butil + rq.biklan + rq.btrans + rq.bam;
     const ubQ = ukQ - totBQ;
-    const phNet = rq.ph - rq.terima_ph;
-    const puNet = rq.pu - rq.bayar_pu;
+    const phNet = rq.ph - rq.terima_ph - rq.pulang_ph;
+    const puNet = rq.pu - rq.bayar_pu - rq.pulang_beli;
     r = rq; ub = ubQ; tunai = 0; totAset = rq.at + rq.sk + phNet + tunai; totLiab = puNet + rq.pinj_bank + rq.pinj_lain;
   }
   const totB = (r.bgaji||0)+(r.bsewa||0)+(r.butil||0)+(r.biklan||0)+(r.btrans||0)+(r.bam||0);
-  const npm = r.j > 0 ? (ub/r.j*100) : 0;
+  const jualBersihKPI = (r.j||0) - (r.pulang_jual||0);
+  const npm = jualBersihKPI > 0 ? (ub/jualBersihKPI*100) : 0;
   document.getElementById('kpi_strip').innerHTML = `
-    <div class="kpi-card"><div class="kpi-label">Jualan Tahun Ini</div><div class="kpi-val blu">RM ${fmt(r.j)}</div><div class="kpi-sub">${db.filter(d=>d.t&&d.t.startsWith(String(cy))&&(d.j==='jual_tunai'||d.j==='jual_hutang')).length} transaksi</div></div>
+    <div class="kpi-card"><div class="kpi-label">Jualan Bersih Tahun Ini</div><div class="kpi-val blu">RM ${fmt(jualBersihKPI)}</div><div class="kpi-sub">${db.filter(d=>d.t&&d.t.startsWith(String(cy))&&(d.j==='jual_tunai'||d.j==='jual_hutang')).length} transaksi</div></div>
     <div class="kpi-card"><div class="kpi-label">Untung / (Rugi) Bersih</div><div class="kpi-val ${ub>=0?'pos':'neg'}">RM ${fmt(ub)}</div><div class="kpi-sub">Margin: ${npm.toFixed(1)}%</div></div>
     <div class="kpi-card"><div class="kpi-label">Jumlah Belanja</div><div class="kpi-val neg">RM ${fmt(totB)}</div><div class="kpi-sub">Operasi sahaja</div></div>
     <div class="kpi-card"><div class="kpi-label">Jumlah Transaksi</div><div class="kpi-val neu">${db.length}</div><div class="kpi-sub">Semua rekod tersimpan</div></div>
   `;
+
+  // --- UPDATE GAUGES ---
+  const maxGauge = Math.max(jualBersihKPI * 0.5, 5000, Math.abs(ub));
+  let angU = (ub / maxGauge) * 90;
+  angU = Math.max(-90, Math.min(90, angU));
+  const arcOffsetU = 251 - (((angU + 90) / 180) * 251);
+  const needleU = document.getElementById('gauge_ub_needle');
+  const arcU = document.getElementById('gauge_ub_arc');
+  if(needleU) needleU.setAttribute('transform', `rotate(${angU} 100 100)`);
+  if(arcU) {
+    arcU.setAttribute('stroke-dashoffset', arcOffsetU.toString());
+    arcU.setAttribute('stroke', ub >= 0 ? '#0a7c42' : '#c0392b');
+  }
+  const ubValEl = document.getElementById('gauge_ub_val');
+  if(ubValEl) { ubValEl.textContent = 'RM ' + fmt(ub); ubValEl.className = 'gauge-val ' + (ub>=0?'pos':'neg'); }
+  const ubSubEl = document.getElementById('gauge_ub_sub');
+  if(ubSubEl) ubSubEl.textContent = 'Margin Bersih: ' + npm.toFixed(1) + '%' + (ub>=0 ? ' ✅' : ' ⚠️ RUGI');
+
+  // Gauge 2: Titik Pulang Modal
+  // TPM = Kos Tetap / (1 - Kos Berubah/Jualan)
+  // Simplified: kos tetap = gaji+sewa+utiliti, kos berubah = COGS
+  const cogsKPI = (r.sa||0) + ((r.beli||0)-(r.pulang_beli||0)) - (r.ambs||0) - (r.sk||0);
+  const kostetap = (r.bgaji||0) + (r.bsewa||0) + (r.butil||0) + (r.biklan||0) + (r.btrans||0) + (r.bam||0);
+  const tpm = jualBersihKPI > 0 ? (cogsKPI / jualBersihKPI) : 0;
+  const contrib = 1 - tpm;
+  const tpmRM = contrib > 0 ? (kostetap / contrib) : 0;
+  const tpmPct = jualBersihKPI > 0 ? (tpmRM / jualBersihKPI * 100) : 0;
+  const jualanLebihTPM = jualBersihKPI - tpmRM;
+  let angT = ((tpmPct / 100) * 180) - 90; // 0% at left, 100% at right
+  angT = Math.max(-90, Math.min(90, angT));
+  const arcOffsetT = 251 - (((angT + 90) / 180) * 251);
+  const needleT = document.getElementById('gauge_tpm_needle');
+  const arcT = document.getElementById('gauge_tpm_arc');
+  if(needleT) needleT.setAttribute('transform', `rotate(${angT} 100 100)`);
+  if(arcT) arcT.setAttribute('stroke-dashoffset', arcOffsetT.toString());
+  const tpmValEl = document.getElementById('gauge_tpm_val');
+  if(tpmValEl) { tpmValEl.textContent = 'RM ' + fmt(tpmRM); }
+  const tpmSubEl = document.getElementById('gauge_tpm_sub');
+  if(tpmSubEl) {
+    if(jualBersihKPI <= 0) { tpmSubEl.textContent = 'Masukkan data jualan untuk kira TPM'; }
+    else if(jualanLebihTPM >= 0) { tpmSubEl.textContent = `Jualan melebihi TPM RM ${fmt(jualanLebihTPM)} ✅`; }
+    else { tpmSubEl.textContent = `Perlukan lagi RM ${fmt(Math.abs(jualanLebihTPM))} untuk capai TPM ⚠️`; }
+  }
 }
 
 function renderHistory() {
@@ -1039,23 +1194,23 @@ function renderHistory() {
     const isIn = ['jual_tunai','jual_hutang','modal','pinjaman_bank','pinjaman_lain','terima_penghutang'].includes(d.j);
     const itemHtml = d.items && d.items.length ? `
       <div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px;">
-        ${d.items.map(i=>`<span style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:10px;color:var(--text-dim);font-family:var(--mono);">${i.nama} × ${i.qty} @ RM${i.harga.toFixed(2)}</span>`).join('')}
+        ${d.items.map(i=>`<span style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;padding:2px 7px;font-size:10px;color:#475569;font-family:var(--mono);">${i.nama} × ${i.qty} @ RM${i.harga.toFixed(2)}</span>`).join('')}
       </div>` : '';
     return `
     <tr>
-      <td style="font-family:var(--mono);color:var(--text-dim);font-size:11px;white-space:nowrap;">${d.t}</td>
+      <td style="font-family:var(--mono);color:#64748b;font-size:11px;white-space:nowrap;">${d.t}</td>
       <td><span class="badge ${getBadge(d.j)}">${JENIS_LABEL[d.j]||d.j}</span></td>
-      <td style="color:var(--text-dim);font-size:11px;">${d.n || '—'}${itemHtml}</td>
+      <td style="color:#64748b;font-size:11px;">${d.n || '—'}${itemHtml}</td>
       <td class="amount ${isIn?'pos':'neg'}">RM ${fmt(d.a)}</td>
       <td><button class="btn-del" onclick="hapus(${d.id})">PADAM</button></td>
     </tr>`;
   }).join('');
 
   document.getElementById('txn_summary').innerHTML = `
-    <span style="color:var(--text)">Jumlah rekod: <strong>${filtered.length}</strong></span>
-    <span>Masuk: <strong class="pos">RM ${fmt(totalIn)}</strong></span>
-    <span>Keluar: <strong class="neg">RM ${fmt(totalOut)}</strong></span>
-    <span>Bersih: <strong class="${(totalIn-totalOut)>=0?'pos':'neg'}">RM ${fmt(totalIn-totalOut)}</strong></span>
+    <span style="color:#475569">Jumlah rekod: <strong>${filtered.length}</strong></span>
+    <span>Masuk: <strong style="color:#0a7c42">RM ${fmt(totalIn)}</strong></span>
+    <span>Keluar: <strong style="color:#c0392b">RM ${fmt(totalOut)}</strong></span>
+    <span>Bersih: <strong style="color:${(totalIn-totalOut)>=0?'#0a7c42':'#c0392b'}">RM ${fmt(totalIn-totalOut)}</strong></span>
   `;
 }
 
