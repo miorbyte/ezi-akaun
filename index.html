@@ -45,7 +45,7 @@
         .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #ddd; }
         .card-title { margin: 0 0 20px 0; font-size: 18px; font-weight: 800; border-bottom: 4px solid var(--accent); display: inline-block; padding-bottom: 5px; }
         .table-laporan { width: 100%; border-collapse: collapse; }
-        .table-laporan td { padding: 12px 0; border-bottom: 1px solid #f1f2f6; font-size: 14px; }
+        .table-laporan td, .table-laporan th { padding: 12px 10px; border-bottom: 1px solid #f1f2f6; font-size: 14px; }
         .val-laporan { text-align: right; font-weight: 700; font-family: 'Courier New', monospace; font-size: 15px; }
         .total-row { background: #f8f9fa; font-weight: 900 !important; border-top: 3px solid #000; border-bottom: 3px double #000; color: black; }
         .sub-header { color: var(--accent); font-weight: 900; font-size: 12px; padding-top: 20px !important; text-transform: uppercase; letter-spacing: 1px; }
@@ -59,6 +59,10 @@
         /* Filter Bar */
         .filter-bar { background: #fff; padding: 20px; border-radius: 20px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px; border: 3px solid var(--accent); }
         .btn-csv { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+
+        /* Sejarah Transaksi Specific styling */
+        .tr-footer { background-color: #2f3542; color: white; font-weight: 900; }
+        .tr-footer td { border-bottom: none; padding: 15px 10px; }
 
         @media print { .no-print { display: none !important; } .container { max-width: 100%; } }
     </style>
@@ -190,6 +194,8 @@
                     </tr>
                 </thead>
                 <tbody id="senaraiTransaksi"></tbody>
+                <tfoot id="footerTransaksi">
+                    </tfoot>
             </table>
         </div>
     </div>
@@ -306,21 +312,43 @@
 
     function renderTable(filtered) {
         const tbody = document.getElementById('senaraiTransaksi');
+        const tfoot = document.getElementById('footerTransaksi');
         tbody.innerHTML = "";
+        
+        let totalMasuk = 0;
+        let totalKeluar = 0;
+
         [...filtered].reverse().forEach(d => {
             const isDebit = debitKeys.includes(d.jenis);
-            const amt = d.amaun.toLocaleString('en-US', {minimumFractionDigits: 2});
+            const amt = d.amaun;
+            
+            if(isDebit) totalMasuk += amt;
+            else totalKeluar += amt;
+
+            const displayAmt = amt.toLocaleString('en-US', {minimumFractionDigits: 2});
+            
             tbody.insertAdjacentHTML('beforeend', `
                 <tr style="border-bottom: 1px solid #eee;">
                     <td style="padding:15px; font-weight:600;">${d.tarikh}</td>
                     <td><span style="font-size:10px; font-weight:900; background:#f1f2f6; padding:5px 8px; border-radius:6px;">${d.jenis.replace('_',' ').toUpperCase()}</span></td>
                     <td style="font-weight:600;">${d.butiran}</td>
-                    <td style="text-align:right; color:var(--success); font-weight:800;">${isDebit ? amt : '-'}</td>
-                    <td style="text-align:right; color:var(--danger); font-weight:800;">${!isDebit ? amt : '-'}</td>
+                    <td style="text-align:right; color:var(--success); font-weight:800;">${isDebit ? displayAmt : '-'}</td>
+                    <td style="text-align:right; color:var(--danger); font-weight:800;">${!isDebit ? displayAmt : '-'}</td>
                     <td class="no-print" style="text-align:center"><button onclick="hapus(${d.id})" style="border:none; background:none; color:#bdc3c7; cursor:pointer; font-size:22px;">&times;</button></td>
                 </tr>
             `);
         });
+
+        // Update Total di bahagian Footer
+        const f = (n) => n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        tfoot.innerHTML = `
+            <tr class="tr-footer">
+                <td colspan="3" style="text-align:right; padding-right:20px;">JUMLAH KESELURUHAN</td>
+                <td style="text-align:right;">RM ${f(totalMasuk)}</td>
+                <td style="text-align:right;">RM ${f(totalKeluar)}</td>
+                <td class="no-print"></td>
+            </tr>
+        `;
     }
 
     function eksportCSV() {
