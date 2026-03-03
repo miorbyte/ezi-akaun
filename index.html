@@ -2,308 +2,541 @@
 <html lang="ms">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profit Niaga Pro v18 - Financial Controller Edition</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Profit Niaga Pro v18</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;700;900&display=swap');
-
 :root {
-  --bg: #f0f4f8;
-  --surface: #ffffff;
-  --surface2: #f5f7fa;
-  --border: #dde3ec;
-  --green: #0a7c42;
-  --green-dim: rgba(10,124,66,0.12);
-  --red: #c0392b;
-  --yellow: #b7791f;
-  --blue: #1a56db;
-  --purple: #6b46c1;
-  --text: #1a202c;
-  --text-dim: #64748b;
-  --font: 'IBM Plex Sans', sans-serif;
-  --mono: 'IBM Plex Mono', monospace;
+  --bg:       #0a0d12;
+  --surface:  #111520;
+  --surface2: #161b26;
+  --surface3: #1c2333;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.12);
+  --gold:     #c9a84c;
+  --gold2:    #e8c97a;
+  --gold-dim: rgba(201,168,76,0.12);
+  --gold-glow:rgba(201,168,76,0.25);
+  --green:    #22c97a;
+  --green-dim:rgba(34,201,122,0.1);
+  --red:      #f0554a;
+  --red-dim:  rgba(240,85,74,0.1);
+  --blue:     #4f9cf9;
+  --blue-dim: rgba(79,156,249,0.1);
+  --purple:   #a78bfa;
+  --text:     #e8ecf4;
+  --text2:    #8892a4;
+  --text3:    #4a5568;
+  --font:     'DM Sans', sans-serif;
+  --mono:     'DM Mono', monospace;
+  --display:  'Syne', sans-serif;
+  --radius:   14px;
+  --radius-sm:8px;
+  --shadow:   0 8px 32px rgba(0,0,0,0.4);
+  --shadow-gold: 0 0 20px rgba(201,168,76,0.15);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+* { box-sizing: border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body { 
+  background: var(--bg); color: var(--text); 
+  font-family: var(--font); min-height: 100vh;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(201,168,76,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 80% 80%, rgba(79,156,249,0.04) 0%, transparent 60%);
+}
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #f0f4f8; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
 
-/* HEADER */
+/* ─── HEADER ─── */
 .app-header {
-  background: linear-gradient(135deg, #1e3a5f 0%, #0f2040 100%);
-  border-bottom: 1px solid #0f2040;
-  padding: 18px 24px;
-  display: flex; align-items: center; gap: 16px;
+  background: linear-gradient(180deg, rgba(17,21,32,0.98) 0%, rgba(10,13,18,0.98) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px 14px;
+  display: flex; align-items: center; gap: 12px;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 .logo-badge {
-  background: #22c55e; color: #fff; font-weight: 900; font-size: 11px;
-  padding: 4px 10px; border-radius: 4px; letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #0a0d12; font-family: var(--display); font-weight: 800; font-size: 10px;
+  padding: 5px 10px; border-radius: 6px; letter-spacing: 1.5px;
+  white-space: nowrap; flex-shrink: 0;
+  box-shadow: var(--shadow-gold);
 }
 .company-input {
   flex: 1; background: transparent; border: none; outline: none;
-  font-size: 22px; font-weight: 900; color: #fff; font-family: var(--font);
-  letter-spacing: 1px; text-transform: uppercase;
+  font-size: 15px; font-weight: 700; color: var(--text); 
+  font-family: var(--display); letter-spacing: 0.5px;
+  min-width: 0;
 }
-.company-input::placeholder { color: rgba(255,255,255,0.5); }
-.header-date { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+.company-input::placeholder { color: var(--text3); }
+.header-date { 
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+  white-space: nowrap; flex-shrink: 0; display: none;
+}
+@media(min-width:600px){ .header-date { display: block; } }
 
-/* NAV TABS */
+/* ─── NAV ─── */
 .nav-tabs {
-  display: flex; gap: 0; background: #ffffff;
-  border-bottom: 2px solid var(--border); padding: 0 24px; overflow-x: auto;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; overflow-x: auto; gap: 0;
+  scrollbar-width: none; position: sticky; top: 57px; z-index: 99;
 }
+.nav-tabs::-webkit-scrollbar { display: none; }
 .tab-btn {
-  padding: 14px 20px; border: none; background: transparent; color: var(--text-dim);
-  cursor: pointer; font-family: var(--font); font-weight: 700; font-size: 12px;
-  letter-spacing: 0.5px; border-bottom: 3px solid transparent; transition: all 0.2s;
-  white-space: nowrap;
+  padding: 14px 16px; border: none; background: transparent; 
+  color: var(--text3); cursor: pointer; 
+  font-family: var(--font); font-weight: 600; font-size: 12px;
+  letter-spacing: 0.3px; border-bottom: 2px solid transparent; 
+  transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
 }
-.tab-btn:hover { color: var(--text); background: #f8fafc; }
-.tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+.tab-btn:hover { color: var(--text2); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-/* CONTENT */
-.tab-content { display: none; padding: 24px; }
+/* ─── TAB CONTENT ─── */
+.tab-content { display: none; padding: 16px; max-width: 1200px; margin: 0 auto; }
 .tab-content.active { display: block; }
+@media(min-width:768px){ .tab-content { padding: 24px; } }
 
-/* KPI STRIP */
+/* ─── KPI STRIP ─── */
 .kpi-strip {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px; margin-bottom: 24px;
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px; margin-bottom: 20px;
 }
-.kpi-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 16px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.kpi-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-.kpi-val { font-family: var(--mono); font-size: 20px; font-weight: 700; }
-.kpi-sub { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
-.pos { color: #0a7c42; }
-.neg { color: #c0392b; }
-.neu { color: #b7791f; }
-.blu { color: #1a56db; }
+@media(min-width:640px){ .kpi-strip { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
 
-/* INPUT GRID */
-.input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.kpi-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  opacity: 0.5;
+}
+.kpi-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+.kpi-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600; }
+.kpi-val { font-family: var(--mono); font-size: 18px; font-weight: 500; line-height: 1; }
+.kpi-sub { font-size: 10px; color: var(--text3); margin-top: 6px; }
+@media(min-width:640px){ .kpi-val { font-size: 20px; } }
+
+/* ─── GAUGE ─── */
+.gauge-grid { 
+  display: grid; 
+  grid-template-columns: 1fr;
+  gap: 12px; margin-bottom: 20px;
+}
+@media(min-width:640px){ .gauge-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.gauge-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; text-align: center;
+}
+.gauge-title { 
+  font-size: 11px; font-weight: 700; text-transform: uppercase; 
+  letter-spacing: 1px; color: var(--text2); margin-bottom: 12px;
+  font-family: var(--display);
+}
+.gauge-svg { width: 180px; margin: 0 auto; display: block; }
+.gauge-val { font-family: var(--mono); font-size: 22px; font-weight: 500; margin-top: 8px; }
+.gauge-sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+/* ─── INPUT TABS ─── */
+.inp-tab-row {
+  display: flex; gap: 6px; margin-bottom: 16px; 
+  overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.inp-tab-row::-webkit-scrollbar { display: none; }
+.inp-tab-btn {
+  padding: 9px 14px; border: 1px solid var(--border2);
+  background: var(--surface); color: var(--text2);
+  border-radius: var(--radius-sm); cursor: pointer; 
+  font-family: var(--font); font-weight: 600; font-size: 12px;
+  transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+}
+.inp-tab-btn:hover { border-color: var(--border2); color: var(--text); }
+.inp-tab-btn.active { 
+  background: var(--gold-dim); border-color: var(--gold); color: var(--gold);
+}
+.inp-tab-btn.katalog-btn {
+  margin-left: auto; border-color: rgba(167,139,250,0.3); color: var(--purple);
+  background: rgba(167,139,250,0.08);
+}
+
+/* ─── INPUT PANEL ─── */
 .input-panel {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 20px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border-radius: var(--radius); padding: 20px; max-width: 720px;
 }
 .panel-title {
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-  color: #334155; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  font-family: var(--display); font-size: 13px; font-weight: 700; 
+  text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text2); margin-bottom: 18px; 
+  display: flex; align-items: center; gap: 8px;
+  padding-bottom: 14px; border-bottom: 1px solid var(--border);
 }
-.panel-title span { font-size: 16px; }
-label { font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 4px; margin-top: 10px; font-weight: 600; }
+
+/* ─── FORM ─── */
+label { 
+  font-size: 10px; color: var(--text3); display: block; 
+  margin-bottom: 5px; margin-top: 14px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.8px;
+}
 input[type="date"], input[type="number"], input[type="text"], select {
-  width: 100%; padding: 9px 12px; background: #f8fafc;
-  border: 1px solid var(--border); border-radius: 7px; color: var(--text);
-  font-family: var(--font); font-size: 13px; outline: none; transition: border 0.2s;
+  width: 100%; padding: 11px 14px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: var(--font); font-size: 14px; outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  -webkit-appearance: none; appearance: none;
 }
-input:focus, select:focus { border-color: var(--blue); background: #fff; }
-select option { background: #fff; color: #1a202c; }
+input:focus, select:focus { 
+  border-color: var(--gold); background: var(--surface3);
+  box-shadow: 0 0 0 3px var(--gold-dim);
+}
+select { 
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238892a4' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 34px;
+}
+select option { background: #1c2333; color: var(--text); }
+
+/* ─── BUTTONS ─── */
 .btn-submit {
-  width: 100%; margin-top: 16px; padding: 11px;
-  border: none; border-radius: 8px; cursor: pointer; font-family: var(--font);
-  font-weight: 800; font-size: 13px; letter-spacing: 0.5px; transition: all 0.2s;
+  width: 100%; margin-top: 18px; padding: 14px;
+  border: none; border-radius: var(--radius-sm); cursor: pointer; 
+  font-family: var(--display); font-weight: 700; font-size: 13px; 
+  letter-spacing: 0.8px; transition: all 0.2s;
+  text-transform: uppercase;
 }
-.btn-green { background: #0a7c42; color: #fff; }
-.btn-blue { background: #1a56db; color: #fff; }
-.btn-purple { background: #6b46c1; color: #fff; }
-.btn-submit:hover { opacity: 0.85; transform: translateY(-1px); }
+.btn-gold { 
+  background: linear-gradient(135deg, var(--gold), var(--gold2)); 
+  color: #0a0d12; 
+  box-shadow: 0 4px 15px var(--gold-glow);
+}
+.btn-gold:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px var(--gold-glow); }
+.btn-green { background: var(--green); color: #0a0d12; }
+.btn-green:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-blue { background: var(--blue); color: #0a0d12; }
+.btn-blue:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-purple { background: var(--purple); color: #0a0d12; }
+.btn-purple:hover { opacity: 0.9; transform: translateY(-1px); }
 
-/* FILTER BAR */
-.filter-bar {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 20px;
-  display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+/* ─── ITEM ROWS ─── */
+.item-row-header {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 32px;
+  gap: 6px; margin-bottom: 6px; padding: 0 2px;
 }
-.filter-bar label { margin: 0; color: var(--text-dim); font-size: 11px; font-weight: 700; }
-.filter-bar select { width: auto; padding: 7px 12px; font-size: 12px; }
-.btn-tool {
-  padding: 8px 16px; border: none; border-radius: 7px; cursor: pointer;
-  font-family: var(--font); font-weight: 700; font-size: 11px; transition: all 0.2s;
+.item-row-header span {
+  font-size: 9px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.8px;
 }
-.btn-tool:hover { opacity: 0.85; }
+@media(max-width:520px){
+  .item-row-header { grid-template-columns: 1fr 1fr; gap: 4px; }
+  .item-row-header span:nth-child(n+3) { display: none; }
+}
 
-/* STATEMENTS */
-.stmt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; margin-bottom: 20px; }
-.stmt-card {
-  background: #ffffff; border: 1px solid var(--border);
-  border-radius: 12px; padding: 20px; overflow-x: auto;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+.item-row {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 32px;
+  gap: 6px; margin-bottom: 8px; align-items: center;
 }
-.stmt-title {
-  font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;
-  color: #1a56db; margin-bottom: 16px; padding-bottom: 10px;
-  border-bottom: 2px solid #e2e8f0;
+@media(max-width:520px){
+  .item-row { 
+    grid-template-columns: 1fr 1fr; gap: 6px;
+    background: var(--surface2); border-radius: var(--radius-sm);
+    padding: 10px; border: 1px solid var(--border);
+  }
+  .item-row > div:first-child { grid-column: 1 / -1; }
 }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 7px 10px; font-size: 12px; }
-td.label-col { color: #1a202c; }
-td.val-col { text-align: right; font-family: var(--mono); font-weight: 700; font-size: 12px; }
-.sec-head { background: #eff6ff; }
-.sec-head td { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #1a56db; padding: 6px 10px; }
-.sub-row td { color: #475569; }
-.total-row td { border-top: 1px solid #cbd5e1; border-bottom: 2px solid #94a3b8; font-weight: 900; font-size: 13px; background: #f1f5f9; }
-.highlight-row td { font-weight: 900; font-size: 13px; }
-tr:hover td { background: rgba(0,0,0,0.015); }
 
-/* CASH FLOW TABLE */
-.cf-wrap { overflow-x: auto; }
-.cf-table th { background: #f1f5f9; text-align: center; font-size: 11px; color: #475569; font-family: var(--mono); padding: 8px 6px; border-bottom: 2px solid #cbd5e1; }
-.cf-table td.month-val { text-align: right; font-family: var(--mono); font-size: 11px; padding: 5px 6px; }
-.cf-table td.row-label { font-size: 11px; font-weight: 700; min-width: 180px; color: #1a202c; padding: 5px 10px; }
-.cf-section { background: #eff6ff; }
-.cf-section td { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #1a56db; padding: 8px 10px; }
-.cf-total td { font-weight: 900; background: #f1f5f9; border-top: 1px solid #cbd5e1; }
-.cf-net td { font-weight: 900; color: #0a7c42; font-family: var(--mono); }
+.item-row input { margin-bottom: 0; }
+.item-jumlah {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  background: var(--green-dim); border: 1px solid rgba(34,201,122,0.2);
+  border-radius: var(--radius-sm); padding: 11px 10px; 
+  color: var(--green); text-align: right;
+}
+.btn-del-row {
+  background: none; border: 1px solid var(--border); color: var(--text3);
+  border-radius: var(--radius-sm); width: 32px; height: 40px; cursor: pointer; 
+  font-size: 14px; display: flex; align-items: center; justify-content: center; 
+  transition: all 0.2s; flex-shrink: 0;
+}
+.btn-del-row:hover { border-color: var(--red); color: var(--red); background: var(--red-dim); }
 
-/* TRANSACTION HISTORY */
-.txn-controls {
-  display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center;
+.add-item-btn {
+  width: 100%; margin-top: 8px; background: none; 
+  border: 1px dashed var(--border2); color: var(--text3);
+  padding: 10px 14px; border-radius: var(--radius-sm); cursor: pointer; 
+  font-size: 12px; font-weight: 600; transition: all 0.2s;
+  font-family: var(--font);
 }
-.txn-controls input, .txn-controls select { width: auto; flex: 1; min-width: 120px; }
-.txn-table-wrap { overflow-x: auto; max-height: 600px; overflow-y: auto; }
-.txn-table { width: 100%; }
-.txn-table thead th {
-  background: #f1f5f9; font-size: 11px; text-transform: uppercase;
-  letter-spacing: 0.5px; color: #475569; padding: 10px 12px;
-  position: sticky; top: 0; z-index: 1; text-align: left; font-weight: 700;
-}
-.txn-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s; }
-.txn-table tbody tr:hover { background: #f8fafc; }
-.txn-table td { padding: 10px 12px; font-size: 12px; color: #1a202c; }
-.txn-table td.amount { font-family: var(--mono); text-align: right; font-weight: 700; }
-.badge {
-  display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 10px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-}
-.badge-green { background: #dcfce7; color: #166534; }
-.badge-red { background: #fee2e2; color: #991b1b; }
-.badge-blue { background: #dbeafe; color: #1e40af; }
-.badge-yellow { background: #fef9c3; color: #854d0e; }
-.badge-purple { background: #f3e8ff; color: #6b21a8; }
-.badge-orange { background: #fff7ed; color: #9a3412; }
+.add-item-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
 
-/* ITEM CATALOGUE AUTOCOMPLETE */
+.total-row-display {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 16px; padding: 14px 16px;
+  background: var(--surface2); border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.total-label { font-size: 11px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+.total-val { font-family: var(--mono); font-size: 22px; font-weight: 500; }
+
+/* ─── AUTOCOMPLETE DROPDOWN ─── */
 .item-input-wrap { position: relative; }
 .item-dropdown {
-  position: absolute; top: 100%; left: 0; right: 0; z-index: 999;
-  background: #fff; border: 1px solid #dde3ec; border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12); max-height: 200px; overflow-y: auto;
-  display: none;
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 999;
+  background: var(--surface3); border: 1px solid var(--border2); 
+  border-radius: var(--radius-sm);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5); 
+  max-height: 200px; overflow-y: auto; display: none;
 }
 .item-dropdown.show { display: block; }
 .item-dropdown-item {
-  padding: 9px 12px; cursor: pointer; display: flex; justify-content: space-between;
-  align-items: center; font-size: 12px; border-bottom: 1px solid #f1f5f9;
+  padding: 10px 14px; cursor: pointer; 
+  display: flex; justify-content: space-between; align-items: center; 
+  font-size: 12px; border-bottom: 1px solid var(--border);
   transition: background 0.1s;
 }
 .item-dropdown-item:last-child { border-bottom: none; }
-.item-dropdown-item:hover, .item-dropdown-item.active { background: #eff6ff; }
-.item-dropdown-nama { font-weight: 700; color: #1a202c; }
-.item-dropdown-harga { font-family: var(--mono); font-size: 11px; color: #1a56db; font-weight: 700; }
-.item-dropdown-jenis { font-size: 10px; color: #94a3b8; background: #f1f5f9; padding: 1px 6px; border-radius: 10px; }
+.item-dropdown-item:hover, .item-dropdown-item.active { background: var(--gold-dim); }
+.item-dropdown-nama { font-weight: 600; color: var(--text); }
+.item-dropdown-harga { font-family: var(--mono); font-size: 11px; color: var(--gold); font-weight: 500; }
+.item-dropdown-jenis { font-size: 9px; color: var(--text3); background: var(--surface2); padding: 2px 6px; border-radius: 10px; margin-left: 6px; }
 
-/* KATALOG MODAL */
+/* ─── FILTER BAR ─── */
+.filter-bar {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px; 
+  flex-wrap: wrap;
+}
+.filter-bar label { margin: 0; color: var(--text3); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+.filter-bar select { width: auto; padding: 8px 12px; font-size: 12px; }
+
+/* ─── PRINT BAR ─── */
+.print-bar { 
+  display: flex; justify-content: flex-end; 
+  margin-bottom: 16px; gap: 8px; flex-wrap: wrap;
+}
+.btn-print {
+  padding: 10px 20px; 
+  background: linear-gradient(135deg, var(--gold), var(--gold2)); 
+  color: #0a0d12; border: none;
+  border-radius: var(--radius-sm); cursor: pointer; 
+  font-family: var(--display); font-weight: 700;
+  font-size: 12px; transition: all 0.2s;
+  box-shadow: 0 4px 15px var(--gold-glow);
+  letter-spacing: 0.5px;
+}
+.btn-print:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ─── STATEMENTS ─── */
+.stmt-grid { 
+  display: grid; 
+  grid-template-columns: 1fr;
+  gap: 16px; margin-bottom: 20px;
+}
+@media(min-width:900px){ 
+  .stmt-grid { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); } 
+}
+
+.stmt-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; overflow-x: auto;
+}
+.stmt-title {
+  font-family: var(--display); font-size: 12px; font-weight: 800; 
+  text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--gold); margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 8px 10px; font-size: 12px; }
+td.label-col { color: var(--text2); }
+td.val-col { text-align: right; font-family: var(--mono); font-weight: 500; font-size: 12px; }
+.sec-head { background: rgba(79,156,249,0.05); }
+.sec-head td { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--blue); padding: 8px 10px; }
+.sub-row td { color: var(--text3); }
+.total-row td { 
+  border-top: 1px solid var(--border2); 
+  border-bottom: 2px solid var(--gold);
+  font-weight: 700; font-size: 13px; 
+  background: rgba(201,168,76,0.05);
+}
+.highlight-row td { font-weight: 700; font-size: 13px; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ─── CASH FLOW TABLE ─── */
+.cf-wrap { overflow-x: auto; }
+.cf-table th { 
+  background: var(--surface2); text-align: center; 
+  font-size: 10px; color: var(--text3); font-family: var(--mono);
+  padding: 8px 6px; border-bottom: 1px solid var(--border2); 
+}
+.cf-table td.month-val { text-align: right; font-family: var(--mono); font-size: 11px; padding: 5px 6px; }
+.cf-table td.row-label { font-size: 11px; font-weight: 600; min-width: 180px; color: var(--text2); padding: 5px 10px; }
+.cf-section { background: rgba(79,156,249,0.04); }
+.cf-section td { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--blue); padding: 8px 10px; }
+.cf-total td { font-weight: 700; background: var(--surface2); border-top: 1px solid var(--border2); }
+.cf-net td { font-weight: 700; color: var(--gold); font-family: var(--mono); }
+
+/* ─── TRANSACTION HISTORY ─── */
+.txn-controls {
+  display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center;
+}
+.txn-controls input, .txn-controls select { width: auto; flex: 1; min-width: 120px; }
+
+.txn-table-wrap { overflow-x: auto; max-height: 600px; overflow-y: auto; }
+.txn-table { width: 100%; }
+.txn-table thead th {
+  background: var(--surface2); font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--text3); padding: 10px 12px;
+  position: sticky; top: 0; z-index: 1; text-align: left; font-weight: 700;
+  border-bottom: 1px solid var(--border2);
+}
+.txn-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.txn-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.txn-table td { padding: 11px 12px; font-size: 12px; color: var(--text2); }
+.txn-table td.amount { font-family: var(--mono); text-align: right; font-weight: 500; }
+
+/* ─── BADGES ─── */
+.badge {
+  display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 10px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.badge-green { background: rgba(34,201,122,0.12); color: #22c97a; border: 1px solid rgba(34,201,122,0.2); }
+.badge-red { background: rgba(240,85,74,0.12); color: #f0554a; border: 1px solid rgba(240,85,74,0.2); }
+.badge-blue { background: rgba(79,156,249,0.12); color: #4f9cf9; border: 1px solid rgba(79,156,249,0.2); }
+.badge-yellow { background: rgba(201,168,76,0.12); color: #c9a84c; border: 1px solid rgba(201,168,76,0.2); }
+.badge-purple { background: rgba(167,139,250,0.12); color: #a78bfa; border: 1px solid rgba(167,139,250,0.2); }
+.badge-orange { background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.2); }
+
+/* ─── TOOL BUTTONS ─── */
+.btn-tool {
+  padding: 9px 16px; border: 1px solid var(--border2); border-radius: var(--radius-sm); 
+  cursor: pointer; font-family: var(--font); font-weight: 700; font-size: 11px; 
+  transition: all 0.2s; background: var(--surface2); color: var(--text2);
+}
+.btn-tool:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+.btn-tool.backup { border-color: rgba(34,201,122,0.3); color: var(--green); background: var(--green-dim); }
+.btn-tool.backup:hover { border-color: var(--green); }
+.btn-tool.import { border-color: rgba(201,168,76,0.3); color: var(--gold); background: var(--gold-dim); }
+
+/* ─── DELETE BUTTON ─── */
+.btn-del { 
+  background: none; border: 1px solid rgba(240,85,74,0.3); color: #f0554a; 
+  padding: 4px 10px; border-radius: var(--radius-sm); cursor: pointer; 
+  font-size: 10px; font-weight: 700; transition: all 0.15s;
+}
+.btn-del:hover { background: var(--red-dim); border-color: var(--red); }
+
+/* ─── KATALOG MODAL ─── */
 .modal-overlay {
-  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-  z-index: 9000; align-items: center; justify-content: center;
+  display: none; position: fixed; inset: 0; 
+  background: rgba(0,0,0,0.7); z-index: 9000; 
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+  padding: 16px;
 }
 .modal-overlay.show { display: flex; }
 .modal-box {
-  background: #fff; border-radius: 16px; padding: 24px; max-width: 680px;
-  width: 95%; max-height: 80vh; display: flex; flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 24px; 
+  max-width: 680px; width: 100%; max-height: 85vh; 
+  display: flex; flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
 }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.modal-title { font-size: 14px; font-weight: 900; color: #1a202c; }
-.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b; }
+.modal-title { font-family: var(--display); font-size: 14px; font-weight: 700; color: var(--gold); }
+.modal-close { 
+  background: var(--surface2); border: 1px solid var(--border2); 
+  color: var(--text2); font-size: 14px; cursor: pointer; 
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.modal-close:hover { border-color: var(--red); color: var(--red); }
 .modal-body { overflow-y: auto; flex: 1; }
 .katalog-search { width: 100%; margin-bottom: 12px; }
+
 .katalog-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.katalog-table th { background: #f1f5f9; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; border-bottom: 2px solid #e2e8f0; }
-.katalog-table td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-.katalog-table tr:hover td { background: #f8fafc; }
-.katalog-harga-input { width: 100px; padding: 5px 8px; border: 1px solid #dde3ec; border-radius: 5px; font-size: 12px; font-family: var(--mono); text-align: right; }
-.katalog-harga-input:focus { border-color: #1a56db; outline: none; }
-.btn-del { background: none; border: 1px solid #fca5a5; color: #c0392b; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 10px; font-weight: 700; transition: all 0.15s; }
-.btn-del:hover { background: #c0392b; color: #fff; }
-
-.empty-state { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; }
-.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
-
-.inp-tab-btn {
-  padding: 9px 18px; border: 1px solid var(--border); background: #fff;
-  color: var(--text-dim); border-radius: 8px; cursor: pointer; font-family: var(--font);
-  font-weight: 700; font-size: 12px; transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+.katalog-table th { 
+  background: var(--surface2); padding: 8px 10px; text-align: left; 
+  font-size: 9px; text-transform: uppercase; color: var(--text3); 
+  font-weight: 700; border-bottom: 1px solid var(--border2); letter-spacing: 0.8px;
 }
-.inp-tab-btn.active { background: #1a56db; border-color: #1a56db; color: #fff; }
-.inp-tab-btn:hover { color: var(--text); border-color: #94a3b8; }
+.katalog-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text2); }
+.katalog-table tr:hover td { background: rgba(255,255,255,0.02); }
+.katalog-harga-input { 
+  width: 100px; padding: 6px 8px; 
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); font-size: 12px; 
+  font-family: var(--mono); text-align: right; color: var(--text);
+}
+.katalog-harga-input:focus { border-color: var(--gold); outline: none; }
 
-.item-row {
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 36px;
-  gap: 6px; margin-bottom: 6px; align-items: center;
-}
-.item-row input { margin-bottom: 0; }
-.item-jumlah {
-  font-family: var(--mono); font-size: 13px; font-weight: 700;
-  background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 7px;
-  padding: 9px 10px; color: #0a7c42; text-align: right;
-}
-.btn-del-row {
-  background: none; border: 1px solid var(--border); color: var(--text-dim);
-  border-radius: 6px; width: 32px; height: 34px; cursor: pointer; font-size: 14px;
-  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-  flex-shrink: 0;
-}
-.btn-del-row:hover { border-color: #c0392b; color: #c0392b; }
+/* ─── EMPTY STATE ─── */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text3); font-size: 14px; }
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
 
-/* PRINT BUTTON fixed */
-.print-bar { display: flex; justify-content: flex-end; margin-bottom: 16px; gap: 10px; }
-.btn-print {
-  padding: 9px 20px; background: #1a56db; color: #fff; border: none;
-  border-radius: 8px; cursor: pointer; font-family: var(--font); font-weight: 800;
-  font-size: 12px; transition: all 0.2s;
+/* ─── ALERT TOAST ─── */
+.toast {
+  position: fixed; top: 80px; right: 16px; z-index: 9999;
+  background: var(--surface3); border: 1px solid var(--border2);
+  color: var(--text); padding: 12px 18px; border-radius: var(--radius-sm);
+  font-weight: 600; font-size: 13px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: toastIn 0.3s ease;
+  border-left: 3px solid var(--green);
+  max-width: 280px;
 }
-.btn-print:hover { background: #1e40af; }
+@keyframes toastIn { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
 
-/* GAUGE */
-.gauge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.gauge-card {
-  background: #ffffff; border: 1px solid var(--border);
-  border-radius: 12px; padding: 20px; text-align: center;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+/* ─── COLORS ─── */
+.pos { color: var(--green) !important; }
+.neg { color: var(--red) !important; }
+.neu { color: var(--gold) !important; }
+.blu { color: var(--blue) !important; }
+
+/* ─── INPUT GRID ─── */
+.two-col { display: grid; grid-template-columns: 1fr; gap: 0; }
+@media(min-width:480px){ .two-col { grid-template-columns: 1fr 1fr; gap: 12px; } }
+
+.input-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px; }
+@media(min-width:600px){ .input-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } }
+
+/* ─── TXN SUMMARY ─── */
+#txn_summary {
+  padding: 14px; border-top: 1px solid var(--border); 
+  font-size: 12px; color: var(--text3); 
+  display: flex; gap: 20px; flex-wrap: wrap;
+  background: var(--surface2); border-radius: 0 0 var(--radius) var(--radius);
 }
-.gauge-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #475569; margin-bottom: 10px; }
-.gauge-svg { width: 200px; margin: 0 auto; display: block; }
-.gauge-val { font-family: var(--mono); font-size: 22px; font-weight: 900; margin-top: 4px; }
-.gauge-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
 
+/* ─── PRINT ─── */
 @media print {
-  .no-print { display: none !important; }
-  .print-bar { display: none !important; }
-  .gauge-grid { display: none !important; }
-  .nav-tabs { display: none !important; }
-  .app-header { border: none !important; }
-  body { background: white; color: #000 !important; padding: 0; }
+  body { background: white !important; color: #000 !important; }
+  .no-print, .print-bar, .gauge-grid, .nav-tabs, .app-header,
+  .filter-bar, .txn-controls, .inp-tab-row { display: none !important; }
   .tab-content { display: block !important; padding: 10px; }
-  .stmt-card { background: white !important; color: #000 !important; border: 1px solid #ccc !important; page-break-inside: avoid; }
-  .sec-head td { background: #f0f0f0 !important; color: #333 !important; }
-  .total-row td { background: #fafafa !important; }
-  table td, table th { color: #000 !important; }
+  .stmt-card { background: white !important; border: 1px solid #ccc !important; }
+  .kpi-card, .gauge-card { display: none; }
+  td, th { color: #000 !important; }
   .pos { color: #006400 !important; }
   .neg { color: #8b0000 !important; }
-  .val-col { color: #000 !important; }
-  .cf-table th { background: #eee !important; color: #333 !important; }
 }
 </style>
 </head>
@@ -318,65 +551,61 @@ tr:hover td { background: rgba(0,0,0,0.015); }
 
 <!-- NAV -->
 <div class="nav-tabs no-print">
-  <button class="tab-btn active" onclick="showTab('input')">⌨️ Input Data</button>
-  <button class="tab-btn" onclick="showTab('pnl')">📊 Untung Rugi</button>
-  <button class="tab-btn" onclick="showTab('bs')">🏛️ Kunci Kira-Kira</button>
-  <button class="tab-btn" onclick="showTab('cf')">💸 Aliran Tunai</button>
-  <button class="tab-btn" onclick="showTab('history')">📋 Sejarah Transaksi</button>
+  <button class="tab-btn active" onclick="showTab('input',this)">⌨️ Input</button>
+  <button class="tab-btn" onclick="showTab('pnl',this)">📊 Untung Rugi</button>
+  <button class="tab-btn" onclick="showTab('bs',this)">🏛️ Kunci Kira</button>
+  <button class="tab-btn" onclick="showTab('cf',this)">💸 Aliran Tunai</button>
+  <button class="tab-btn" onclick="showTab('history',this)">📋 Sejarah</button>
 </div>
 
 <!-- ======================== TAB: INPUT ======================== -->
 <div class="tab-content active" id="tab-input">
   <div class="kpi-strip" id="kpi_strip"></div>
 
-  <!-- ANALISIS GAUGE -->
   <div class="gauge-grid no-print" id="gauge_section">
     <div class="gauge-card">
       <div class="gauge-title">📈 Analisis Untung Bersih</div>
       <svg class="gauge-svg" viewBox="0 0 200 120">
-        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#e2e8f0" stroke-width="14" stroke-linecap="round"/>
-        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#0a7c42" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" id="gauge_ub_arc"/>
-        <line id="gauge_ub_needle" x1="100" y1="100" x2="100" y2="28" stroke="#1a202c" stroke-width="3" stroke-linecap="round" transform="rotate(-90 100 100)"/>
-        <circle cx="100" cy="100" r="5" fill="#1a202c"/>
-        <text x="20" y="115" font-size="9" fill="#94a3b8" font-family="monospace">Rugi</text>
-        <text x="155" y="115" font-size="9" fill="#94a3b8" font-family="monospace">Untung</text>
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#22c97a" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" id="gauge_ub_arc"/>
+        <line id="gauge_ub_needle" x1="100" y1="100" x2="100" y2="28" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="5" fill="#c9a84c"/>
+        <text x="20" y="115" font-size="9" fill="#4a5568" font-family="monospace">Rugi</text>
+        <text x="155" y="115" font-size="9" fill="#4a5568" font-family="monospace">Untung</text>
       </svg>
       <div class="gauge-val pos" id="gauge_ub_val">RM 0.00</div>
       <div class="gauge-sub" id="gauge_ub_sub">Margin Bersih: 0.0%</div>
     </div>
     <div class="gauge-card">
-      <div class="gauge-title">⚖️ Analisis Titik Pulang Modal (TPM)</div>
+      <div class="gauge-title">⚖️ Titik Pulang Modal (TPM)</div>
       <svg class="gauge-svg" viewBox="0 0 200 120">
-        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#e2e8f0" stroke-width="14" stroke-linecap="round"/>
-        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#b7791f" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" id="gauge_tpm_arc"/>
-        <line id="gauge_tpm_needle" x1="100" y1="100" x2="100" y2="28" stroke="#1a202c" stroke-width="3" stroke-linecap="round" transform="rotate(-90 100 100)"/>
-        <circle cx="100" cy="100" r="5" fill="#1a202c"/>
-        <text x="16" y="115" font-size="9" fill="#94a3b8" font-family="monospace">Belum TPM</text>
-        <text x="145" y="115" font-size="9" fill="#94a3b8" font-family="monospace">Lepas TPM</text>
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#c9a84c" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" id="gauge_tpm_arc"/>
+        <line id="gauge_tpm_needle" x1="100" y1="100" x2="100" y2="28" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="5" fill="#c9a84c"/>
+        <text x="16" y="115" font-size="9" fill="#4a5568" font-family="monospace">Belum</text>
+        <text x="150" y="115" font-size="9" fill="#4a5568" font-family="monospace">Lepas</text>
       </svg>
       <div class="gauge-val neu" id="gauge_tpm_val">RM 0.00</div>
       <div class="gauge-sub" id="gauge_tpm_sub">TPM: 0% daripada jualan</div>
     </div>
   </div>
-  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
-    <button class="inp-tab-btn active" id="itab_jual" onclick="switchInputTab('jual')">🟢 Rekod Jualan</button>
-    <button class="inp-tab-btn" id="itab_beli" onclick="switchInputTab('beli')">🔴 Rekod Belian</button>
-    <button class="inp-tab-btn" id="itab_ops" onclick="switchInputTab('ops')">📋 Belanja Operasi</button>
-    <button class="inp-tab-btn" id="itab_modal" onclick="switchInputTab('modal')">🏛️ Modal / Aset / Stok</button>
-    <button class="inp-tab-btn" onclick="bukaKatalog()" style="margin-left:auto; border-color:#6b46c1; color:#6b46c1;">📦 Katalog Item</button>
+
+  <div class="inp-tab-row no-print">
+    <button class="inp-tab-btn active" id="itab_jual" onclick="switchInputTab('jual')">🟢 Jualan</button>
+    <button class="inp-tab-btn" id="itab_beli" onclick="switchInputTab('beli')">🔴 Belian</button>
+    <button class="inp-tab-btn" id="itab_ops" onclick="switchInputTab('ops')">📋 Operasi</button>
+    <button class="inp-tab-btn" id="itab_modal" onclick="switchInputTab('modal')">🏛️ Modal & Aset</button>
+    <button class="inp-tab-btn katalog-btn no-print" onclick="bukaKatalog()">📦 Katalog</button>
   </div>
 
   <!-- PANEL JUALAN -->
-  <div class="inp-panel-wrap" id="iwrap_jual">
-    <div class="input-panel" style="max-width:700px;">
+  <div id="iwrap_jual">
+    <div class="input-panel">
       <div class="panel-title"><span>🟢</span> Rekod Jualan</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-        <div>
-          <label>Tarikh Jualan</label>
-          <input type="date" id="j_tarikh">
-        </div>
-        <div>
-          <label>Jenis Pembayaran</label>
+      <div class="two-col">
+        <div><label>Tarikh Jualan</label><input type="date" id="j_tarikh"></div>
+        <div><label>Jenis Pembayaran</label>
           <select id="j_jenis">
             <option value="jual_tunai">Jualan Tunai</option>
             <option value="jual_hutang">Jualan Hutang (Penghutang)</option>
@@ -384,43 +613,35 @@ tr:hover td { background: rgba(0,0,0,0.015); }
             <option value="pulang_jual_hutang">⮐ Pulangan Jualan Hutang</option>
           </select>
         </div>
-        <div>
-          <label>Nama Pelanggan / Rujukan (Pilihan)</label>
-          <input type="text" id="j_pelanggan" placeholder="cth: Kedai ABC, Encik Ali...">
-        </div>
+        <div><label>Nama Pelanggan / Rujukan</label><input type="text" id="j_pelanggan" placeholder="cth: Kedai ABC, Encik Ali..."></div>
         <div></div>
       </div>
-      <!-- Item rows -->
-      <div style="margin-top:14px;">
-        <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr 36px; gap:6px; margin-bottom:6px;">
-          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Nama Item / Produk</span>
-          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Kuantiti</span>
-          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Harga/Unit (RM)</span>
-          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Jumlah (RM)</span>
+      <div style="margin-top:16px;">
+        <div class="item-row-header">
+          <span>Nama Item / Produk</span>
+          <span>Kuantiti</span>
+          <span>Harga/Unit (RM)</span>
+          <span>Jumlah (RM)</span>
           <span></span>
         </div>
         <div id="j_items"></div>
-        <button onclick="tambahItem('j')" style="margin-top:8px;background:none;border:1px dashed #cbd5e1;color:#64748b;padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;width:100%;">+ Tambah Item</button>
+        <button class="add-item-btn" onclick="tambahItem('j')">+ Tambah Item</button>
       </div>
-      <div style="display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;">
-        <div style="font-size:13px;color:#64748b;">JUMLAH KESELURUHAN:</div>
-        <div id="j_total_disp" style="font-family:var(--mono);font-size:22px;font-weight:900;color:#0a7c42;">RM 0.00</div>
+      <div class="total-row-display">
+        <div class="total-label">Jumlah Keseluruhan</div>
+        <div id="j_total_disp" class="total-val pos">RM 0.00</div>
       </div>
-      <button class="btn-submit btn-green" onclick="rekodJualBeli('jual')" style="margin-top:10px;">✅ SIMPAN REKOD JUALAN</button>
+      <button class="btn-submit btn-gold" onclick="rekodJualBeli('jual')">✅ Simpan Rekod Jualan</button>
     </div>
   </div>
 
   <!-- PANEL BELIAN -->
-  <div class="inp-panel-wrap" id="iwrap_beli" style="display:none;">
-    <div class="input-panel" style="max-width:700px;">
+  <div id="iwrap_beli" style="display:none;">
+    <div class="input-panel">
       <div class="panel-title"><span>🔴</span> Rekod Belian Stok</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-        <div>
-          <label>Tarikh Belian</label>
-          <input type="date" id="b2_tarikh">
-        </div>
-        <div>
-          <label>Jenis Pembayaran</label>
+      <div class="two-col">
+        <div><label>Tarikh Belian</label><input type="date" id="b2_tarikh"></div>
+        <div><label>Jenis Pembayaran</label>
           <select id="b2_jenis">
             <option value="beli_tunai">Belian Tunai</option>
             <option value="beli_hutang">Belian Hutang (Pemiutang)</option>
@@ -428,38 +649,33 @@ tr:hover td { background: rgba(0,0,0,0.015); }
             <option value="pulang_beli_hutang">⮐ Pulangan Belian Hutang</option>
           </select>
         </div>
-        <div>
-          <label>Nama Pembekal / Rujukan (Pilihan)</label>
-          <input type="text" id="b2_pembekal" placeholder="cth: Pembekal XYZ, Syarikat ABC...">
-        </div>
+        <div><label>Nama Pembekal / Rujukan</label><input type="text" id="b2_pembekal" placeholder="cth: Pembekal XYZ..."></div>
         <div></div>
       </div>
-      <!-- Item rows belian -->
-      <div style="margin-top:14px;">
-        <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr 36px; gap:6px; margin-bottom:6px;">
-          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Nama Item / Bahan</span>
-          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Kuantiti</span>
-          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Harga/Unit (RM)</span>
-          <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;">Jumlah (RM)</span>
+      <div style="margin-top:16px;">
+        <div class="item-row-header">
+          <span>Nama Item / Bahan</span>
+          <span>Kuantiti</span>
+          <span>Harga/Unit (RM)</span>
+          <span>Jumlah (RM)</span>
           <span></span>
         </div>
         <div id="b2_items"></div>
-        <button onclick="tambahItem('b2')" style="margin-top:8px;background:none;border:1px dashed #cbd5e1;color:#64748b;padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;width:100%;">+ Tambah Item</button>
+        <button class="add-item-btn" onclick="tambahItem('b2')">+ Tambah Item</button>
       </div>
-      <div style="display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;">
-        <div style="font-size:13px;color:#64748b;">JUMLAH KESELURUHAN:</div>
-        <div id="b2_total_disp" style="font-family:var(--mono);font-size:22px;font-weight:900;color:#c0392b;">RM 0.00</div>
+      <div class="total-row-display">
+        <div class="total-label">Jumlah Keseluruhan</div>
+        <div id="b2_total_disp" class="total-val neg">RM 0.00</div>
       </div>
-      <button class="btn-submit btn-blue" onclick="rekodJualBeli('beli')" style="margin-top:10px;">✅ SIMPAN REKOD BELIAN</button>
+      <button class="btn-submit btn-blue" onclick="rekodJualBeli('beli')">✅ Simpan Rekod Belian</button>
     </div>
   </div>
 
-  <div class="input-grid" id="iwrap_ops" style="display:none;">
-
+  <!-- PANEL OPS -->
+  <div id="iwrap_ops" style="display:none;">
     <div class="input-panel">
       <div class="panel-title"><span>📋</span> Belanja Operasi</div>
-      <label>Tarikh</label>
-      <input type="date" id="b_tarikh">
+      <label>Tarikh</label><input type="date" id="b_tarikh">
       <label>Kategori Belanja</label>
       <select id="b_jenis">
         <option value="b_gaji">Gaji & Upah</option>
@@ -475,15 +691,15 @@ tr:hover td { background: rgba(0,0,0,0.015); }
       <input type="text" id="b_nota" placeholder="cth: Gaji bulan Januari...">
       <label>Amaun (RM)</label>
       <input type="number" id="b_amaun" placeholder="0.00" step="0.01">
-      <button class="btn-submit btn-green" onclick="rekod('B')">SIMPAN BELANJA</button>
+      <button class="btn-submit btn-gold" onclick="rekod('B')">Simpan Belanja</button>
     </div>
-  </div><!-- end iwrap_ops -->
+  </div>
+
+  <!-- PANEL MODAL -->
   <div id="iwrap_modal" style="display:none;">
-    <div class="input-grid" style="max-width:400px;">
     <div class="input-panel">
       <div class="panel-title"><span>🏛️</span> Modal, Aset & Stok</div>
-      <label>Tarikh</label>
-      <input type="date" id="a2_tarikh">
+      <label>Tarikh</label><input type="date" id="a2_tarikh">
       <label>Jenis</label>
       <select id="a2_jenis">
         <option value="modal">Modal Tunai Masuk</option>
@@ -499,10 +715,9 @@ tr:hover td { background: rgba(0,0,0,0.015); }
       <input type="text" id="a2_nota" placeholder="cth: Pinjaman MBSB RM50k...">
       <label>Amaun (RM)</label>
       <input type="number" id="a2_amaun" placeholder="0.00" step="0.01">
-      <button class="btn-submit btn-purple" onclick="rekod('A2')">REKOD MODAL/ASET</button>
+      <button class="btn-submit btn-purple" onclick="rekod('A2')">Rekod Modal / Aset</button>
     </div>
-    </div>
-    </div><!-- end iwrap_modal -->
+  </div>
 </div>
 
 <!-- ======================== TAB: P&L ======================== -->
@@ -522,7 +737,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
     <select id="fTahun" onchange="proses()"></select>
   </div>
   <div class="print-bar">
-    <button onclick="window.print()" class="btn-print">📄 CETAK / SIMPAN PDF</button>
+    <button onclick="window.print()" class="btn-print">📄 Cetak / PDF</button>
   </div>
   <div class="stmt-grid">
     <div class="stmt-card" id="pnl_card">
@@ -539,7 +754,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
         <tr class="sub-row"><td class="label-col">(-) Stok Akhir</td><td class="val-col neg" id="r_sk">(0.00)</td></tr>
         <tr class="highlight-row"><td class="label-col neg">Kos Jualan (COGS)</td><td class="val-col neg" id="r_cogs">0.00</td></tr>
         <tr class="total-row"><td class="label-col">UNTUNG KASAR</td><td class="val-col pos" id="r_uk">0.00</td></tr>
-        <tr><td class="label-col" style="font-size:10px;color:#64748b;padding-top:4px;">Margin Untung Kasar</td><td class="val-col blu" id="r_gpm" style="font-size:11px;">0.0%</td></tr>
+        <tr><td class="label-col" style="font-size:10px;color:var(--text3);padding-top:4px;">Margin Untung Kasar</td><td class="val-col blu" id="r_gpm" style="font-size:11px;">0.0%</td></tr>
         <tr class="sec-head"><td colspan="2">Belanja Operasi</td></tr>
         <tr class="sub-row"><td class="label-col">Gaji & Upah</td><td class="val-col neg" id="r_bgaji">0.00</td></tr>
         <tr class="sub-row"><td class="label-col">Sewa Premis</td><td class="val-col neg" id="r_bsewa">0.00</td></tr>
@@ -549,7 +764,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
         <tr class="sub-row"><td class="label-col">Belanja Am & Pejabat</td><td class="val-col neg" id="r_bam">0.00</td></tr>
         <tr class="highlight-row"><td class="label-col neg">Jumlah Belanja Operasi</td><td class="val-col neg" id="r_totb">0.00</td></tr>
         <tr class="total-row"><td class="label-col">UNTUNG / (RUGI) BERSIH</td><td class="val-col" id="r_ub">0.00</td></tr>
-        <tr><td class="label-col" style="font-size:10px;color:#64748b;padding-top:4px;">Margin Untung Bersih</td><td class="val-col blu" id="r_npm" style="font-size:11px;">0.0%</td></tr>
+        <tr><td class="label-col" style="font-size:10px;color:var(--text3);padding-top:4px;">Margin Untung Bersih</td><td class="val-col blu" id="r_npm" style="font-size:11px;">0.0%</td></tr>
       </table>
     </div>
   </div>
@@ -572,7 +787,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
     <select id="fTahun2" onchange="proses()"></select>
   </div>
   <div class="print-bar">
-    <button onclick="window.print()" class="btn-print">📄 CETAK / SIMPAN PDF</button>
+    <button onclick="window.print()" class="btn-print">📄 Cetak / PDF</button>
   </div>
   <div class="stmt-grid">
     <div class="stmt-card">
@@ -585,14 +800,12 @@ tr:hover td { background: rgba(0,0,0,0.015); }
         <tr><td class="label-col">Akaun Belum Terima (Penghutang)</td><td class="val-col" id="r_k_ph">0.00</td></tr>
         <tr><td class="label-col">Wang di Bank / Tunai</td><td class="val-col" id="r_k_tunai">0.00</td></tr>
         <tr class="total-row"><td class="label-col">JUMLAH ASET</td><td class="val-col pos" id="r_k_ta">0.00</td></tr>
-
         <tr class="sec-head"><td colspan="2">EKUITI PEMILIK</td></tr>
         <tr><td class="label-col">Modal Permulaan</td><td class="val-col" id="r_k_mod">0.00</td></tr>
         <tr><td class="label-col">+ Untung Bersih Semasa</td><td class="val-col" id="r_k_ub">0.00</td></tr>
         <tr><td class="label-col">(-) Ambilan Tunai</td><td class="val-col neg" id="r_k_ambt">(0.00)</td></tr>
         <tr><td class="label-col">(-) Ambilan Stok</td><td class="val-col neg" id="r_k_ambs">(0.00)</td></tr>
         <tr class="highlight-row"><td class="label-col">MODAL AKHIR</td><td class="val-col pos" id="r_k_ma">0.00</td></tr>
-
         <tr class="sec-head"><td colspan="2">LIABILITI BUKAN SEMASA</td></tr>
         <tr><td class="label-col">Pinjaman Bank (Jangka Panjang)</td><td class="val-col neg" id="r_k_pbank">0.00</td></tr>
         <tr class="sec-head"><td colspan="2">LIABILITI SEMASA</td></tr>
@@ -600,7 +813,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
         <tr><td class="label-col">Pinjaman Lain-lain</td><td class="val-col neg" id="r_k_plain">0.00</td></tr>
         <tr class="highlight-row"><td class="label-col">JUMLAH LIABILITI</td><td class="val-col neg" id="r_k_totliab">0.00</td></tr>
         <tr class="total-row"><td class="label-col">JUMLAH LIABILITI & EKUITI</td><td class="val-col pos" id="r_k_tle">0.00</td></tr>
-        <tr><td class="label-col" style="font-size:10px; color:#64748b;">Status Imbangan</td><td class="val-col" id="r_k_check" style="font-size:11px;"></td></tr>
+        <tr><td class="label-col" style="font-size:10px;color:var(--text3);">Status Imbangan</td><td class="val-col" id="r_k_check" style="font-size:11px;"></td></tr>
       </table>
     </div>
   </div>
@@ -613,7 +826,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
     <select id="fTahun3" onchange="proses()"></select>
   </div>
   <div class="print-bar">
-    <button onclick="window.print()" class="btn-print">📄 CETAK / SIMPAN PDF</button>
+    <button onclick="window.print()" class="btn-print">📄 Cetak / PDF</button>
   </div>
   <div class="stmt-card">
     <div class="stmt-title">Penyata Aliran Tunai Terperinci (Jan - Dis)</div>
@@ -635,8 +848,8 @@ tr:hover td { background: rgba(0,0,0,0.015); }
 <!-- ======================== TAB: HISTORY ======================== -->
 <div class="tab-content" id="tab-history">
   <div class="txn-controls no-print">
-    <input type="text" id="searchTxn" placeholder="🔍 Cari keterangan, jenis..." oninput="renderHistory()">
-    <select id="filterCat" onchange="renderHistory()" style="min-width:160px;">
+    <input type="text" id="searchTxn" placeholder="🔍 Cari transaksi..." oninput="renderHistory()">
+    <select id="filterCat" onchange="renderHistory()" style="min-width:150px;">
       <option value="">Semua Kategori</option>
       <option value="jual_tunai">Jualan Tunai</option>
       <option value="jual_hutang">Jualan Hutang</option>
@@ -644,12 +857,10 @@ tr:hover td { background: rgba(0,0,0,0.015); }
       <option value="pulang_jual_hutang">Pulangan Jualan Hutang</option>
       <option value="beli_tunai">Belian Tunai</option>
       <option value="beli_hutang">Belian Hutang</option>
-      <option value="pulang_beli_tunai">Pulangan Belian Tunai</option>
-      <option value="pulang_beli_hutang">Pulangan Belian Hutang</option>
       <option value="b_gaji">Gaji & Upah</option>
       <option value="b_sewa">Sewa</option>
       <option value="b_utiliti">Utiliti</option>
-      <option value="b_iklan">Pemasaran & Iklan</option>
+      <option value="b_iklan">Pemasaran</option>
       <option value="b_trans">Pengangkutan</option>
       <option value="b_am">Belanja Am</option>
       <option value="amb_tunai">Ambilan Tunai</option>
@@ -657,11 +868,9 @@ tr:hover td { background: rgba(0,0,0,0.015); }
       <option value="modal">Modal</option>
       <option value="aset_tetap">Aset Tetap</option>
       <option value="pinjaman_bank">Pinjaman Bank</option>
-      <option value="pinjaman_lain">Pinjaman Lain</option>
       <option value="stok_akhir">Stok Akhir</option>
-      <option value="stok_awal">Stok Awal</option>
     </select>
-    <select id="filterMonth" onchange="renderHistory()" style="min-width:130px;">
+    <select id="filterMonth" onchange="renderHistory()" style="min-width:120px;">
       <option value="">Semua Bulan</option>
       <option value="01">Januari</option><option value="02">Februari</option>
       <option value="03">Mac</option><option value="04">April</option>
@@ -670,9 +879,9 @@ tr:hover td { background: rgba(0,0,0,0.015); }
       <option value="09">September</option><option value="10">Oktober</option>
       <option value="11">November</option><option value="12">Disember</option>
     </select>
-    <select id="filterYear2" onchange="renderHistory()" style="min-width:90px;"></select>
-    <button onclick="exportData()" class="btn-tool" style="background:var(--green);color:#000; margin-left:auto; font-weight:900;">💾 BACKUP JSON</button>
-    <button onclick="document.getElementById('importFile').click()" class="btn-tool" style="background:var(--yellow);color:#000; font-weight:900;">📂 IMPORT</button>
+    <select id="filterYear2" onchange="renderHistory()" style="min-width:80px;"></select>
+    <button onclick="exportData()" class="btn-tool backup" style="margin-left:auto;">💾 Backup</button>
+    <button onclick="document.getElementById('importFile').click()" class="btn-tool import">📂 Import</button>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
   </div>
   <div class="stmt-card">
@@ -681,8 +890,8 @@ tr:hover td { background: rgba(0,0,0,0.015); }
       <table class="txn-table">
         <thead>
           <tr>
-            <th style="width:110px;">Tarikh</th>
-            <th>Jenis / Kategori</th>
+            <th style="width:100px;">Tarikh</th>
+            <th>Kategori</th>
             <th>Keterangan</th>
             <th style="text-align:right;">Amaun (RM)</th>
             <th style="width:60px;"></th>
@@ -695,7 +904,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
         Tiada transaksi dijumpai. Mula rekod transaksi pertama anda!
       </div>
     </div>
-    <div id="txn_summary" style="padding:14px 10px; border-top:1px solid #e2e8f0; font-size:12px; color:#64748b; display:flex; gap:24px; flex-wrap:wrap;"></div>
+    <div id="txn_summary"></div>
   </div>
 </div>
 
@@ -703,7 +912,7 @@ tr:hover td { background: rgba(0,0,0,0.015); }
 <div class="modal-overlay" id="katalog_modal">
   <div class="modal-box">
     <div class="modal-header">
-      <div class="modal-title">📦 Katalog Item — Jualan & Belian</div>
+      <div class="modal-title">📦 Katalog Item</div>
       <button class="modal-close" onclick="tutupKatalog()">✕</button>
     </div>
     <div class="modal-body">
@@ -711,19 +920,16 @@ tr:hover td { background: rgba(0,0,0,0.015); }
       <table class="katalog-table">
         <thead>
           <tr>
-            <th>Nama Item</th>
-            <th>Jenis</th>
+            <th>Nama Item</th><th>Jenis</th>
             <th style="text-align:right;">Harga Terakhir (RM)</th>
-            <th>Kali Guna</th>
-            <th>Tarikh Terakhir</th>
-            <th></th>
+            <th>Kali Guna</th><th>Tarikh</th><th></th>
           </tr>
         </thead>
         <tbody id="katalog_body"></tbody>
       </table>
       <div id="katalog_empty" class="empty-state" style="display:none;">
         <div class="icon">📦</div>
-        Tiada item dalam katalog. Item akan ditambah secara automatik apabila anda menyimpan transaksi jualan atau belian.
+        Tiada item dalam katalog. Item akan ditambah apabila transaksi disimpan.
       </div>
     </div>
   </div>
@@ -731,39 +937,30 @@ tr:hover td { background: rgba(0,0,0,0.015); }
 
 <script>
 let db = JSON.parse(localStorage.getItem('biz_v18') || localStorage.getItem('biz_v17') || '[]');
-
-// Katalog item: { nama, hargaJual, hargaBeli, kaliJual, kaliBeli, tarikhTerakhir }
 let katalog = JSON.parse(localStorage.getItem('biz_katalog') || '{}');
 
-function simpanKatalog() {
-  localStorage.setItem('biz_katalog', JSON.stringify(katalog));
-}
+function simpanKatalog() { localStorage.setItem('biz_katalog', JSON.stringify(katalog)); }
 
 function kemaskiniKatalog(itemDetails, jenis) {
   const isJual = ['jual_tunai','jual_hutang','pulang_jual_tunai','pulang_jual_hutang'].includes(jenis);
   const isBeli = ['beli_tunai','beli_hutang','pulang_beli_tunai','pulang_beli_hutang'].includes(jenis);
   const tarikhHari = new Date().toISOString().split('T')[0];
-
   itemDetails.forEach(item => {
     const key = item.nama.toLowerCase().trim();
-    if(!katalog[key]) {
-      katalog[key] = { nama: item.nama, hargaJual: 0, hargaBeli: 0, kaliJual: 0, kaliBeli: 0, tarikhTerakhir: tarikhHari };
-    }
+    if(!katalog[key]) katalog[key] = { nama: item.nama, hargaJual:0, hargaBeli:0, kaliJual:0, kaliBeli:0, tarikhTerakhir: tarikhHari };
     katalog[key].tarikhTerakhir = tarikhHari;
-    katalog[key].nama = item.nama; // preserve latest casing
+    katalog[key].nama = item.nama;
     if(isJual) { katalog[key].hargaJual = item.harga; katalog[key].kaliJual++; }
     if(isBeli) { katalog[key].hargaBeli = item.harga; katalog[key].kaliBeli++; }
   });
   simpanKatalog();
 }
 
-// Migrate old data if needed
 db = db.map(d => ({ id: d.id || Date.now(), t: d.t, j: d.j, a: d.a, n: d.n || '' }));
 
 const cy = new Date().getFullYear();
 document.getElementById('headerDate').textContent = new Date().toLocaleDateString('ms-MY',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
 
-// Populate year dropdowns
 ['fTahun','fTahun2','fTahun3','filterYear2'].forEach(id => {
   const el = document.getElementById(id);
   if(el) for(let i=cy; i>=cy-3; i--) {
@@ -772,31 +969,26 @@ document.getElementById('headerDate').textContent = new Date().toLocaleDateStrin
   }
 });
 
-// Set today's date
-document.querySelectorAll('input[type="date"]').forEach(i => i.valueAsDate = new Date());
-
-function showTab(t) {
+function showTab(t, btn) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
-  event.target.classList.add('active');
+  if(btn) btn.classList.add('active');
   if(t === 'history') renderHistory();
   if(t === 'pnl' || t === 'bs' || t === 'cf') proses();
 }
 
-// Label mapping
 const JENIS_LABEL = {
-  jual_tunai: 'Jualan Tunai', jual_hutang: 'Jualan Hutang',
-  beli_tunai: 'Belian Tunai', beli_hutang: 'Belian Hutang',
-  pulang_jual_tunai: 'Pulangan Jualan Tunai', pulang_jual_hutang: 'Pulangan Jualan Hutang',
-  pulang_beli_tunai: 'Pulangan Belian Tunai', pulang_beli_hutang: 'Pulangan Belian Hutang',
-  b_gaji: 'Gaji & Upah', b_sewa: 'Sewa Premis', b_utiliti: 'Utiliti',
-  b_iklan: 'Pemasaran & Iklan', b_trans: 'Pengangkutan & Petrol',
-  b_am: 'Belanja Am & Pejabat', amb_tunai: 'Ambilan Tunai Pemilik',
-  amb_stok: 'Ambilan Stok Pemilik', modal: 'Modal Masuk', aset_tetap: 'Beli Aset Tetap',
-  pinjaman_bank: 'Pinjaman Bank', pinjaman_lain: 'Pinjaman Lain-lain',
-  bayar_pemiutang: 'Bayar Pemiutang', terima_penghutang: 'Terima Penghutang',
-  stok_akhir: 'Audit Stok Akhir', stok_awal: 'Stok Awal'
+  jual_tunai:'Jualan Tunai', jual_hutang:'Jualan Hutang',
+  beli_tunai:'Belian Tunai', beli_hutang:'Belian Hutang',
+  pulang_jual_tunai:'Pulangan Jualan Tunai', pulang_jual_hutang:'Pulangan Jualan Hutang',
+  pulang_beli_tunai:'Pulangan Belian Tunai', pulang_beli_hutang:'Pulangan Belian Hutang',
+  b_gaji:'Gaji & Upah', b_sewa:'Sewa Premis', b_utiliti:'Utiliti',
+  b_iklan:'Pemasaran & Iklan', b_trans:'Pengangkutan', b_am:'Belanja Am',
+  amb_tunai:'Ambilan Tunai', amb_stok:'Ambilan Stok', modal:'Modal Masuk',
+  aset_tetap:'Beli Aset Tetap', pinjaman_bank:'Pinjaman Bank', pinjaman_lain:'Pinjaman Lain',
+  bayar_pemiutang:'Bayar Pemiutang', terima_penghutang:'Terima Penghutang',
+  stok_akhir:'Stok Akhir', stok_awal:'Stok Awal'
 };
 
 function getBadge(j) {
@@ -808,19 +1000,16 @@ function getBadge(j) {
   return 'badge-blue';
 }
 
-// ---- INPUT TAB SWITCHING ----
 function switchInputTab(tab) {
   ['jual','beli','ops','modal'].forEach(t => {
     const btn = document.getElementById('itab_'+t);
     const wrap = document.getElementById('iwrap_'+t);
     if(btn) btn.classList.toggle('active', t===tab);
     if(wrap) wrap.style.display = (t===tab) ? 'block' : 'none';
-    // ops uses input-grid (flex)
-    if(t==='ops' && wrap) wrap.style.display = (t===tab) ? 'grid' : 'none';
   });
 }
 
-let itemCounters = { j: 0, b2: 0 };
+let itemCounters = { j:0, b2:0 };
 
 function tambahItem(prefix) {
   const idx = ++itemCounters[prefix];
@@ -828,18 +1017,15 @@ function tambahItem(prefix) {
   const row = document.createElement('div');
   row.className = 'item-row';
   row.id = prefix+'_row_'+idx;
-  const isJual = prefix === 'j';
   row.innerHTML = `
     <div class="item-input-wrap">
-      <input type="text" placeholder="Taip nama item..." id="${prefix}_nama_${idx}" 
-        oninput="cariKatalog('${prefix}',${idx})" 
-        onfocus="cariKatalog('${prefix}',${idx})"
+      <input type="text" placeholder="Nama item..." id="${prefix}_nama_${idx}" 
+        oninput="cariKatalog('${prefix}',${idx})" onfocus="cariKatalog('${prefix}',${idx})"
         onkeydown="naviDropdown(event,'${prefix}',${idx})"
-        onblur="setTimeout(()=>tutupDropdown('${prefix}',${idx}),200)"
-        autocomplete="off">
+        onblur="setTimeout(()=>tutupDropdown('${prefix}',${idx}),200)" autocomplete="off">
       <div class="item-dropdown" id="${prefix}_drop_${idx}"></div>
     </div>
-    <input type="number" placeholder="0" min="0" step="0.01" id="${prefix}_qty_${idx}" oninput="kiraJumlah('${prefix}',${idx})">
+    <input type="number" placeholder="Qty" min="0" step="0.01" id="${prefix}_qty_${idx}" oninput="kiraJumlah('${prefix}',${idx})">
     <input type="number" placeholder="0.00" min="0" step="0.01" id="${prefix}_harga_${idx}" oninput="kiraJumlah('${prefix}',${idx})">
     <div class="item-jumlah" id="${prefix}_jumlah_${idx}">0.00</div>
     <button class="btn-del-row" onclick="buangItem('${prefix}',${idx})">×</button>
@@ -871,47 +1057,29 @@ function buangItem(prefix, idx) {
   kiraTotal(prefix);
 }
 
-// ---- AUTOCOMPLETE KATALOG ----
-let dropdownActive = {}; // tracks active index per dropdown
+let dropdownActive = {};
 
 function cariKatalog(prefix, idx) {
   const input = document.getElementById(`${prefix}_nama_${idx}`);
   const drop = document.getElementById(`${prefix}_drop_${idx}`);
   if(!input || !drop) return;
-
   const q = input.value.toLowerCase().trim();
   const isJual = prefix === 'j';
-
-  const jenisEl = document.getElementById(prefix === 'j' ? 'j_jenis' : 'b2_jenis');
-  const jenis = jenisEl ? jenisEl.value : '';
-  const isPulangan = jenis.includes('pulang');
-
-  const allItems = Object.values(katalog)
-    .sort((a,b) => new Date(b.tarikhTerakhir) - new Date(a.tarikhTerakhir));
-
-  // Filter by query if typed, else show all
-  const matches = (q.length === 0 ? allItems : allItems.filter(k => k.nama.toLowerCase().includes(q))).slice(0, 10);
-
+  const allItems = Object.values(katalog).sort((a,b) => new Date(b.tarikhTerakhir)-new Date(a.tarikhTerakhir));
+  const matches = (q.length === 0 ? allItems : allItems.filter(k => k.nama.toLowerCase().includes(q))).slice(0,10);
   if(matches.length === 0) { drop.classList.remove('show'); return; }
-
   dropdownActive[`${prefix}_${idx}`] = -1;
-
-  drop.innerHTML = matches.map((k, i) => {
+  drop.innerHTML = matches.map((k,i) => {
     const harga = isJual ? k.hargaJual : k.hargaBeli;
     const kali = isJual ? k.kaliJual : k.kaliBeli;
-    const jenisLabel = isJual ? (k.kaliJual > 0 ? `${k.kaliJual}× jual` : 'Baru') : (k.kaliBeli > 0 ? `${k.kaliBeli}× beli` : 'Baru');
+    const jenisLabel = kali > 0 ? `${kali}×` : 'Baru';
     return `<div class="item-dropdown-item" data-idx="${i}" 
       onmousedown="pilihKatalog('${prefix}',${idx},'${k.nama.replace(/'/g,"\\'")}',${harga})"
       onmouseover="dropdownActive['${prefix}_${idx}']=${i};highlightDrop('${prefix}',${idx})">
-      <div>
-        <span class="item-dropdown-nama">${k.nama}</span>
-        <span class="item-dropdown-jenis" style="margin-left:6px;">${jenisLabel}</span>
-        ${isPulangan ? '<span class="item-dropdown-jenis" style="margin-left:4px;background:#fff7ed;color:#9a3412;">PULANGAN</span>' : ''}
-      </div>
+      <div><span class="item-dropdown-nama">${k.nama}</span><span class="item-dropdown-jenis">${jenisLabel}</span></div>
       <span class="item-dropdown-harga">${harga > 0 ? 'RM '+fmt(harga) : '—'}</span>
     </div>`;
   }).join('');
-
   drop.classList.add('show');
 }
 
@@ -919,9 +1087,7 @@ function highlightDrop(prefix, idx) {
   const drop = document.getElementById(`${prefix}_drop_${idx}`);
   if(!drop) return;
   const key = `${prefix}_${idx}`;
-  drop.querySelectorAll('.item-dropdown-item').forEach((el, i) => {
-    el.classList.toggle('active', i === dropdownActive[key]);
-  });
+  drop.querySelectorAll('.item-dropdown-item').forEach((el,i) => el.classList.toggle('active', i===dropdownActive[key]));
 }
 
 function naviDropdown(e, prefix, idx) {
@@ -929,606 +1095,409 @@ function naviDropdown(e, prefix, idx) {
   if(!drop || !drop.classList.contains('show')) return;
   const key = `${prefix}_${idx}`;
   const items = drop.querySelectorAll('.item-dropdown-item');
-  if(e.key === 'ArrowDown') {
-    e.preventDefault();
-    dropdownActive[key] = Math.min((dropdownActive[key]||0)+1, items.length-1);
-    highlightDrop(prefix, idx);
-  } else if(e.key === 'ArrowUp') {
-    e.preventDefault();
-    dropdownActive[key] = Math.max((dropdownActive[key]||0)-1, 0);
-    highlightDrop(prefix, idx);
-  } else if(e.key === 'Enter' || e.key === 'Tab') {
-    const active = dropdownActive[key];
-    if(active >= 0 && items[active]) {
-      e.preventDefault();
-      items[active].dispatchEvent(new MouseEvent('mousedown'));
-    }
-  } else if(e.key === 'Escape') {
-    tutupDropdown(prefix, idx);
-  }
+  if(e.key==='ArrowDown') { e.preventDefault(); dropdownActive[key]=Math.min((dropdownActive[key]||0)+1,items.length-1); highlightDrop(prefix,idx); }
+  else if(e.key==='ArrowUp') { e.preventDefault(); dropdownActive[key]=Math.max((dropdownActive[key]||0)-1,0); highlightDrop(prefix,idx); }
+  else if(e.key==='Enter'||e.key==='Tab') { const a=dropdownActive[key]; if(a>=0&&items[a]){e.preventDefault();items[a].dispatchEvent(new MouseEvent('mousedown'));} }
+  else if(e.key==='Escape') tutupDropdown(prefix,idx);
 }
 
 function pilihKatalog(prefix, idx, nama, harga) {
-  const namaEl = document.getElementById(`${prefix}_nama_${idx}`);
-  const hargaEl = document.getElementById(`${prefix}_harga_${idx}`);
-  const qtyEl = document.getElementById(`${prefix}_qty_${idx}`);
-  if(namaEl) namaEl.value = nama;
-  if(hargaEl && harga > 0) {
-    hargaEl.value = harga;
-    kiraJumlah(prefix, idx);
-  }
-  if(qtyEl && (!qtyEl.value || qtyEl.value == '0')) qtyEl.focus();
-  else if(hargaEl && (!hargaEl.value || hargaEl.value == '0')) hargaEl.focus();
-  tutupDropdown(prefix, idx);
+  const namaEl=document.getElementById(`${prefix}_nama_${idx}`);
+  const hargaEl=document.getElementById(`${prefix}_harga_${idx}`);
+  const qtyEl=document.getElementById(`${prefix}_qty_${idx}`);
+  if(namaEl) namaEl.value=nama;
+  if(hargaEl&&harga>0){hargaEl.value=harga;kiraJumlah(prefix,idx);}
+  if(qtyEl&&(!qtyEl.value||qtyEl.value=='0')) qtyEl.focus();
+  else if(hargaEl&&(!hargaEl.value||hargaEl.value=='0')) hargaEl.focus();
+  tutupDropdown(prefix,idx);
 }
 
 function tutupDropdown(prefix, idx) {
-  const drop = document.getElementById(`${prefix}_drop_${idx}`);
+  const drop=document.getElementById(`${prefix}_drop_${idx}`);
   if(drop) drop.classList.remove('show');
 }
 
-// ---- KATALOG MODAL ----
 function bukaKatalog() {
   document.getElementById('katalog_modal').classList.add('show');
   renderKatalog();
 }
-
-function tutupKatalog() {
-  document.getElementById('katalog_modal').classList.remove('show');
-}
+function tutupKatalog() { document.getElementById('katalog_modal').classList.remove('show'); }
 
 function renderKatalog() {
-  const q = (document.getElementById('katalog_cari')?.value || '').toLowerCase();
-  const tbody = document.getElementById('katalog_body');
-  const empty = document.getElementById('katalog_empty');
-
-  const items = Object.entries(katalog)
-    .filter(([k,v]) => !q || v.nama.toLowerCase().includes(q))
-    .sort((a,b) => new Date(b[1].tarikhTerakhir) - new Date(a[1].tarikhTerakhir));
-
-  if(items.length === 0) {
-    tbody.innerHTML = '';
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
-
-  tbody.innerHTML = items.map(([key, k]) => `
-    <tr>
-      <td><strong>${k.nama}</strong></td>
-      <td>
-        ${k.kaliJual > 0 ? `<span class="badge badge-green" style="margin-right:3px;">Jual ×${k.kaliJual}</span>` : ''}
-        ${k.kaliBeli > 0 ? `<span class="badge badge-red">Beli ×${k.kaliBeli}</span>` : ''}
-      </td>
-      <td style="text-align:right;">
-        <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap;">
-          ${k.kaliJual > 0 ? `<div style="display:flex;align-items:center;gap:4px;"><span style="font-size:10px;color:#64748b;">Jual:</span><input class="katalog-harga-input" type="number" value="${k.hargaJual}" onchange="editHargaKatalog('${key}','jual',this.value)" step="0.01"></div>` : ''}
-          ${k.kaliBeli > 0 ? `<div style="display:flex;align-items:center;gap:4px;"><span style="font-size:10px;color:#64748b;">Beli:</span><input class="katalog-harga-input" type="number" value="${k.hargaBeli}" onchange="editHargaKatalog('${key}','beli',this.value)" step="0.01"></div>` : ''}
-          ${k.kaliJual === 0 && k.kaliBeli === 0 ? `<input class="katalog-harga-input" type="number" value="0" disabled>` : ''}
-        </div>
-      </td>
-      <td style="color:#64748b;font-size:11px;">${k.kaliJual + k.kaliBeli} kali</td>
-      <td style="font-family:var(--mono);font-size:11px;color:#64748b;">${k.tarikhTerakhir}</td>
-      <td><button class="btn-del" onclick="padamKatalog('${key}')">PADAM</button></td>
-    </tr>
-  `).join('');
+  const q=(document.getElementById('katalog_cari')?.value||'').toLowerCase();
+  const tbody=document.getElementById('katalog_body');
+  const empty=document.getElementById('katalog_empty');
+  const items=Object.entries(katalog).filter(([k,v])=>!q||v.nama.toLowerCase().includes(q)).sort((a,b)=>new Date(b[1].tarikhTerakhir)-new Date(a[1].tarikhTerakhir));
+  if(items.length===0){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=items.map(([key,k])=>`<tr>
+    <td><strong style="color:var(--text)">${k.nama}</strong></td>
+    <td>${k.kaliJual>0?`<span class="badge badge-green" style="margin-right:3px;">Jual ×${k.kaliJual}</span>`:''}${k.kaliBeli>0?`<span class="badge badge-red">Beli ×${k.kaliBeli}</span>`:''}</td>
+    <td style="text-align:right;">
+      <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap;">
+        ${k.kaliJual>0?`<div style="display:flex;align-items:center;gap:4px;"><span style="font-size:10px;color:var(--text3);">Jual:</span><input class="katalog-harga-input" type="number" value="${k.hargaJual}" onchange="editHargaKatalog('${key}','jual',this.value)" step="0.01"></div>`:''}
+        ${k.kaliBeli>0?`<div style="display:flex;align-items:center;gap:4px;"><span style="font-size:10px;color:var(--text3);">Beli:</span><input class="katalog-harga-input" type="number" value="${k.hargaBeli}" onchange="editHargaKatalog('${key}','beli',this.value)" step="0.01"></div>`:''}
+      </div>
+    </td>
+    <td style="color:var(--text3);font-size:11px;">${k.kaliJual+k.kaliBeli} kali</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--text3);">${k.tarikhTerakhir}</td>
+    <td><button class="btn-del" onclick="padamKatalog('${key}')">PADAM</button></td>
+  </tr>`).join('');
 }
 
-function editHargaKatalog(key, jenis, val) {
+function editHargaKatalog(key,jenis,val){
   if(!katalog[key]) return;
-  const harga = parseFloat(val) || 0;
-  if(jenis === 'jual') katalog[key].hargaJual = harga;
-  else katalog[key].hargaBeli = harga;
-  simpanKatalog();
-  showAlert('✅ Harga katalog dikemaskini!');
+  const harga=parseFloat(val)||0;
+  if(jenis==='jual') katalog[key].hargaJual=harga; else katalog[key].hargaBeli=harga;
+  simpanKatalog(); showAlert('✅ Harga katalog dikemaskini!');
 }
 
-function padamKatalog(key) {
+function padamKatalog(key){
   if(!confirm(`Padam "${katalog[key]?.nama}" dari katalog?`)) return;
-  delete katalog[key];
-  simpanKatalog();
-  renderKatalog();
+  delete katalog[key]; simpanKatalog(); renderKatalog();
 }
 
 function rekodJualBeli(type) {
-  const prefix = type === 'jual' ? 'j' : 'b2';
-  const tarikh = document.getElementById(prefix+'_tarikh').value;
-  const jenis = document.getElementById(prefix+'_jenis').value;
-  const refField = type === 'jual' ? 'j_pelanggan' : 'b2_pembekal';
-  const ref = document.getElementById(refField)?.value.trim() || '';
-
-  if(!tarikh) { alert('Sila pilih tarikh!'); return; }
-
-  // Gather items
-  const itemEls = document.querySelectorAll(`[id^="${prefix}_row_"]`);
-  if(itemEls.length === 0) { alert('Sila tambah sekurang-kurangnya 1 item!'); return; }
-
-  let totalKeseluruhan = 0;
-  let itemDetails = [];
-  let valid = true;
-
-  itemEls.forEach(row => {
-    const idx = row.id.split('_').pop();
-    const nama = document.getElementById(`${prefix}_nama_${idx}`)?.value.trim() || '';
-    const qty = parseFloat(document.getElementById(`${prefix}_qty_${idx}`)?.value) || 0;
-    const harga = parseFloat(document.getElementById(`${prefix}_harga_${idx}`)?.value) || 0;
-    const jumlah = qty * harga;
-    if(!nama || qty <= 0 || harga <= 0) { valid = false; return; }
-    itemDetails.push({ nama, qty, harga, jumlah });
-    totalKeseluruhan += jumlah;
+  const prefix=type==='jual'?'j':'b2';
+  const tarikh=document.getElementById(prefix+'_tarikh').value;
+  const jenis=document.getElementById(prefix+'_jenis').value;
+  const refField=type==='jual'?'j_pelanggan':'b2_pembekal';
+  const ref=document.getElementById(refField)?.value.trim()||'';
+  if(!tarikh){alert('Sila pilih tarikh!');return;}
+  const itemEls=document.querySelectorAll(`[id^="${prefix}_row_"]`);
+  if(itemEls.length===0){alert('Sila tambah sekurang-kurangnya 1 item!');return;}
+  let totalKeseluruhan=0;let itemDetails=[];let valid=true;
+  itemEls.forEach(row=>{
+    const idx=row.id.split('_').pop();
+    const nama=document.getElementById(`${prefix}_nama_${idx}`)?.value.trim()||'';
+    const qty=parseFloat(document.getElementById(`${prefix}_qty_${idx}`)?.value)||0;
+    const harga=parseFloat(document.getElementById(`${prefix}_harga_${idx}`)?.value)||0;
+    const jumlah=qty*harga;
+    if(!nama||qty<=0||harga<=0){valid=false;return;}
+    itemDetails.push({nama,qty,harga,jumlah});totalKeseluruhan+=jumlah;
   });
-
-  if(!valid) { alert('Sila pastikan semua item mempunyai nama, kuantiti dan harga yang sah!'); return; }
-  if(totalKeseluruhan <= 0) { alert('Jumlah keseluruhan mesti lebih dari 0!'); return; }
-
-  // Format nota from items
-  const notaItems = itemDetails.map(i => `${i.nama} (${i.qty} x RM${i.harga.toFixed(2)})`).join(', ');
-  const nota = ref ? `${ref} | ${notaItems}` : notaItems;
-
-  // Save as one transaction with item breakdown
-  const entry = {
-    id: Date.now(),
-    t: tarikh,
-    j: jenis,
-    a: totalKeseluruhan,
-    n: nota,
-    items: itemDetails
-  };
-  db.push(entry);
-  kemaskiniKatalog(itemDetails, jenis);  // auto-save to item catalogue
-  save();
-
-  // Reset form
-  document.getElementById(prefix+'_items').innerHTML = '';
-  itemCounters[prefix] = 0;
-  document.getElementById(prefix+'_total_disp').textContent = 'RM 0.00';
-  if(document.getElementById(refField)) document.getElementById(refField).value = '';
-  showAlert(`✅ ${type==='jual'?'Jualan':'Belian'} RM ${totalKeseluruhan.toLocaleString('en-US',{minimumFractionDigits:2})} berjaya disimpan!`);
+  if(!valid){alert('Pastikan semua item mempunyai nama, kuantiti dan harga yang sah!');return;}
+  if(totalKeseluruhan<=0){alert('Jumlah mesti lebih dari 0!');return;}
+  const notaItems=itemDetails.map(i=>`${i.nama} (${i.qty} x RM${i.harga.toFixed(2)})`).join(', ');
+  const nota=ref?`${ref} | ${notaItems}`:notaItems;
+  db.push({id:Date.now(),t:tarikh,j:jenis,a:totalKeseluruhan,n:nota,items:itemDetails});
+  kemaskiniKatalog(itemDetails,jenis);save();
+  document.getElementById(prefix+'_items').innerHTML='';itemCounters[prefix]=0;
+  document.getElementById(prefix+'_total_disp').textContent='RM 0.00';
+  if(document.getElementById(refField)) document.getElementById(refField).value='';
+  showAlert(`✅ ${type==='jual'?'Jualan':'Belian'} RM ${totalKeseluruhan.toLocaleString('en-US',{minimumFractionDigits:2})} disimpan!`);
 }
 
-// ---- ORIGINAL rekod function (for ops & modal) ----
 function rekod(type) {
-  let entry = { id: Date.now() };
-  if(type === 'B') {
-    entry.t = document.getElementById('b_tarikh').value;
-    entry.j = document.getElementById('b_jenis').value;
-    entry.a = parseFloat(document.getElementById('b_amaun').value) || 0;
-    entry.n = document.getElementById('b_nota').value.trim();
-  } else if(type === 'A') {
-    entry.t = document.getElementById('a_tarikh').value;
-    entry.j = document.getElementById('a_jenis').value;
-    entry.a = parseFloat(document.getElementById('a_amaun').value) || 0;
-    entry.n = document.getElementById('a_nota').value.trim();
-  } else if(type === 'A2') {
-    entry.t = document.getElementById('a2_tarikh').value;
-    entry.j = document.getElementById('a2_jenis').value;
-    entry.a = parseFloat(document.getElementById('a2_amaun').value) || 0;
-    entry.n = document.getElementById('a2_nota').value.trim();
-  }
-  if(!entry.t) { alert('Sila pilih tarikh!'); return; }
-  if(entry.a <= 0 && !['stok_akhir','stok_awal'].includes(entry.j)) { alert('Sila masukkan amaun!'); return; }
-  db.push(entry);
-  save();
-  ['b_amaun','b_nota','a_amaun','a_nota','a2_amaun','a2_nota'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  showAlert('✅ Transaksi berjaya disimpan!');
+  let entry={id:Date.now()};
+  if(type==='B'){entry.t=document.getElementById('b_tarikh').value;entry.j=document.getElementById('b_jenis').value;entry.a=parseFloat(document.getElementById('b_amaun').value)||0;entry.n=document.getElementById('b_nota').value.trim();}
+  else if(type==='A2'){entry.t=document.getElementById('a2_tarikh').value;entry.j=document.getElementById('a2_jenis').value;entry.a=parseFloat(document.getElementById('a2_amaun').value)||0;entry.n=document.getElementById('a2_nota').value.trim();}
+  if(!entry.t){alert('Sila pilih tarikh!');return;}
+  if(entry.a<=0&&!['stok_akhir','stok_awal'].includes(entry.j)){alert('Sila masukkan amaun!');return;}
+  db.push(entry);save();
+  ['b_amaun','b_nota','a2_amaun','a2_nota'].forEach(id=>{const el=document.getElementById(id);if(el) el.value='';});
+  showAlert('✅ Transaksi disimpan!');
 }
 
-function hapus(id) {
+function hapus(id){
   if(!confirm('Padam transaksi ini?')) return;
-  db = db.filter(d => d.id !== id);
-  save();
-  renderHistory();
+  db=db.filter(d=>d.id!==id);save();renderHistory();
 }
 
-function save() {
-  localStorage.setItem('biz_v18', JSON.stringify(db));
-  proses();
-  renderKPI();
+function save(){localStorage.setItem('biz_v18',JSON.stringify(db));proses();renderKPI();}
+
+function showAlert(msg){
+  const a=document.createElement('div');
+  a.className='toast';a.textContent=msg;
+  document.body.appendChild(a);setTimeout(()=>a.remove(),2500);
 }
 
-function showAlert(msg) {
-  const a = document.createElement('div');
-  a.style.cssText = 'position:fixed;top:20px;right:20px;background:#0a7c42;color:#fff;padding:12px 20px;border-radius:8px;font-weight:800;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(10,124,66,0.3);';
-  a.textContent = msg;
-  document.body.appendChild(a);
-  setTimeout(() => a.remove(), 2500);
-}
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-function fmt(n) { return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function getSelTahun() { return document.getElementById('fTahun').value || String(cy); }
+function proses(){
+  const selT=document.getElementById('fTahun').value||String(cy);
+  const selB=document.getElementById('fBulan')?document.getElementById('fBulan').value:'semua';
 
-function proses() {
-  const selT = document.getElementById('fTahun').value || String(cy);
-  const selT2 = document.getElementById('fTahun2').value || String(cy);
-  const selT3 = document.getElementById('fTahun3').value || String(cy);
-  const selB = document.getElementById('fBulan') ? document.getElementById('fBulan').value : 'semua';
-  const selB2 = document.getElementById('fBulan2') ? document.getElementById('fBulan2').value : 'semua';
+  let cf=Array(12).fill(0).map(()=>({j_tunai:0,j_hutang_col:0,modal_masuk:0,pinj_bank:0,pinj_lain:0,terima_ph:0,beli_tunai:0,b_gaji:0,b_sewa:0,b_utiliti:0,b_iklan:0,b_trans:0,b_am:0,aset:0,amb_tunai:0,bayar_pu:0,pulang_jual_tunai:0,pulang_beli_tunai:0}));
+  let r={j:0,beli:0,sk:0,sa:0,mod:0,pinj_bank:0,pinj_lain:0,at:0,ambt:0,ambs:0,ph:0,pu:0,bayar_pu:0,terima_ph:0,bgaji:0,bsewa:0,butil:0,biklan:0,btrans:0,bam:0,pulang_jual:0,pulang_beli:0,pulang_ph:0};
 
-  // --- Build data structures ---
-  let cf = Array(12).fill(0).map(() => ({
-    j_tunai:0, j_hutang_col:0, modal_masuk:0, pinj_bank:0, pinj_lain:0, terima_ph:0,
-    beli_tunai:0, b_gaji:0, b_sewa:0, b_utiliti:0, b_iklan:0, b_trans:0, b_am:0,
-    aset:0, amb_tunai:0, bayar_pu:0,
-    pulang_jual_tunai:0, pulang_beli_tunai:0,
-  }));
-
-  let r = { j:0, beli:0, sk:0, sa:0, mod:0, pinj_bank:0, pinj_lain:0, at:0, ambt:0, ambs:0,
-    ph:0, pu:0, bayar_pu:0, terima_ph:0,
-    bgaji:0, bsewa:0, butil:0, biklan:0, btrans:0, bam:0,
-    pulang_jual:0, pulang_beli:0, pulang_ph:0 };
-
-  db.filter(d => d.t && d.t.startsWith(selT)).sort((a,b) => new Date(a.t)-new Date(b.t)).forEach(d => {
-    let mIdx = parseInt(d.t.split('-')[1]) - 1;
-    let val = d.a;
-
-    // Aliran Tunai: masuk/keluar terperinci
-    if(d.j === 'jual_tunai') cf[mIdx].j_tunai += val;
-    if(d.j === 'jual_hutang') cf[mIdx].j_hutang_col += 0; // non-cash, captured via terima_penghutang
-    if(d.j === 'pulang_jual_tunai') cf[mIdx].pulang_jual_tunai += val;  // cash outflow — refund tunai
-    if(d.j === 'pulang_beli_tunai') cf[mIdx].pulang_beli_tunai += val;  // cash inflow — terima balik duit
-    if(d.j === 'modal') cf[mIdx].modal_masuk += val;
-    if(d.j === 'pinjaman_bank') cf[mIdx].pinj_bank += val;
-    if(d.j === 'pinjaman_lain') cf[mIdx].pinj_lain += val;
-    if(d.j === 'terima_penghutang') cf[mIdx].terima_ph += val;
-    if(d.j === 'beli_tunai') cf[mIdx].beli_tunai += val;
-    if(d.j === 'b_gaji') cf[mIdx].b_gaji += val;
-    if(d.j === 'b_sewa') cf[mIdx].b_sewa += val;
-    if(d.j === 'b_utiliti') cf[mIdx].b_utiliti += val;
-    if(d.j === 'b_iklan') cf[mIdx].b_iklan += val;
-    if(d.j === 'b_trans') cf[mIdx].b_trans += val;
-    if(d.j === 'b_am') cf[mIdx].b_am += val;
-    if(d.j === 'aset_tetap') cf[mIdx].aset += val;
-    if(d.j === 'amb_tunai') cf[mIdx].amb_tunai += val;
-    if(d.j === 'bayar_pemiutang') cf[mIdx].bayar_pu += val;
+  db.filter(d=>d.t&&d.t.startsWith(selT)).sort((a,b)=>new Date(a.t)-new Date(b.t)).forEach(d=>{
+    let mIdx=parseInt(d.t.split('-')[1])-1;let val=d.a;
+    if(d.j==='jual_tunai') cf[mIdx].j_tunai+=val;
+    if(d.j==='pulang_jual_tunai') cf[mIdx].pulang_jual_tunai+=val;
+    if(d.j==='pulang_beli_tunai') cf[mIdx].pulang_beli_tunai+=val;
+    if(d.j==='modal') cf[mIdx].modal_masuk+=val;
+    if(d.j==='pinjaman_bank') cf[mIdx].pinj_bank+=val;
+    if(d.j==='pinjaman_lain') cf[mIdx].pinj_lain+=val;
+    if(d.j==='terima_penghutang') cf[mIdx].terima_ph+=val;
+    if(d.j==='beli_tunai') cf[mIdx].beli_tunai+=val;
+    if(d.j==='b_gaji') cf[mIdx].b_gaji+=val;if(d.j==='b_sewa') cf[mIdx].b_sewa+=val;
+    if(d.j==='b_utiliti') cf[mIdx].b_utiliti+=val;if(d.j==='b_iklan') cf[mIdx].b_iklan+=val;
+    if(d.j==='b_trans') cf[mIdx].b_trans+=val;if(d.j==='b_am') cf[mIdx].b_am+=val;
+    if(d.j==='aset_tetap') cf[mIdx].aset+=val;if(d.j==='amb_tunai') cf[mIdx].amb_tunai+=val;
+    if(d.j==='bayar_pemiutang') cf[mIdx].bayar_pu+=val;
   });
 
-  // P&L & BS (using separate year filter for BS)
-  db.filter(d => d.t && d.t.startsWith(selT)).sort((a,b) => new Date(a.t)-new Date(b.t)).forEach(d => {
-    let mIdx = parseInt(d.t.split('-')[1]) - 1;
-    let val = d.a;
-    const mStr = (mIdx+1).toString().padStart(2,'0');
-    if(selB === 'semua' || mStr === selB) {
-      if(d.j === 'jual_tunai' || d.j === 'jual_hutang') r.j += val;
-      if(d.j === 'beli_tunai' || d.j === 'beli_hutang') r.beli += val;
-      // Pulangan: tolak dari jualan/belian
-      if(d.j === 'pulang_jual_tunai' || d.j === 'pulang_jual_hutang') r.pulang_jual += val;
-      if(d.j === 'pulang_beli_tunai' || d.j === 'pulang_beli_hutang') r.pulang_beli += val;
-      // Pulangan jualan hutang → kurang penghutang
-      if(d.j === 'pulang_jual_hutang') r.pulang_ph += val;
-      if(d.j === 'stok_akhir') r.sk = val;
-      if(d.j === 'stok_awal') r.sa = val;
-      if(d.j === 'modal') r.mod += val;
-      if(d.j === 'aset_tetap') r.at += val;
-      if(d.j === 'amb_tunai') r.ambt += val;
-      if(d.j === 'amb_stok') r.ambs += val;
-      if(d.j === 'jual_hutang') r.ph += val;
-      if(d.j === 'beli_hutang') r.pu += val;
-      if(d.j === 'pinjaman_bank') r.pinj_bank += val;
-      if(d.j === 'pinjaman_lain') r.pinj_lain += val;
-      if(d.j === 'bayar_pemiutang') r.bayar_pu += val;
-      if(d.j === 'terima_penghutang') r.terima_ph += val;
-      if(d.j === 'b_gaji') r.bgaji += val;
-      if(d.j === 'b_sewa') r.bsewa += val;
-      if(d.j === 'b_utiliti') r.butil += val;
-      if(d.j === 'b_iklan') r.biklan += val;
-      if(d.j === 'b_trans') r.btrans += val;
-      if(d.j === 'b_am') r.bam += val;
+  db.filter(d=>d.t&&d.t.startsWith(selT)).forEach(d=>{
+    let mIdx=parseInt(d.t.split('-')[1])-1;let val=d.a;
+    const mStr=(mIdx+1).toString().padStart(2,'0');
+    if(selB==='semua'||mStr===selB){
+      if(d.j==='jual_tunai'||d.j==='jual_hutang') r.j+=val;
+      if(d.j==='beli_tunai'||d.j==='beli_hutang') r.beli+=val;
+      if(d.j==='pulang_jual_tunai'||d.j==='pulang_jual_hutang') r.pulang_jual+=val;
+      if(d.j==='pulang_beli_tunai'||d.j==='pulang_beli_hutang') r.pulang_beli+=val;
+      if(d.j==='pulang_jual_hutang') r.pulang_ph+=val;
+      if(d.j==='stok_akhir') r.sk=val;if(d.j==='stok_awal') r.sa=val;
+      if(d.j==='modal') r.mod+=val;if(d.j==='aset_tetap') r.at+=val;
+      if(d.j==='amb_tunai') r.ambt+=val;if(d.j==='amb_stok') r.ambs+=val;
+      if(d.j==='jual_hutang') r.ph+=val;if(d.j==='beli_hutang') r.pu+=val;
+      if(d.j==='pinjaman_bank') r.pinj_bank+=val;if(d.j==='pinjaman_lain') r.pinj_lain+=val;
+      if(d.j==='bayar_pemiutang') r.bayar_pu+=val;if(d.j==='terima_penghutang') r.terima_ph+=val;
+      if(d.j==='b_gaji') r.bgaji+=val;if(d.j==='b_sewa') r.bsewa+=val;
+      if(d.j==='b_utiliti') r.butil+=val;if(d.j==='b_iklan') r.biklan+=val;
+      if(d.j==='b_trans') r.btrans+=val;if(d.j==='b_am') r.bam+=val;
     }
   });
 
-  // P&L calculations
-  const jualBersih = r.j - r.pulang_jual;
-  const beliBersih = r.beli - r.pulang_beli;
-  const cogs = r.sa + beliBersih - r.ambs - r.sk;
-  const uk = jualBersih - cogs;
-  const totB = r.bgaji + r.bsewa + r.butil + r.biklan + r.btrans + r.bam;
-  const ub = uk - totB;
-  const gpm = jualBersih > 0 ? (uk/jualBersih*100) : 0;
-  const npm = jualBersih > 0 ? (ub/jualBersih*100) : 0;
+  const jualBersih=r.j-r.pulang_jual;const beliBersih=r.beli-r.pulang_beli;
+  const cogs=r.sa+beliBersih-r.ambs-r.sk;const uk=jualBersih-cogs;
+  const totB=r.bgaji+r.bsewa+r.butil+r.biklan+r.btrans+r.bam;const ub=uk-totB;
+  const gpm=jualBersih>0?(uk/jualBersih*100):0;const npm=jualBersih>0?(ub/jualBersih*100):0;
 
-  // P&L DOM
-  document.getElementById('r_jual').textContent = fmt(r.j);
-  document.getElementById('r_pulang_jual').textContent = r.pulang_jual > 0 ? `(${fmt(r.pulang_jual)})` : '(0.00)';
-  document.getElementById('r_jual_bersih').textContent = fmt(jualBersih);
-  document.getElementById('r_jual_bersih').className = 'val-col ' + (jualBersih>=0?'pos':'neg');
-  document.getElementById('r_sa').textContent = fmt(r.sa);
-  document.getElementById('r_beli').textContent = fmt(r.beli);
-  document.getElementById('r_pulang_beli').textContent = r.pulang_beli > 0 ? `(${fmt(r.pulang_beli)})` : '(0.00)';
-  document.getElementById('r_ambs').textContent = `(${fmt(r.ambs)})`;
-  document.getElementById('r_sk').textContent = `(${fmt(r.sk)})`;
-  document.getElementById('r_cogs').textContent = fmt(cogs);
-  document.getElementById('r_uk').textContent = fmt(uk);
-  document.getElementById('r_uk').className = 'val-col ' + (uk>=0?'pos':'neg');
-  document.getElementById('r_gpm').textContent = gpm.toFixed(1)+'%';
-  document.getElementById('r_bgaji').textContent = fmt(r.bgaji);
-  document.getElementById('r_bsewa').textContent = fmt(r.bsewa);
-  document.getElementById('r_butil').textContent = fmt(r.butil);
-  document.getElementById('r_biklan').textContent = fmt(r.biklan);
-  document.getElementById('r_btrans').textContent = fmt(r.btrans);
-  document.getElementById('r_bam').textContent = fmt(r.bam);
-  document.getElementById('r_totb').textContent = fmt(totB);
-  document.getElementById('r_ub').textContent = fmt(ub);
-  document.getElementById('r_ub').className = 'val-col ' + (ub>=0?'pos':'neg');
-  document.getElementById('r_npm').textContent = npm.toFixed(1)+'%';
-  document.getElementById('r_npm').className = 'val-col ' + (npm>=0?'pos':'neg');
+  document.getElementById('r_jual').textContent=fmt(r.j);
+  document.getElementById('r_pulang_jual').textContent=r.pulang_jual>0?`(${fmt(r.pulang_jual)})`:'(0.00)';
+  document.getElementById('r_jual_bersih').textContent=fmt(jualBersih);
+  document.getElementById('r_jual_bersih').className='val-col '+(jualBersih>=0?'pos':'neg');
+  document.getElementById('r_sa').textContent=fmt(r.sa);
+  document.getElementById('r_beli').textContent=fmt(r.beli);
+  document.getElementById('r_pulang_beli').textContent=r.pulang_beli>0?`(${fmt(r.pulang_beli)})`:'(0.00)';
+  document.getElementById('r_ambs').textContent=`(${fmt(r.ambs)})`;
+  document.getElementById('r_sk').textContent=`(${fmt(r.sk)})`;
+  document.getElementById('r_cogs').textContent=fmt(cogs);
+  document.getElementById('r_uk').textContent=fmt(uk);
+  document.getElementById('r_uk').className='val-col '+(uk>=0?'pos':'neg');
+  document.getElementById('r_gpm').textContent=gpm.toFixed(1)+'%';
+  document.getElementById('r_bgaji').textContent=fmt(r.bgaji);document.getElementById('r_bsewa').textContent=fmt(r.bsewa);
+  document.getElementById('r_butil').textContent=fmt(r.butil);document.getElementById('r_biklan').textContent=fmt(r.biklan);
+  document.getElementById('r_btrans').textContent=fmt(r.btrans);document.getElementById('r_bam').textContent=fmt(r.bam);
+  document.getElementById('r_totb').textContent=fmt(totB);
+  document.getElementById('r_ub').textContent=fmt(ub);
+  document.getElementById('r_ub').className='val-col '+(ub>=0?'pos':'neg');
+  document.getElementById('r_npm').textContent=npm.toFixed(1)+'%';
+  document.getElementById('r_npm').className='val-col '+(npm>=0?'pos':'neg');
 
-  // Cash flow: net per month
-  let carry = 0;
-  let cfMasuk = Array(12).fill(0), cfKeluar = Array(12).fill(0), cfAwal = Array(12).fill(0), cfAkhir = Array(12).fill(0);
-  for(let i=0; i<12; i++) {
-    cfAwal[i] = carry;
-    cfMasuk[i] = cf[i].j_tunai + cf[i].modal_masuk + cf[i].pinj_bank + cf[i].pinj_lain + cf[i].terima_ph + cf[i].pulang_beli_tunai;
-    cfKeluar[i] = cf[i].beli_tunai + cf[i].b_gaji + cf[i].b_sewa + cf[i].b_utiliti + cf[i].b_iklan + cf[i].b_trans + cf[i].b_am + cf[i].aset + cf[i].amb_tunai + cf[i].bayar_pu + cf[i].pulang_jual_tunai;
-    cfAkhir[i] = cfAwal[i] + cfMasuk[i] - cfKeluar[i];
-    carry = cfAkhir[i];
+  let carry=0;let cfMasuk=Array(12).fill(0),cfKeluar=Array(12).fill(0),cfAwal=Array(12).fill(0),cfAkhir=Array(12).fill(0);
+  for(let i=0;i<12;i++){
+    cfAwal[i]=carry;
+    cfMasuk[i]=cf[i].j_tunai+cf[i].modal_masuk+cf[i].pinj_bank+cf[i].pinj_lain+cf[i].terima_ph+cf[i].pulang_beli_tunai;
+    cfKeluar[i]=cf[i].beli_tunai+cf[i].b_gaji+cf[i].b_sewa+cf[i].b_utiliti+cf[i].b_iklan+cf[i].b_trans+cf[i].b_am+cf[i].aset+cf[i].amb_tunai+cf[i].bayar_pu+cf[i].pulang_jual_tunai;
+    cfAkhir[i]=cfAwal[i]+cfMasuk[i]-cfKeluar[i];carry=cfAkhir[i];
   }
 
-  // BS
-  const phNet = r.ph - r.terima_ph - r.pulang_ph;  // penghutang bersih (tolak pulangan jualan hutang)
-  const puNet = r.pu - r.bayar_pu - r.pulang_beli;  // pemiutang bersih (tolak pulangan belian hutang)
-  const mk = r.mod + ub - (r.ambt + r.ambs);
-  const totLiab = puNet + r.pinj_bank + r.pinj_lain;
-  const totAset = r.at + r.sk + phNet + carry;
+  const phNet=r.ph-r.terima_ph-r.pulang_ph;const puNet=r.pu-r.bayar_pu-r.pulang_beli;
+  const mk=r.mod+ub-(r.ambt+r.ambs);const totLiab=puNet+r.pinj_bank+r.pinj_lain;
+  const totAset=r.at+r.sk+phNet+carry;
 
-  document.getElementById('r_at').textContent = fmt(r.at);
-  document.getElementById('r_k_sk').textContent = fmt(r.sk);
-  document.getElementById('r_k_ph').textContent = fmt(phNet > 0 ? phNet : 0);
-  document.getElementById('r_k_tunai').textContent = fmt(carry);
-  document.getElementById('r_k_ta').textContent = fmt(totAset);
-  document.getElementById('r_k_mod').textContent = fmt(r.mod);
-  document.getElementById('r_k_ub').textContent = fmt(ub);
-  document.getElementById('r_k_ub').className = 'val-col ' + (ub>=0?'pos':'neg');
-  document.getElementById('r_k_ambt').textContent = `(${fmt(r.ambt)})`;
-  document.getElementById('r_k_ambs').textContent = `(${fmt(r.ambs)})`;
-  document.getElementById('r_k_ma').textContent = fmt(mk);
-  document.getElementById('r_k_pbank').textContent = fmt(r.pinj_bank);
-  document.getElementById('r_k_pu').textContent = fmt(puNet > 0 ? puNet : 0);
-  document.getElementById('r_k_plain').textContent = fmt(r.pinj_lain);
-  document.getElementById('r_k_totliab').textContent = fmt(totLiab);
-  document.getElementById('r_k_tle').textContent = fmt(mk + totLiab);
-  const balanced = Math.abs(totAset - (mk + totLiab)) < 0.01;
-  const chk = document.getElementById('r_k_check');
-  chk.textContent = balanced ? '✅ SEIMBANG' : `⚠️ Tidak Seimbang (Selisih: RM ${fmt(Math.abs(totAset-(mk+totLiab)))})`;
-  chk.className = 'val-col ' + (balanced ? 'pos' : 'neg');
+  document.getElementById('r_at').textContent=fmt(r.at);
+  document.getElementById('r_k_sk').textContent=fmt(r.sk);
+  document.getElementById('r_k_ph').textContent=fmt(phNet>0?phNet:0);
+  document.getElementById('r_k_tunai').textContent=fmt(carry);
+  document.getElementById('r_k_ta').textContent=fmt(totAset);
+  document.getElementById('r_k_mod').textContent=fmt(r.mod);
+  document.getElementById('r_k_ub').textContent=fmt(ub);
+  document.getElementById('r_k_ub').className='val-col '+(ub>=0?'pos':'neg');
+  document.getElementById('r_k_ambt').textContent=`(${fmt(r.ambt)})`;
+  document.getElementById('r_k_ambs').textContent=`(${fmt(r.ambs)})`;
+  document.getElementById('r_k_ma').textContent=fmt(mk);
+  document.getElementById('r_k_pbank').textContent=fmt(r.pinj_bank);
+  document.getElementById('r_k_pu').textContent=fmt(puNet>0?puNet:0);
+  document.getElementById('r_k_plain').textContent=fmt(r.pinj_lain);
+  document.getElementById('r_k_totliab').textContent=fmt(totLiab);
+  document.getElementById('r_k_tle').textContent=fmt(mk+totLiab);
+  const balanced=Math.abs(totAset-(mk+totLiab))<0.01;
+  const chk=document.getElementById('r_k_check');
+  chk.textContent=balanced?'✅ SEIMBANG':`⚠️ Tidak Seimbang (Selisih: RM ${fmt(Math.abs(totAset-(mk+totLiab)))})`;
+  chk.className='val-col '+(balanced?'pos':'neg');
 
-  // Build Cash Flow Table
-  const cfDef = [
-    { sec: 'AKTIVITI OPERASI - TUNAI MASUK', rows: null },
-    { label: 'Jualan Tunai Diterima', key: 'j_tunai', type: 'in' },
-    { label: 'Terima Bayaran Penghutang', key: 'terima_ph', type: 'in' },
-    { label: 'Terima Balik Pulangan Belian', key: 'pulang_beli_tunai', type: 'in' },
-    { sec: 'AKTIVITI OPERASI - TUNAI KELUAR', rows: null },
-    { label: 'Belian Tunai (Stok)', key: 'beli_tunai', type: 'out' },
-    { label: 'Bayar Balik Pulangan Jualan', key: 'pulang_jual_tunai', type: 'out' },
-    { label: 'Gaji & Upah', key: 'b_gaji', type: 'out' },
-    { label: 'Sewa Premis', key: 'b_sewa', type: 'out' },
-    { label: 'Utiliti (Air/Api/Internet)', key: 'b_utiliti', type: 'out' },
-    { label: 'Pemasaran & Iklan', key: 'b_iklan', type: 'out' },
-    { label: 'Pengangkutan & Petrol', key: 'b_trans', type: 'out' },
-    { label: 'Belanja Am & Pejabat', key: 'b_am', type: 'out' },
-    { label: 'Bayar Pemiutang', key: 'bayar_pu', type: 'out' },
-    { label: 'Ambilan Tunai Pemilik', key: 'amb_tunai', type: 'out' },
-    { sec: 'AKTIVITI PELABURAN', rows: null },
-    { label: 'Pembelian Aset Tetap', key: 'aset', type: 'out' },
-    { sec: 'AKTIVITI PEMBIAYAAN', rows: null },
-    { label: 'Modal Tunai Masuk', key: 'modal_masuk', type: 'in' },
-    { label: 'Pinjaman Bank Diterima', key: 'pinj_bank', type: 'in' },
-    { label: 'Pinjaman Lain-lain', key: 'pinj_lain', type: 'in' },
-    { special: 'net' },
-    { special: 'awal' },
-    { special: 'akhir' },
+  const cfDef=[
+    {sec:'AKTIVITI OPERASI — TUNAI MASUK'},
+    {label:'Jualan Tunai Diterima',key:'j_tunai',type:'in'},
+    {label:'Terima Bayaran Penghutang',key:'terima_ph',type:'in'},
+    {label:'Terima Balik Pulangan Belian',key:'pulang_beli_tunai',type:'in'},
+    {sec:'AKTIVITI OPERASI — TUNAI KELUAR'},
+    {label:'Belian Tunai (Stok)',key:'beli_tunai',type:'out'},
+    {label:'Bayar Balik Pulangan Jualan',key:'pulang_jual_tunai',type:'out'},
+    {label:'Gaji & Upah',key:'b_gaji',type:'out'},
+    {label:'Sewa Premis',key:'b_sewa',type:'out'},
+    {label:'Utiliti',key:'b_utiliti',type:'out'},
+    {label:'Pemasaran & Iklan',key:'b_iklan',type:'out'},
+    {label:'Pengangkutan & Petrol',key:'b_trans',type:'out'},
+    {label:'Belanja Am & Pejabat',key:'b_am',type:'out'},
+    {label:'Bayar Pemiutang',key:'bayar_pu',type:'out'},
+    {label:'Ambilan Tunai Pemilik',key:'amb_tunai',type:'out'},
+    {sec:'AKTIVITI PELABURAN'},
+    {label:'Pembelian Aset Tetap',key:'aset',type:'out'},
+    {sec:'AKTIVITI PEMBIAYAAN'},
+    {label:'Modal Tunai Masuk',key:'modal_masuk',type:'in'},
+    {label:'Pinjaman Bank Diterima',key:'pinj_bank',type:'in'},
+    {label:'Pinjaman Lain-lain',key:'pinj_lain',type:'in'},
+    {special:'net'},{special:'awal'},{special:'akhir'}
   ];
 
-  let html = '';
-  cfDef.forEach(row => {
-    if(row.sec) {
-      html += `<tr class="cf-section"><td colspan="13" class="row-label">${row.sec}</td></tr>`;
-    } else if(row.special === 'net') {
-      const netRow = cfMasuk.map((m,i) => cfMasuk[i]-cfKeluar[i]);
-      html += `<tr class="cf-total"><td class="row-label" style="color:#b7791f">ALIRAN TUNAI BERSIH</td>${netRow.map(v=>`<td class="month-val" style="color:${v>=0?'#0a7c42':'#c0392b'}">${fmt(v)}</td>`).join('')}</tr>`;
-    } else if(row.special === 'awal') {
-      html += `<tr><td class="row-label" style="color:#94a3b8">Baki Tunai Awal</td>${cfAwal.map(v=>`<td class="month-val" style="color:#94a3b8">${fmt(v)}</td>`).join('')}</tr>`;
-    } else if(row.special === 'akhir') {
-      html += `<tr class="cf-net"><td class="row-label">💰 BAKI TUNAI AKHIR</td>${cfAkhir.map(v=>`<td class="month-val" style="color:${v>=0?'#0a7c42':'#c0392b'}">${fmt(v)}</td>`).join('')}</tr>`;
+  let html='';
+  cfDef.forEach(row=>{
+    if(row.sec) html+=`<tr class="cf-section"><td colspan="13" class="row-label">${row.sec}</td></tr>`;
+    else if(row.special==='net'){
+      const netRow=cfMasuk.map((_,i)=>cfMasuk[i]-cfKeluar[i]);
+      html+=`<tr class="cf-total"><td class="row-label" style="color:var(--gold)">ALIRAN TUNAI BERSIH</td>${netRow.map(v=>`<td class="month-val" style="color:${v>=0?'var(--green)':'var(--red)'}">${fmt(v)}</td>`).join('')}</tr>`;
+    } else if(row.special==='awal'){
+      html+=`<tr><td class="row-label" style="color:var(--text3)">Baki Tunai Awal</td>${cfAwal.map(v=>`<td class="month-val" style="color:var(--text3)">${fmt(v)}</td>`).join('')}</tr>`;
+    } else if(row.special==='akhir'){
+      html+=`<tr class="cf-net"><td class="row-label">💰 BAKI TUNAI AKHIR</td>${cfAkhir.map(v=>`<td class="month-val" style="color:${v>=0?'var(--gold)':'var(--red)'}">${fmt(v)}</td>`).join('')}</tr>`;
     } else {
-      const vals = Array(12).fill(0).map((_, i) => cf[i][row.key] || 0);
-      const color = row.type === 'in' ? '#0a7c42' : '#c0392b';
-      const sign = row.type === 'out' ? '-' : '+';
-      const hasVal = vals.some(v => v > 0);
+      const vals=Array(12).fill(0).map((_,i)=>cf[i][row.key]||0);
+      const color=row.type==='in'?'var(--green)':'var(--red)';
+      const sign=row.type==='out'?'-':'+';
+      const hasVal=vals.some(v=>v>0);
       if(!hasVal) return;
-      html += `<tr class="sub-row"><td class="row-label" style="padding-left:20px;color:#64748b">${sign} ${row.label}</td>${vals.map(v=>`<td class="month-val" style="color:${v>0?color:'#94a3b8'}">${v>0?fmt(v):'-'}</td>`).join('')}</tr>`;
+      html+=`<tr class="sub-row"><td class="row-label" style="padding-left:20px;color:var(--text3)">${sign} ${row.label}</td>${vals.map(v=>`<td class="month-val" style="color:${v>0?color:'var(--text3)'}">${v>0?fmt(v):'-'}</td>`).join('')}</tr>`;
     }
   });
-  document.getElementById('cf_rows').innerHTML = html;
-
-  renderKPI(r, ub, carry, totAset, totLiab);
+  document.getElementById('cf_rows').innerHTML=html;
+  renderKPI(r,ub,carry,totAset,totLiab);
 }
 
-function renderKPI(r, ub, tunai, totAset, totLiab) {
-  if(!r) {
-    // Quick calc for input tab KPI
-    const selT = String(cy);
-    let rq = { j:0, bgaji:0, bsewa:0, butil:0, biklan:0, btrans:0, bam:0, beli:0, sk:0, sa:0, ambt:0, ambs:0, mod:0, at:0, ph:0, pu:0, pinj_bank:0, pinj_lain:0, bayar_pu:0, terima_ph:0, pulang_jual:0, pulang_beli:0, pulang_ph:0 };
-    db.filter(d => d.t && d.t.startsWith(selT)).forEach(d => {
-      if(d.j === 'jual_tunai' || d.j === 'jual_hutang') rq.j += d.a;
-      if(d.j === 'b_gaji') rq.bgaji += d.a; if(d.j === 'b_sewa') rq.bsewa += d.a;
-      if(d.j === 'b_utiliti') rq.butil += d.a; if(d.j === 'b_iklan') rq.biklan += d.a;
-      if(d.j === 'b_trans') rq.btrans += d.a; if(d.j === 'b_am') rq.bam += d.a;
-      if(d.j === 'beli_tunai' || d.j === 'beli_hutang') rq.beli += d.a;
-      if(d.j === 'stok_akhir') rq.sk = d.a; if(d.j === 'stok_awal') rq.sa = d.a;
-      if(d.j === 'amb_tunai') rq.ambt += d.a; if(d.j === 'amb_stok') rq.ambs += d.a;
-      if(d.j === 'modal') rq.mod += d.a; if(d.j === 'aset_tetap') rq.at += d.a;
-      if(d.j === 'pinjaman_bank') rq.pinj_bank += d.a; if(d.j === 'pinjaman_lain') rq.pinj_lain += d.a;
-      if(d.j === 'jual_hutang') rq.ph += d.a; if(d.j === 'beli_hutang') rq.pu += d.a;
-      if(d.j === 'bayar_pemiutang') rq.bayar_pu += d.a; if(d.j === 'terima_penghutang') rq.terima_ph += d.a;
-      if(d.j === 'pulang_jual_tunai' || d.j === 'pulang_jual_hutang') rq.pulang_jual += d.a;
-      if(d.j === 'pulang_beli_tunai' || d.j === 'pulang_beli_hutang') rq.pulang_beli += d.a;
-      if(d.j === 'pulang_jual_hutang') rq.pulang_ph += d.a;
+function renderKPI(r,ub,tunai,totAset,totLiab){
+  if(!r){
+    const selT=String(cy);
+    let rq={j:0,bgaji:0,bsewa:0,butil:0,biklan:0,btrans:0,bam:0,beli:0,sk:0,sa:0,ambt:0,ambs:0,mod:0,at:0,ph:0,pu:0,pinj_bank:0,pinj_lain:0,bayar_pu:0,terima_ph:0,pulang_jual:0,pulang_beli:0,pulang_ph:0};
+    db.filter(d=>d.t&&d.t.startsWith(selT)).forEach(d=>{
+      if(d.j==='jual_tunai'||d.j==='jual_hutang') rq.j+=d.a;
+      if(d.j==='b_gaji') rq.bgaji+=d.a;if(d.j==='b_sewa') rq.bsewa+=d.a;
+      if(d.j==='b_utiliti') rq.butil+=d.a;if(d.j==='b_iklan') rq.biklan+=d.a;
+      if(d.j==='b_trans') rq.btrans+=d.a;if(d.j==='b_am') rq.bam+=d.a;
+      if(d.j==='beli_tunai'||d.j==='beli_hutang') rq.beli+=d.a;
+      if(d.j==='stok_akhir') rq.sk=d.a;if(d.j==='stok_awal') rq.sa=d.a;
+      if(d.j==='amb_tunai') rq.ambt+=d.a;if(d.j==='amb_stok') rq.ambs+=d.a;
+      if(d.j==='modal') rq.mod+=d.a;if(d.j==='aset_tetap') rq.at+=d.a;
+      if(d.j==='pinjaman_bank') rq.pinj_bank+=d.a;if(d.j==='pinjaman_lain') rq.pinj_lain+=d.a;
+      if(d.j==='jual_hutang') rq.ph+=d.a;if(d.j==='beli_hutang') rq.pu+=d.a;
+      if(d.j==='bayar_pemiutang') rq.bayar_pu+=d.a;if(d.j==='terima_penghutang') rq.terima_ph+=d.a;
+      if(d.j==='pulang_jual_tunai'||d.j==='pulang_jual_hutang') rq.pulang_jual+=d.a;
+      if(d.j==='pulang_beli_tunai'||d.j==='pulang_beli_hutang') rq.pulang_beli+=d.a;
+      if(d.j==='pulang_jual_hutang') rq.pulang_ph+=d.a;
     });
-    const jualBersihQ = rq.j - rq.pulang_jual;
-    const beliBersihQ = rq.beli - rq.pulang_beli;
-    const cogsQ = rq.sa + beliBersihQ - rq.ambs - rq.sk;
-    const ukQ = jualBersihQ - cogsQ;
-    const totBQ = rq.bgaji + rq.bsewa + rq.butil + rq.biklan + rq.btrans + rq.bam;
-    const ubQ = ukQ - totBQ;
-    const phNet = rq.ph - rq.terima_ph - rq.pulang_ph;
-    const puNet = rq.pu - rq.bayar_pu - rq.pulang_beli;
-    r = rq; ub = ubQ; tunai = 0; totAset = rq.at + rq.sk + phNet + tunai; totLiab = puNet + rq.pinj_bank + rq.pinj_lain;
+    const jbQ=rq.j-rq.pulang_jual;const bbQ=rq.beli-rq.pulang_beli;
+    const cogsQ=rq.sa+bbQ-rq.ambs-rq.sk;const ukQ=jbQ-cogsQ;
+    const totBQ=rq.bgaji+rq.bsewa+rq.butil+rq.biklan+rq.btrans+rq.bam;const ubQ=ukQ-totBQ;
+    r=rq;ub=ubQ;tunai=0;totAset=rq.at+rq.sk+tunai;totLiab=rq.pu+rq.pinj_bank+rq.pinj_lain;
   }
-  const totB = (r.bgaji||0)+(r.bsewa||0)+(r.butil||0)+(r.biklan||0)+(r.btrans||0)+(r.bam||0);
-  const jualBersihKPI = (r.j||0) - (r.pulang_jual||0);
-  const npm = jualBersihKPI > 0 ? (ub/jualBersihKPI*100) : 0;
-  document.getElementById('kpi_strip').innerHTML = `
-    <div class="kpi-card"><div class="kpi-label">Jualan Bersih Tahun Ini</div><div class="kpi-val blu">RM ${fmt(jualBersihKPI)}</div><div class="kpi-sub">${db.filter(d=>d.t&&d.t.startsWith(String(cy))&&(d.j==='jual_tunai'||d.j==='jual_hutang')).length} transaksi</div></div>
+  const totB=(r.bgaji||0)+(r.bsewa||0)+(r.butil||0)+(r.biklan||0)+(r.btrans||0)+(r.bam||0);
+  const jualBersihKPI=(r.j||0)-(r.pulang_jual||0);
+  const npm=jualBersihKPI>0?(ub/jualBersihKPI*100):0;
+  document.getElementById('kpi_strip').innerHTML=`
+    <div class="kpi-card"><div class="kpi-label">Jualan Bersih</div><div class="kpi-val blu">RM ${fmt(jualBersihKPI)}</div><div class="kpi-sub">${db.filter(d=>d.t&&d.t.startsWith(String(cy))&&(d.j==='jual_tunai'||d.j==='jual_hutang')).length} transaksi tahun ini</div></div>
     <div class="kpi-card"><div class="kpi-label">Untung / (Rugi) Bersih</div><div class="kpi-val ${ub>=0?'pos':'neg'}">RM ${fmt(ub)}</div><div class="kpi-sub">Margin: ${npm.toFixed(1)}%</div></div>
     <div class="kpi-card"><div class="kpi-label">Jumlah Belanja</div><div class="kpi-val neg">RM ${fmt(totB)}</div><div class="kpi-sub">Operasi sahaja</div></div>
-    <div class="kpi-card"><div class="kpi-label">Jumlah Transaksi</div><div class="kpi-val neu">${db.length}</div><div class="kpi-sub">Semua rekod tersimpan</div></div>
+    <div class="kpi-card"><div class="kpi-label">Rekod Tersimpan</div><div class="kpi-val neu">${db.length}</div><div class="kpi-sub">Semua transaksi</div></div>
   `;
 
-  // --- UPDATE GAUGES ---
-  const maxGauge = Math.max(jualBersihKPI * 0.5, 5000, Math.abs(ub));
-  let angU = (ub / maxGauge) * 90;
-  angU = Math.max(-90, Math.min(90, angU));
-  const arcOffsetU = 251 - (((angU + 90) / 180) * 251);
-  const needleU = document.getElementById('gauge_ub_needle');
-  const arcU = document.getElementById('gauge_ub_arc');
-  if(needleU) needleU.setAttribute('transform', `rotate(${angU} 100 100)`);
-  if(arcU) {
-    arcU.setAttribute('stroke-dashoffset', arcOffsetU.toString());
-    arcU.setAttribute('stroke', ub >= 0 ? '#0a7c42' : '#c0392b');
-  }
-  const ubValEl = document.getElementById('gauge_ub_val');
-  if(ubValEl) { ubValEl.textContent = 'RM ' + fmt(ub); ubValEl.className = 'gauge-val ' + (ub>=0?'pos':'neg'); }
-  const ubSubEl = document.getElementById('gauge_ub_sub');
-  if(ubSubEl) ubSubEl.textContent = 'Margin Bersih: ' + npm.toFixed(1) + '%' + (ub>=0 ? ' ✅' : ' ⚠️ RUGI');
+  const maxGauge=Math.max(jualBersihKPI*0.5,5000,Math.abs(ub));
+  let angU=(ub/maxGauge)*90;angU=Math.max(-90,Math.min(90,angU));
+  const arcOffsetU=251-(((angU+90)/180)*251);
+  const needleU=document.getElementById('gauge_ub_needle');const arcU=document.getElementById('gauge_ub_arc');
+  if(needleU) needleU.setAttribute('transform',`rotate(${angU} 100 100)`);
+  if(arcU){arcU.setAttribute('stroke-dashoffset',arcOffsetU.toString());arcU.setAttribute('stroke',ub>=0?'#22c97a':'#f0554a');}
+  const ubValEl=document.getElementById('gauge_ub_val');
+  if(ubValEl){ubValEl.textContent='RM '+fmt(ub);ubValEl.className='gauge-val '+(ub>=0?'pos':'neg');}
+  const ubSubEl=document.getElementById('gauge_ub_sub');
+  if(ubSubEl) ubSubEl.textContent='Margin Bersih: '+npm.toFixed(1)+'%'+(ub>=0?' ✅':' ⚠️ RUGI');
 
-  // Gauge 2: Titik Pulang Modal
-  // TPM = Kos Tetap / (1 - Kos Berubah/Jualan)
-  // Simplified: kos tetap = gaji+sewa+utiliti, kos berubah = COGS
-  const cogsKPI = (r.sa||0) + ((r.beli||0)-(r.pulang_beli||0)) - (r.ambs||0) - (r.sk||0);
-  const kostetap = (r.bgaji||0) + (r.bsewa||0) + (r.butil||0) + (r.biklan||0) + (r.btrans||0) + (r.bam||0);
-  const tpm = jualBersihKPI > 0 ? (cogsKPI / jualBersihKPI) : 0;
-  const contrib = 1 - tpm;
-  const tpmRM = contrib > 0 ? (kostetap / contrib) : 0;
-  const tpmPct = jualBersihKPI > 0 ? (tpmRM / jualBersihKPI * 100) : 0;
-  const jualanLebihTPM = jualBersihKPI - tpmRM;
-  let angT = ((tpmPct / 100) * 180) - 90; // 0% at left, 100% at right
-  angT = Math.max(-90, Math.min(90, angT));
-  const arcOffsetT = 251 - (((angT + 90) / 180) * 251);
-  const needleT = document.getElementById('gauge_tpm_needle');
-  const arcT = document.getElementById('gauge_tpm_arc');
-  if(needleT) needleT.setAttribute('transform', `rotate(${angT} 100 100)`);
-  if(arcT) arcT.setAttribute('stroke-dashoffset', arcOffsetT.toString());
-  const tpmValEl = document.getElementById('gauge_tpm_val');
-  if(tpmValEl) { tpmValEl.textContent = 'RM ' + fmt(tpmRM); }
-  const tpmSubEl = document.getElementById('gauge_tpm_sub');
-  if(tpmSubEl) {
-    if(jualBersihKPI <= 0) { tpmSubEl.textContent = 'Masukkan data jualan untuk kira TPM'; }
-    else if(jualanLebihTPM >= 0) { tpmSubEl.textContent = `Jualan melebihi TPM RM ${fmt(jualanLebihTPM)} ✅`; }
-    else { tpmSubEl.textContent = `Perlukan lagi RM ${fmt(Math.abs(jualanLebihTPM))} untuk capai TPM ⚠️`; }
+  const cogsKPI=(r.sa||0)+((r.beli||0)-(r.pulang_beli||0))-(r.ambs||0)-(r.sk||0);
+  const kostetap=(r.bgaji||0)+(r.bsewa||0)+(r.butil||0)+(r.biklan||0)+(r.btrans||0)+(r.bam||0);
+  const tpm=jualBersihKPI>0?(cogsKPI/jualBersihKPI):0;const contrib=1-tpm;
+  const tpmRM=contrib>0?(kostetap/contrib):0;const tpmPct=jualBersihKPI>0?(tpmRM/jualBersihKPI*100):0;
+  const jualanLebihTPM=jualBersihKPI-tpmRM;
+  let angT=((tpmPct/100)*180)-90;angT=Math.max(-90,Math.min(90,angT));
+  const arcOffsetT=251-(((angT+90)/180)*251);
+  const needleT=document.getElementById('gauge_tpm_needle');const arcT=document.getElementById('gauge_tpm_arc');
+  if(needleT) needleT.setAttribute('transform',`rotate(${angT} 100 100)`);
+  if(arcT) arcT.setAttribute('stroke-dashoffset',arcOffsetT.toString());
+  const tpmValEl=document.getElementById('gauge_tpm_val');if(tpmValEl) tpmValEl.textContent='RM '+fmt(tpmRM);
+  const tpmSubEl=document.getElementById('gauge_tpm_sub');
+  if(tpmSubEl){
+    if(jualBersihKPI<=0) tpmSubEl.textContent='Masukkan data jualan untuk kira TPM';
+    else if(jualanLebihTPM>=0) tpmSubEl.textContent=`Melebihi TPM sebanyak RM ${fmt(jualanLebihTPM)} ✅`;
+    else tpmSubEl.textContent=`Perlukan lagi RM ${fmt(Math.abs(jualanLebihTPM))} untuk TPM ⚠️`;
   }
 }
 
-function renderHistory() {
-  const search = document.getElementById('searchTxn').value.toLowerCase();
-  const cat = document.getElementById('filterCat').value;
-  const mon = document.getElementById('filterMonth').value;
-  const yr = document.getElementById('filterYear2').value;
-
-  let filtered = [...db].sort((a,b) => new Date(b.t)-new Date(a.t));
-  if(search) filtered = filtered.filter(d => (JENIS_LABEL[d.j]||d.j).toLowerCase().includes(search) || (d.n||'').toLowerCase().includes(search));
-  if(cat) filtered = filtered.filter(d => d.j === cat);
-  if(mon) filtered = filtered.filter(d => d.t && d.t.split('-')[1] === mon);
-  if(yr) filtered = filtered.filter(d => d.t && d.t.startsWith(yr));
-
-  const body = document.getElementById('txn_body');
-  const empty = document.getElementById('txn_empty');
-
-  if(filtered.length === 0) {
-    body.innerHTML = '';
-    empty.style.display = 'block';
-    document.getElementById('txn_summary').innerHTML = '';
-    return;
-  }
-  empty.style.display = 'none';
-
-  let totalIn = 0, totalOut = 0;
-  filtered.forEach(d => {
-    if(['jual_tunai','jual_hutang','modal','pinjaman_bank','pinjaman_lain','terima_penghutang'].includes(d.j)) totalIn += d.a;
-    else totalOut += d.a;
+function renderHistory(){
+  const search=document.getElementById('searchTxn').value.toLowerCase();
+  const cat=document.getElementById('filterCat').value;
+  const mon=document.getElementById('filterMonth').value;
+  const yr=document.getElementById('filterYear2').value;
+  let filtered=[...db].sort((a,b)=>new Date(b.t)-new Date(a.t));
+  if(search) filtered=filtered.filter(d=>(JENIS_LABEL[d.j]||d.j).toLowerCase().includes(search)||(d.n||'').toLowerCase().includes(search));
+  if(cat) filtered=filtered.filter(d=>d.j===cat);
+  if(mon) filtered=filtered.filter(d=>d.t&&d.t.split('-')[1]===mon);
+  if(yr) filtered=filtered.filter(d=>d.t&&d.t.startsWith(yr));
+  const body=document.getElementById('txn_body');const empty=document.getElementById('txn_empty');
+  if(filtered.length===0){body.innerHTML='';empty.style.display='block';document.getElementById('txn_summary').innerHTML='';return;}
+  empty.style.display='none';
+  let totalIn=0,totalOut=0;
+  filtered.forEach(d=>{
+    if(['jual_tunai','jual_hutang','modal','pinjaman_bank','pinjaman_lain','terima_penghutang'].includes(d.j)) totalIn+=d.a;
+    else totalOut+=d.a;
   });
-
-  body.innerHTML = filtered.map(d => {
-    const isIn = ['jual_tunai','jual_hutang','modal','pinjaman_bank','pinjaman_lain','terima_penghutang'].includes(d.j);
-    const itemHtml = d.items && d.items.length ? `
-      <div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px;">
-        ${d.items.map(i=>`<span style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;padding:2px 7px;font-size:10px;color:#475569;font-family:var(--mono);">${i.nama} × ${i.qty} @ RM${i.harga.toFixed(2)}</span>`).join('')}
-      </div>` : '';
-    return `
-    <tr>
-      <td style="font-family:var(--mono);color:#64748b;font-size:11px;white-space:nowrap;">${d.t}</td>
+  body.innerHTML=filtered.map(d=>{
+    const isIn=['jual_tunai','jual_hutang','modal','pinjaman_bank','pinjaman_lain','terima_penghutang'].includes(d.j);
+    const itemHtml=d.items&&d.items.length?`<div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:3px;">${d.items.map(i=>`<span style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:10px;color:var(--text3);font-family:var(--mono);">${i.nama} ×${i.qty} @ RM${i.harga.toFixed(2)}</span>`).join('')}</div>`:'';
+    return `<tr>
+      <td style="font-family:var(--mono);color:var(--text3);font-size:11px;white-space:nowrap;">${d.t}</td>
       <td><span class="badge ${getBadge(d.j)}">${JENIS_LABEL[d.j]||d.j}</span></td>
-      <td style="color:#64748b;font-size:11px;">${d.n || '—'}${itemHtml}</td>
+      <td style="color:var(--text3);font-size:11px;">${d.n||'—'}${itemHtml}</td>
       <td class="amount ${isIn?'pos':'neg'}">RM ${fmt(d.a)}</td>
-      <td><button class="btn-del" onclick="hapus(${d.id})">PADAM</button></td>
+      <td><button class="btn-del" onclick="hapus(${d.id})">×</button></td>
     </tr>`;
   }).join('');
-
-  document.getElementById('txn_summary').innerHTML = `
-    <span style="color:#475569">Jumlah rekod: <strong>${filtered.length}</strong></span>
-    <span>Masuk: <strong style="color:#0a7c42">RM ${fmt(totalIn)}</strong></span>
-    <span>Keluar: <strong style="color:#c0392b">RM ${fmt(totalOut)}</strong></span>
-    <span>Bersih: <strong style="color:${(totalIn-totalOut)>=0?'#0a7c42':'#c0392b'}">RM ${fmt(totalIn-totalOut)}</strong></span>
+  document.getElementById('txn_summary').innerHTML=`
+    <span style="color:var(--text3)">Rekod: <strong style="color:var(--text2)">${filtered.length}</strong></span>
+    <span>Masuk: <strong style="color:var(--green)">RM ${fmt(totalIn)}</strong></span>
+    <span>Keluar: <strong style="color:var(--red)">RM ${fmt(totalOut)}</strong></span>
+    <span>Bersih: <strong style="color:${(totalIn-totalOut)>=0?'var(--green)':'var(--red)'}">RM ${fmt(totalIn-totalOut)}</strong></span>
   `;
 }
 
-function exportData() {
-  const b = new Blob([JSON.stringify(db,null,2)], {type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(b);
-  a.download = `Biz_PNP_${new Date().toISOString().split('T')[0]}.json`; a.click();
+function exportData(){
+  const b=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download=`PNP_${new Date().toISOString().split('T')[0]}.json`;a.click();
 }
 
-function importData(e) {
-  const file = e.target.files[0];
-  if(!file) return;
-  const r = new FileReader();
-  r.onload = ev => {
-    try {
-      const imported = JSON.parse(ev.target.result);
-      if(Array.isArray(imported)) {
-        if(confirm(`Import ${imported.length} rekod? Data sedia ada akan digabungkan.`)) {
-          imported.forEach(d => { if(!db.find(x => x.id === d.id)) db.push(d); });
-          save(); renderHistory();
-          showAlert(`✅ ${imported.length} rekod berjaya diimport!`);
+function importData(e){
+  const file=e.target.files[0];if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const imported=JSON.parse(ev.target.result);
+      if(Array.isArray(imported)){
+        if(confirm(`Import ${imported.length} rekod? Data sedia ada akan digabungkan.`)){
+          imported.forEach(d=>{if(!db.find(x=>x.id===d.id)) db.push(d);});
+          save();renderHistory();showAlert(`✅ ${imported.length} rekod berjaya diimport!`);
         }
       }
-    } catch { alert('Fail JSON tidak sah!'); }
+    }catch{alert('Fail JSON tidak sah!');}
   };
-  r.readAsText(file);
-  e.target.value = '';
+  r.readAsText(file);e.target.value='';
 }
 
 // Init
-const todayStr = new Date().toISOString().split('T')[0];
-['j_tarikh','b2_tarikh','a2_tarikh'].forEach(id => {
-  const el = document.getElementById(id);
-  if(el) el.value = todayStr;
-});
-
-// Build katalog from existing db transactions if katalog is empty
-if(Object.keys(katalog).length === 0) {
-  db.forEach(d => {
-    if(d.items && d.items.length > 0) {
-      kemaskiniKatalog(d.items, d.j);
-    }
-  });
-}
-
-tambahItem('j');
-tambahItem('b2');
-proses();
-renderKPI();
-renderHistory();
+const todayStr=new Date().toISOString().split('T')[0];
+['j_tarikh','b2_tarikh','a2_tarikh','b_tarikh'].forEach(id=>{const el=document.getElementById(id);if(el) el.value=todayStr;});
+if(Object.keys(katalog).length===0) db.forEach(d=>{if(d.items&&d.items.length>0) kemaskiniKatalog(d.items,d.j);});
+tambahItem('j');tambahItem('b2');
+proses();renderKPI();renderHistory();
 </script>
 </body>
 </html>
