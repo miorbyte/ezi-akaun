@@ -1222,7 +1222,8 @@ function simpanKatalog() { localStorage.setItem('biz_katalog', JSON.stringify(ka
 function kemaskiniKatalog(itemDetails, jenis) {
   const isJual = ['jual_tunai','jual_hutang','pulang_jual_tunai','pulang_jual_hutang'].includes(jenis);
   const isBeli = ['beli_tunai','beli_hutang','pulang_beli_tunai','pulang_beli_hutang'].includes(jenis);
-  const tarikhHari = new Date().toISOString().split('T')[0];
+  const _t = new Date();
+  const tarikhHari = _t.getFullYear()+'-'+String(_t.getMonth()+1).padStart(2,'0')+'-'+String(_t.getDate()).padStart(2,'0');
   itemDetails.forEach(item => {
     const key = item.nama.toLowerCase().trim();
     if(!katalog[key]) katalog[key] = { nama: item.nama, hargaJual:0, hargaBeli:0, kaliJual:0, kaliBeli:0, tarikhTerakhir: tarikhHari };
@@ -1547,7 +1548,9 @@ function setDashView(view, btn) {
 
 function renderDashboard() {
   const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
+  const todayStr = today.getFullYear() + '-' +
+    String(today.getMonth()+1).padStart(2,'0') + '-' +
+    String(today.getDate()).padStart(2,'0');
 
   const jam = today.getHours();
   const salamSemasa = jam < 12 ? 'Selamat Pagi' : jam < 17 ? 'Selamat Tengah Hari' : 'Selamat Petang';
@@ -1564,8 +1567,8 @@ function renderDashboard() {
     filterFn = d => d.t === todayStr;
     const days7 = [];
     for(let i=6;i>=0;i--){
-      const d = new Date(today); d.setDate(d.getDate()-i);
-      days7.push(d.toISOString().split('T')[0]);
+      const d2 = new Date(today); d2.setDate(d2.getDate()-i);
+      days7.push(d2.getFullYear()+'-'+String(d2.getMonth()+1).padStart(2,'0')+'-'+String(d2.getDate()).padStart(2,'0'));
     }
     chartLabels = days7.map(d => { const p=d.split('-'); return p[2]+'/'+p[1]; });
     chartData = days7.map(d => {
@@ -1589,8 +1592,8 @@ function renderDashboard() {
     const weekStart = new Date(today); weekStart.setDate(today.getDate()-dayOfWeek);
     const week7 = [];
     for(let i=0;i<7;i++){
-      const d = new Date(weekStart); d.setDate(weekStart.getDate()+i);
-      week7.push(d.toISOString().split('T')[0]);
+      const d2 = new Date(weekStart); d2.setDate(weekStart.getDate()+i);
+      week7.push(d2.getFullYear()+'-'+String(d2.getMonth()+1).padStart(2,'0')+'-'+String(d2.getDate()).padStart(2,'0'));
     }
     filterFn = d => week7.includes(d.t);
     const dayNames = ['Isn','Sel','Rab','Kha','Jum','Sab','Ahd'];
@@ -2073,7 +2076,8 @@ function importData(e){
 }
 
 // Init
-const todayStr=new Date().toISOString().split('T')[0];
+const _tn = new Date();
+const todayStr = _tn.getFullYear()+'-'+String(_tn.getMonth()+1).padStart(2,'0')+'-'+String(_tn.getDate()).padStart(2,'0');
 ['j_tarikh','b2_tarikh','a2_tarikh','b_tarikh'].forEach(id=>{const el=document.getElementById(id);if(el) el.value=todayStr;});
 if(Object.keys(katalog).length===0) db.forEach(d=>{if(d.items&&d.items.length>0) kemaskiniKatalog(d.items,d.j);});
 tambahItem('j');tambahItem('b2');
