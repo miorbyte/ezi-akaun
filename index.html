@@ -670,6 +670,29 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   background: var(--surface2); border-radius: 0 0 var(--radius) var(--radius);
 }
 
+/* ── PRINT HEADER ── */
+.print-header {
+  display: none;
+}
+@media print {
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #000;
+  }
+  .print-header-company {
+    font-size: 16pt; font-weight: bold; text-transform: uppercase; color: #000;
+    letter-spacing: 1px;
+  }
+  .print-header-doc {
+    font-size: 12pt; font-weight: bold; color: #000; margin-top: 4px;
+  }
+  .print-header-period {
+    font-size: 10pt; color: #333; margin-top: 2px; font-style: italic;
+  }
+}
 @media print {
   body { background: white !important; color: #000 !important; }
   .no-print, .print-bar, .nav-tabs, .app-header,
@@ -692,6 +715,13 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <div class="header-date" id="headerDate"></div>
 </div>
 
+<!-- PRINT HEADER (hidden on screen, shown on print) -->
+<div class="print-header" id="printHeader">
+  <div class="print-header-company" id="ph_company">NAMA PERNIAGAAN</div>
+  <div class="print-header-doc" id="ph_doc">—</div>
+  <div class="print-header-period" id="ph_period">—</div>
+</div>
+
 <!-- NAV -->
 <div class="nav-tabs no-print">
   <button class="tab-btn active" onclick="showTab('input',this)">📊 Dashboard</button>
@@ -699,7 +729,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <button class="tab-btn" onclick="showTab('pnl',this)">📈 Untung Rugi</button>
   <button class="tab-btn" onclick="showTab('bs',this)">🏛️ Kunci Kira</button>
   <button class="tab-btn" onclick="showTab('cf',this)">💸 Aliran Tunai</button>
-  <button class="tab-btn" onclick="showTab('history',this)">📋 Sejarah</button>
+  <button class="tab-btn" onclick="showTab('history',this)">📋 Lejar Transaksi</button>
 </div>
 
 <!-- ======================== TAB: DASHBOARD ======================== -->
@@ -993,7 +1023,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
   <div class="stmt-grid">
     <div class="stmt-card" id="pnl_card">
-      <div class="stmt-title">Penyata Untung Rugi</div>
+      <div class="stmt-title" id="pnl_doc_title">Penyata Untung Rugi</div>
       <table>
         <tr><td class="label-col">Jualan (Hasilan)</td><td class="val-col pos" id="r_jual">0.00</td></tr>
         <tr class="sub-row"><td class="label-col" style="padding-left:16px;">(-) Pulangan Jualan</td><td class="val-col neg" id="r_pulang_jual">(0.00)</td></tr>
@@ -1043,7 +1073,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
   <div class="stmt-grid">
     <div class="stmt-card">
-      <div class="stmt-title">Kunci Kira-Kira (Balance Sheet)</div>
+      <div class="stmt-title" id="bs_doc_title">Kunci Kira-Kira (Balance Sheet)</div>
       <table>
         <tr class="sec-head"><td colspan="2">ASET BUKAN SEMASA</td></tr>
         <tr><td class="label-col">Aset Tetap (Kos Perolehan)</td><td class="val-col" id="r_at">0.00</td></tr>
@@ -1081,7 +1111,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <button onclick="window.print()" class="btn-print">📄 Cetak / PDF</button>
   </div>
   <div class="stmt-card">
-    <div class="stmt-title">Penyata Aliran Tunai Terperinci (Jan - Dis)</div>
+    <div class="stmt-title" id="cf_doc_title">Penyata Aliran Tunai Terperinci (Jan - Dis)</div>
     <div class="cf-wrap">
       <table class="cf-table">
         <thead>
@@ -1133,7 +1163,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
   </div>
   <div class="stmt-card">
-    <div class="stmt-title">Sejarah Semua Transaksi</div>
+    <div class="stmt-title">Lejar Transaksi Perniagaan</div>
     <div class="txn-table-wrap">
       <table class="txn-table">
         <thead>
@@ -1227,6 +1257,43 @@ function showTab(t, btn) {
   if(t === 'history') renderHistory();
   if(t === 'pnl' || t === 'bs' || t === 'cf') proses();
   if(t === 'input') renderDashboard();
+  kemaskiniPrintHeader(t);
+}
+
+function kemaskiniPrintHeader(tab) {
+  const syarikat = document.getElementById('namaSyarikat').value || 'NAMA PERNIAGAAN';
+  document.getElementById('ph_company').textContent = syarikat.toUpperCase();
+
+  const tahunPNL = document.getElementById('fTahun')?.value || String(cy);
+  const bulanPNL = document.getElementById('fBulan')?.value || 'semua';
+  const tahunBS  = document.getElementById('fTahun2')?.value || String(cy);
+  const bulanBS  = document.getElementById('fBulan2')?.value || 'semua';
+  const tahunCF  = document.getElementById('fTahun3')?.value || String(cy);
+
+  const bulanNama = {
+    '01':'Januari','02':'Februari','03':'Mac','04':'April','05':'Mei','06':'Jun',
+    '07':'Julai','08':'Ogos','09':'September','10':'Oktober','11':'November','12':'Disember'
+  };
+
+  if(tab === 'pnl') {
+    document.getElementById('ph_doc').textContent = 'PENYATA UNTUNG RUGI';
+    const period = bulanPNL === 'semua'
+      ? 'Bagi Tahun Berakhir 31 Disember ' + tahunPNL
+      : 'Bagi Tempoh Bulan ' + bulanNama[bulanPNL] + ' ' + tahunPNL;
+    document.getElementById('ph_period').textContent = period;
+  } else if(tab === 'bs') {
+    document.getElementById('ph_doc').textContent = 'KUNCI KIRA-KIRA (BALANCE SHEET)';
+    const period = bulanBS === 'semua'
+      ? 'Pada 31 Disember ' + tahunBS
+      : 'Pada Hujung Bulan ' + bulanNama[bulanBS] + ' ' + tahunBS;
+    document.getElementById('ph_period').textContent = period;
+  } else if(tab === 'cf') {
+    document.getElementById('ph_doc').textContent = 'PENYATA ALIRAN TUNAI';
+    document.getElementById('ph_period').textContent = 'Bagi Tahun Berakhir 31 Disember ' + tahunCF;
+  } else {
+    document.getElementById('ph_doc').textContent = '';
+    document.getElementById('ph_period').textContent = '';
+  }
 }
 
 const JENIS_LABEL = {
@@ -1781,6 +1848,9 @@ function renderDashboard() {
 
 
 function proses(){
+  // Refresh print header whenever proses is called
+  const _activeTab = document.querySelector('.tab-content.active')?.id?.replace('tab-','');
+  if(_activeTab) kemaskiniPrintHeader(_activeTab);
   const selT=document.getElementById('fTahun').value||String(cy);
   const selB=document.getElementById('fBulan')?document.getElementById('fBulan').value:'semua';
 
