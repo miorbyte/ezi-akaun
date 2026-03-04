@@ -1238,6 +1238,14 @@ db = db.map(d => ({ id: d.id || Date.now(), t: d.t, j: d.j, a: d.a, n: d.n || ''
 
 const cy = new Date().getFullYear();
 
+function kemaskiniTarikh() {
+  const now = new Date();
+  const el = document.getElementById('headerDate');
+  if(el) el.textContent = now.toLocaleDateString('ms-MY',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+}
+kemaskiniTarikh();
+setInterval(kemaskiniTarikh, 60000);
+
 ['fTahun','fTahun2','fTahun3','filterYear2'].forEach(id => {
   const el = document.getElementById(id);
   if(el) for(let i=cy; i>=cy-3; i--) {
@@ -1541,8 +1549,6 @@ function renderDashboard() {
   const today = new Date();
   const todayStr = today.toISOString().split('T')[0];
 
-  // Kemaskini tarikh & salam setiap kali dashboard dipapar
-  document.getElementById('headerDate').textContent = today.toLocaleDateString('ms-MY',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
   const jam = today.getHours();
   const salamSemasa = jam < 12 ? 'Selamat Pagi' : jam < 17 ? 'Selamat Tengah Hari' : 'Selamat Petang';
   document.getElementById('dash-title').textContent = salamSemasa + ' 👋';
