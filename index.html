@@ -1237,9 +1237,6 @@ function kemaskiniKatalog(itemDetails, jenis) {
 db = db.map(d => ({ id: d.id || Date.now(), t: d.t, j: d.j, a: d.a, n: d.n || '', items: d.items || [] }));
 
 const cy = new Date().getFullYear();
-document.getElementById('headerDate').textContent = new Date().toLocaleDateString('ms-MY',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
-const greetHour = new Date().getHours();
-const greet = greetHour < 12 ? 'Selamat Pagi' : greetHour < 17 ? 'Selamat Tengah Hari' : 'Selamat Petang';
 
 ['fTahun','fTahun2','fTahun3','filterYear2'].forEach(id => {
   const el = document.getElementById(id);
@@ -1543,6 +1540,13 @@ function setDashView(view, btn) {
 function renderDashboard() {
   const today = new Date();
   const todayStr = today.toISOString().split('T')[0];
+
+  // Kemaskini tarikh & salam setiap kali dashboard dipapar
+  document.getElementById('headerDate').textContent = today.toLocaleDateString('ms-MY',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+  const jam = today.getHours();
+  const salamSemasa = jam < 12 ? 'Selamat Pagi' : jam < 17 ? 'Selamat Tengah Hari' : 'Selamat Petang';
+  document.getElementById('dash-title').textContent = salamSemasa + ' 👋';
+  document.getElementById('dash-year-badge') && (document.getElementById('dash-year-badge').textContent = `— ${today.getFullYear()} —`);
   const selT = String(cy);
 
   // Compute date ranges
